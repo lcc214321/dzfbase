@@ -10,5 +10,7 @@ public class DZFConstant {
 	public static final String ACCOUNTCODERULE = "4/2/2/2/2";
 	
 	public static final String ZHBWB = "zhbwb";
+	
+	public static final String ZCLBRULE = "2/2/2/2/2";
 
 }
