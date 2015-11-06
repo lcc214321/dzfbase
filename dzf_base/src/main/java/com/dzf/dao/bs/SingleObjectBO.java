@@ -247,11 +247,11 @@ public class SingleObjectBO {
 
 		}
 	}
-	public boolean isExists(String pk_corp, String sql) throws DAOException {
+	public boolean isExists(String pk_corp, String sql,SQLParameter sp) throws DAOException {
 
 		Object[] objCodeAndDefkey = (Object[])executeQuery(
 				"select count(1) from dual where exists(" + sql + ")",
-				new SQLParameter(), new ArrayProcessor());
+				sp, new ArrayProcessor());
 
 		if (objCodeAndDefkey != null && objCodeAndDefkey.length > 0) {
 			BigDecimal i = (BigDecimal) objCodeAndDefkey[0];
