@@ -4,6 +4,7 @@
 package com.dzf.dao.bs;
 
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collection;
@@ -18,6 +19,7 @@ import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 
 import com.dzf.dao.jdbc.framework.SQLParameter;
+import com.dzf.dao.jdbc.framework.processor.ArrayProcessor;
 import com.dzf.dao.jdbc.framework.processor.BeanListProcessor;
 import com.dzf.dao.jdbc.framework.processor.ColumnProcessor;
 import com.dzf.dao.jdbc.framework.processor.ResultSetProcessor;
@@ -244,6 +246,18 @@ public class SingleObjectBO {
 		} finally {
 
 		}
+	}
+	public boolean isExists(String pk_corp, String sql) throws DAOException {
+
+		Object[] objCodeAndDefkey = (Object[])executeQuery(
+				"select count(1) from dual where exists(" + sql + ")",
+				new SQLParameter(), new ArrayProcessor());
+
+		if (objCodeAndDefkey != null && objCodeAndDefkey.length > 0) {
+			BigDecimal i = (BigDecimal) objCodeAndDefkey[0];
+			return i.intValue() > 0;
+		}
+		return false;
 	}
 public boolean lock(SuperVO svo) throws DAOException{
 	boolean b=false;
