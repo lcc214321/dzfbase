@@ -168,7 +168,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 		FieldValidateUtils.Validate(tvo);
 		
 		if(!checkBeforeSaveNew(tvo).booleanValue()){//保存前检查
-			throw new BusinessException(this.errmsg);
+			//throw new BusinessException(this.errmsg);
 		}
 		
 		return (SuperVO)singleObjectBO.saveObject((String)tvo.getAttributeValue("pk_corp"), tvo);
@@ -179,7 +179,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 		FieldValidateUtils.Validate(tvo);
 		
 		if(!checkBeforeUpdata(tvo).booleanValue()){//保存前检查
-			throw new BusinessException(this.errmsg);
+			//throw new BusinessException(this.errmsg);
 		}
 		
 		singleObjectBO.saveObject((String)tvo.getAttributeValue("pk_corp"), tvo);
@@ -198,7 +198,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 		FieldValidateUtils.Validate(tvo);
 		
 		if(!checkBeforeUpdata(tvo).booleanValue()){//保存前检查
-			throw new BusinessException(this.errmsg);
+			//throw new BusinessException(this.errmsg);
 		}
 		
 		getSingleObjectBO().update(tvo, columns);// executeUpdate(updatesql, sp);
@@ -237,20 +237,20 @@ public class BgPubServiceImpl implements IBgPubServices {
 		return rsmap;
 	}
 	
-	protected String errmsg ;
+	//protected String errmsg ;
 	
 	/**
 	 * 更新前检查
 	 * */
-	public DZFBoolean checkBeforeUpdata(SuperVO vo){
-		return new DZFBoolean(true);
+	public DZFBoolean checkBeforeUpdata(SuperVO vo)throws  BusinessException{
+		return DZFBoolean.TRUE;
 	}
 	
 	/**
 	 * 新增前检查
 	 * */
-	public DZFBoolean checkBeforeSaveNew(SuperVO vo){
-		return new DZFBoolean(true);
+	public DZFBoolean checkBeforeSaveNew(SuperVO vo)throws  BusinessException{
+		return DZFBoolean.TRUE;
 	}
 	
 }

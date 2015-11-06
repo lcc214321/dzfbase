@@ -467,7 +467,7 @@ public boolean lock(SuperVO svo) throws DAOException{
 	 * @param vo
 	 * @return
 	 * @throws DAOException
-	 */
+	 */ 
 	public String insertVOWithPK(SuperVO vo) throws DAOException {
 		BaseDAO dao = new BaseDAO(dataSource);
 		return dao.insertVOWithPK(vo.getAttributeValue("pk_corp").toString(), vo);
