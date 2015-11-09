@@ -69,10 +69,26 @@ public class QueryParamVO extends SuperVO {
 
 	private List<String> kmcodelist;// 科目编码集合
 	
+	private String fathercorp;//登录公司的上级公司
+	
 	@FieldAlias("cjq")
 	private Integer cjq;
 	@FieldAlias("cjz")
 	private Integer cjz;
+
+	/**
+	 * @return the fathercorp
+	 */
+	public String getFathercorp() {
+		return fathercorp;
+	}
+
+	/**
+	 * @param fathercorp the fathercorp to set
+	 */
+	public void setFathercorp(String fathercorp) {
+		this.fathercorp = fathercorp;
+	}
 
 	private Integer levelq;// 科目级次开始
 
