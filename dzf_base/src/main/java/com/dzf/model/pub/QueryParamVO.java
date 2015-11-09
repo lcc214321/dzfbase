@@ -63,7 +63,7 @@ public class QueryParamVO extends SuperVO {
 
 	private DZFBoolean ishassh;// 是否审核
 
-	private DZFBoolean ismj;     
+	private DZFBoolean ismj;            
 
 	private String pk_currency;// 币种
 
