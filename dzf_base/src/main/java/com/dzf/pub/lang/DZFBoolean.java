@@ -51,13 +51,18 @@ public final class DZFBoolean implements java.io.Serializable,Comparable{
     }
     
     public static DZFBoolean valueOf(String val) {
-        if (val != null
+    	if("是".equals(val)){
+    		return TRUE;
+    	}else if("否".equals(val)){
+    		return FALSE;
+    	}else if (val != null
                 && val.length() > 0
                 && (val.equalsIgnoreCase("true") || val.charAt(0) == 'Y' || val
-                        .charAt(0) == 'y'))
-            return TRUE;
-        else
-            return FALSE;
+                        .charAt(0) == 'y')){
+    		return TRUE;
+    	}else{
+    		return FALSE;
+    	}
     }
 
 
