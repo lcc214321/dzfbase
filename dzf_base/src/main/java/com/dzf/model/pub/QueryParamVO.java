@@ -81,8 +81,7 @@ public class QueryParamVO extends SuperVO {
 	 */
 	public String getFathercorp() {
 		return fathercorp;
-	}
-
+	} 
 	/**
 	 * @param fathercorp the fathercorp to set
 	 */
