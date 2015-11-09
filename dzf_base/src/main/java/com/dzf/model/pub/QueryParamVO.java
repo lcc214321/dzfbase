@@ -425,6 +425,12 @@ public class QueryParamVO extends SuperVO {
 		this.kms_last = kms_last;
 	}
 
-	
+	public String getFathercorp() {
+		return fathercorp;
+	}
+
+	public void setFathercorp(String fathercorp) {
+		this.fathercorp = fathercorp;
+	}
 	
 }
