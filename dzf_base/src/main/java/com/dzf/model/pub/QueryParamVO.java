@@ -19,6 +19,8 @@ public class QueryParamVO extends SuperVO {
 
 	public QueryParamVO() {
 	}
+	
+	private String fathercorp;
 
 	@FieldAlias("corpIds")
 	private String pk_corp;// 公司
