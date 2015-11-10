@@ -472,5 +472,8 @@ public boolean lock(SuperVO svo) throws DAOException{
 		BaseDAO dao = new BaseDAO(dataSource);
 		return dao.insertVOWithPK(vo.getAttributeValue("pk_corp").toString(), vo);
 	}
-	
+	public String[] insertVOWithPK(String pk_corp,SuperVO[] vo) throws DAOException {
+		BaseDAO dao = new BaseDAO(dataSource);
+		return dao.insertVOArrayWithPK(pk_corp, vo);//(vo.getAttributeValue("pk_corp").toString(), vo);
+	}
 }
