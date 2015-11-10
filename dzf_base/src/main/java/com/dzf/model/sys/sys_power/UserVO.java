@@ -1,6 +1,8 @@
 package com.dzf.model.sys.sys_power;
 
 import com.dzf.pub.SuperVO;
+import com.dzf.pub.Field.FieldAlias;
+import com.dzf.pub.Field.FieldValidate;
 import com.dzf.pub.lang.DZFBoolean;
 import com.dzf.pub.lang.DZFDate;
 import com.dzf.pub.lang.DZFDateTime;
@@ -10,28 +12,51 @@ import com.dzf.pub.lang.DZFDateTime;
  * 
  */
 public class UserVO extends SuperVO {
+	@FieldAlias("ck_code")
+	@FieldValidate("验证码不能为空:checkcode is not null;")
 	private String checkcode;
 	private String langcode;
+	@FieldAlias("pdl")
 	private String pwdlevelcode;
+	@FieldAlias("crtcorp_id")
 	private String pk_creatcorp;
+	@FieldAlias("att")
 	private String authen_type;
+	@FieldAlias("bl1")
 	private DZFBoolean isca;
+	@FieldAlias("lock_flag")
 	private DZFBoolean locked_tag;
+	@FieldAlias("ucode")
+	@FieldValidate("用户编码不能为空:user_code is not null;")
 	private String user_code;
+	@FieldAlias("en_time")
 	private DZFDate able_time;
+	@FieldAlias("dis_time")
 	private DZFDate disable_time;
 	private DZFDateTime ts;
+	@FieldAlias("u_pwd")
+	@FieldValidate("密码不能为空:user_password is not null;")
 	private String user_password;
+	@FieldAlias("yyyyy")
 	private DZFBoolean bappuser;
+	@FieldAlias("b_mng")
 	private DZFBoolean ismanager;
+	@FieldAlias("u_note")
 	private String user_note;
+	@FieldAlias("corp_id")
 	private String pk_corp;
+	@FieldAlias("zzzz")
 	private String pwdparam;
+	@FieldAlias("uname")
+	@FieldValidate("用户名称不能为空:user_name is not null;")
 	private String user_name;
 	private Integer dr;
 	private Integer istate;
+	@FieldAlias("gjyh")
 	private DZFBoolean keyuser;
+	@FieldAlias("uid")
 	private String cuserid;
+	@FieldAlias("pppp")
 	private int pwdtype;
 	//手机用户注册未签约公司 保存临时公司主键
 	private String pk_tempcorp;
@@ -42,7 +67,23 @@ public class UserVO extends SuperVO {
 	//是否财务处理
 	private DZFBoolean baccount;
 
+	private String corpnm;
+	private String crtcorp;
 	
+	
+	
+	public String getCorpnm() {
+		return corpnm;
+	}
+	public void setCorpnm(String corpnm) {
+		this.corpnm = corpnm;
+	}
+	public String getCrtcorp() {
+		return crtcorp;
+	}
+	public void setCrtcorp(String crtcorp) {
+		this.crtcorp = crtcorp;
+	}
 	public DZFBoolean getBdata() {
 		return bdata;
 	}

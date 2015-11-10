@@ -194,7 +194,7 @@ public class BaseAction<T> extends ActionSupport {
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
 	 * 将对象转换成JSON字符串，并响应回前台
 	 * 

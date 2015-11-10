@@ -19,7 +19,7 @@ public class QueryParamVO extends SuperVO {
 
 	public QueryParamVO() {
 	}
-
+	
 	@FieldAlias("corpIds")
 	private String pk_corp;// 公司
 	@FieldAlias("corpcode")
@@ -109,6 +109,8 @@ public class QueryParamVO extends SuperVO {
 	
 	@FieldAlias("asname")
 	private String asname;//资产名称
+	
+	private String zcsx;//资产属性
 	
 	private DZFBoolean isqc;//是否期初
 	
@@ -432,5 +434,15 @@ public class QueryParamVO extends SuperVO {
 	public void setFathercorp(String fathercorp) {
 		this.fathercorp = fathercorp;
 	}
+
+	public String getZcsx() {
+		return zcsx;
+	}
+
+	public void setZcsx(String zcsx) {
+		this.zcsx = zcsx;
+	}
+	
+	
 	
 }

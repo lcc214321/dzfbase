@@ -3,6 +3,7 @@ package com.dzf.pub.lang;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
+
 public class DZFDouble extends java.lang.Number implements java.io.Serializable,
 		Comparable {
 	static final long serialVersionUID = -809396813980155342L;
@@ -65,7 +66,9 @@ public class DZFDouble extends java.lang.Number implements java.io.Serializable,
 		super();
 	}
 
-	
+	public static DZFDouble getUFDouble(DZFDouble ufd){
+		return ufd==null?DZFDouble.ZERO_DBL:ufd;
+	}
 	public DZFDouble(double d) throws NumberFormatException {
 		this(d, DEFAULT_POWER);
 	}

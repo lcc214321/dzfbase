@@ -82,7 +82,7 @@ public class SingleObjectBO {
 		}
 	}
 
-	public void deleteObjectByID(String pk, Class[] cs) throws DAOException {
+	public int deleteObjectByID(String pk, Class[] cs) throws DAOException {
 		String[] keys = null;
 		String userid = null;
 		int len = 0;
@@ -101,7 +101,7 @@ public class SingleObjectBO {
 				sp.addParam(pk);
 				dao.deleteByClause(cs[1], buffer.toString(), sp);
 			}
-			dao.deleteByPK(cs[0], pk);
+			return dao.deleteByPK(cs[0], pk);
 
 		} catch (Exception e) {
 			throw new DAOException(e);
@@ -472,5 +472,8 @@ public boolean lock(SuperVO svo) throws DAOException{
 		BaseDAO dao = new BaseDAO(dataSource);
 		return dao.insertVOWithPK(vo.getAttributeValue("pk_corp").toString(), vo);
 	}
-	
+	public String[] insertVOWithPK(String pk_corp,SuperVO[] vo) throws DAOException {
+		BaseDAO dao = new BaseDAO(dataSource);
+		return dao.insertVOArrayWithPK(pk_corp, vo);//(vo.getAttributeValue("pk_corp").toString(), vo);
+	}
 }

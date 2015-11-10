@@ -995,11 +995,11 @@ final public class BaseDAO {
 	 * @throws DAOException
 	 *             如果删除出错抛出DAOException
 	 */
-	public void deleteByPK(Class className, String pk) throws DAOException {
+	public int deleteByPK(Class className, String pk) throws DAOException {
 		PersistenceManager manager = null;
 		try {
 			manager = createPersistenceManager(dataSource);
-			manager.deleteByPK(className, pk);
+			return manager.deleteByPK(className, pk);
 		} catch (DbException e) {
 			Logger.error(this,e.getMessage(), e);
 			throw new DAOException(e.getMessage());

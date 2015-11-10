@@ -167,9 +167,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 		SuperVO tvo =(SuperVO)vo.clone();
 		FieldValidateUtils.Validate(tvo);
 		
-		if(!checkBeforeSaveNew(tvo).booleanValue()){//保存前检查
-			//throw new BusinessException(this.errmsg);
-		}
+		checkBeforeSaveNew(tvo);
 		
 		return (SuperVO)singleObjectBO.saveObject((String)tvo.getAttributeValue("pk_corp"), tvo);
 	};
@@ -178,9 +176,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 		SuperVO tvo =(SuperVO)vo.clone();
 		FieldValidateUtils.Validate(tvo);
 		
-		if(!checkBeforeUpdata(tvo).booleanValue()){//保存前检查
-			//throw new BusinessException(this.errmsg);
-		}
+		checkBeforeUpdata(tvo);
 		
 		singleObjectBO.saveObject((String)tvo.getAttributeValue("pk_corp"), tvo);
 	}
@@ -197,9 +193,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 		SuperVO tvo =(SuperVO)vo.clone();
 		FieldValidateUtils.Validate(tvo);
 		
-		if(!checkBeforeUpdata(tvo).booleanValue()){//保存前检查
-			//throw new BusinessException(this.errmsg);
-		}
+		checkBeforeUpdata(tvo);//保存前检查
 		
 		getSingleObjectBO().update(tvo, columns);// executeUpdate(updatesql, sp);
 	}
