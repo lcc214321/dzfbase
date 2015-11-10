@@ -10,6 +10,7 @@ import java.util.StringTokenizer;
 import com.dzf.pub.BeanHelper;
 import com.dzf.pub.BusinessException;
 import com.dzf.pub.SuperVO;
+import com.dzf.pub.dzfconstant.DZFConstant;
 
 /**
  * 常用的工具类
@@ -135,6 +136,15 @@ public class DZfcommonTools {
 			}
 		}
 		return result;
+	}
+
+	public static String getFirstCode(String childCode,String codeRule) {
+		String firstCode = "";
+		int[] codeSection = parseCodeRule(codeRule);
+		if(codeSection.length > 0 && childCode.length() >= codeSection[0]){
+			firstCode = childCode.substring(0, codeSection[0]);
+		}
+		return firstCode;
 	}
 
 	
