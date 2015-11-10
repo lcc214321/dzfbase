@@ -23,7 +23,7 @@ import com.dzf.pub.SuperVO;
 /**
  * @author hey
  *         <p/>
- *         鏁版嵁搴撹闂府鍔╃被灏佽浜嗗父鐢ㄧ殑鎸佷箙灞傝闂搷浣�
+ *         数据库访问帮助类封装了常用的持久层访问操作
  */
 
 final public class BaseDAO {
@@ -37,10 +37,10 @@ final public class BaseDAO {
 	boolean addTimestamp = true;
 
 	/**
-	 * 鏈夊弬鏋勯�鍑芥暟锛屽皢浣跨敤鎸囧畾鏁版嵁婧�
+	 * 有参构造函数，将使用指定数据源
 	 * 
 	 * @param dataSource
-	 *            鏁版嵁婧愬悕绉�
+	 *            数据源名称
 	 */
 	public BaseDAO(DataSource dataSource) {
 		super();
@@ -48,12 +48,12 @@ final public class BaseDAO {
 	}
 
 //	/**
-//	 * 鏍规嵁SQL 鎵ц鏁版嵁搴撴煡璇�骞惰繑鍥濺esultSetProcessor澶勭悊鍚庣殑瀵硅薄 锛堥潪 Javadoc锛�
+//	 * 根据SQL 执行数据库查询,并返回ResultSetProcessor处理后的对象 （非 Javadoc）
 //	 * 
 //	 * @param sql
-//	 *            鏌ヨ鐨凷QL
+//	 *            查询的SQL
 //	 * @param processor
-//	 *            缁撴灉闆嗗鐞嗗櫒
+//	 *            结果集处理器
 //	 */
 //	public Object executeQuery(String sql, ResultSetProcessor processor)
 //			throws DAOException {
@@ -75,14 +75,14 @@ final public class BaseDAO {
 //	}
 
 	/**
-	 * 鏍规嵁鎸囧畾SQL 鎵ц鏈夊弬鏁扮殑鏁版嵁搴撴煡璇�骞惰繑鍥濺esultSetProcessor澶勭悊鍚庣殑瀵硅薄
+	 * 根据指定SQL 执行有参数的数据库查询,并返回ResultSetProcessor处理后的对象
 	 * 
 	 * @param sql
-	 *            鏌ヨ鐨凷QL
+	 *            查询的SQL
 	 * @param parameter
-	 *            鏌ヨ鍙傛暟
+	 *            查询参数
 	 * @param processor
-	 *            缁撴灉闆嗗鐞嗗櫒
+	 *            结果集处理器
 	 */
 	public Object executeQuery(String sql, SQLParameter parameter,
 			ResultSetProcessor processor) throws DAOException {
@@ -105,15 +105,15 @@ final public class BaseDAO {
 	}
 
 	/**
-	 * 鏍规嵁鎸囧畾SQL 鎵ц鏈夊弬鏁扮殑鏁版嵁搴撴洿鏂版搷浣�
+	 * 根据指定SQL 执行有参数的数据库更新操作
 	 * 
 	 * @param sql
-	 *            鏇存柊鐨剆ql
+	 *            更新的sql
 	 * @param parameter
-	 *            鏇存柊鍙傛暟
+	 *            更新参数
 	 * @return
 	 * @throws DAOException
-	 *             鏇存柊鍙戠敓閿欒鎶涘嚭DAOException
+	 *             更新发生错误抛出DAOException
 	 */
 	public int executeUpdate(String sql, SQLParameter parameter)
 			throws DAOException {
@@ -135,13 +135,13 @@ final public class BaseDAO {
 	}
 
 	/**
-	 * 鏍规嵁鎸囧畾SQL 鎵ц鏃犲弬鏁扮殑鏁版嵁搴撴洿鏂版搷浣�
+	 * 根据指定SQL 执行无参数的数据库更新操作
 	 * 
 	 * @param sql
-	 *            鏇存柊鐨剆ql
+	 *            更新的sql
 	 * @return
 	 * @throws DAOException
-	 *             鏇存柊鍙戠敓閿欒鎶涘嚭DAOException
+	 *             更新发生错误抛出DAOException
 	 */
 //	public int executeUpdate(String sql) throws DAOException {
 //		PersistenceManager manager = null;
@@ -162,14 +162,14 @@ final public class BaseDAO {
 //	}
 
 	/**
-	 * 鏍规嵁VO绫诲悕鏌ヨ璇O瀵瑰簲琛ㄧ殑鎵�湁鏁版嵁
+	 * 根据VO类名查询该VO对应表的所有数据
 	 * 
 	 * @param className
-	 *            SuperVo绫诲悕
+	 *            SuperVo类名
 	 * 
 	 * @return
 	 * @throws DAOException
-	 *             鍙戠敓閿欒鎶涘嚭DAOException
+	 *             发生错误抛出DAOException
 	 */
 	public Collection retrieveAll(Class className) throws DAOException {
 		PersistenceManager manager = null;
@@ -178,7 +178,7 @@ final public class BaseDAO {
 			SuperVO svo=(SuperVO) className.newInstance();
 			String tabname=svo.getTableName();
 			int index=Arrays.binarySearch(tablenames, tabname.toLowerCase());
-			if(index<0)throw new DAOException("璇ヨ〃涓嶅叿鏈夊叏琛ㄦ煡璇㈡潯浠�);
+			if(index<0)throw new DAOException("该表不具有全表查询条件");
 			manager = createPersistenceManager(dataSource);
 			values = manager.retrieveAll(className);
 
@@ -247,7 +247,7 @@ final public class BaseDAO {
 	}
 
 	/**
-	 * 閫氳繃where鏉′欢鏌ヨ鎵�湁婊¤冻鏉′欢鐨剉o鏁扮粍銆�鏀寔澶氳〃 鍒涘缓鏃ユ湡锛�2002-6-12)
+	 * 通过where条件查询所有满足条件的vo数组。 支持多表 创建日期：(2002-6-12)
 	 * 
 	 * @param c
 	 *            Class
@@ -255,7 +255,7 @@ final public class BaseDAO {
 	 *            String
 	 * @return SuperVO[]
 	 * @throws Exception
-	 *             寮傚父璇存槑銆�
+	 *             异常说明。
 	 */
 //	@SuppressWarnings("unchecked")
 //	public Object[] retrieveByClause(Class c, SqlSupportVO[] sqlvos,
@@ -308,15 +308,15 @@ final public class BaseDAO {
 //	}
 
 	/**
-	 * 鏍规嵁VO涓殑灞炴�鍊间綔涓哄尮閰嶆潯浠朵粠鏁版嵁搴撲腑鏌ヨ璇O瀵瑰簲鐨勮〃鐨勬暟鎹�
+	 * 根据VO中的属性值作为匹配条件从数据库中查询该VO对应的表的数据
 	 * 
 	 * @param vo
-	 *            瑕佹煡璇㈢殑VO瀵硅薄
+	 *            要查询的VO对象
 	 * @param isAnd
-	 *            鎸囧畾鍖归厤鏉′欢鐨勯�杈戯紙true浠ｈ〃&&,flase浠ｈ〃||锛�
+	 *            指定匹配条件的逻辑（true代表&&,flase代表||）
 	 * @return
 	 * @throws DAOException
-	 *             濡傛灉鏌ヨ鍑洪敊鎶涘嚭DAOException
+	 *             如果查询出错抛出DAOException
 	 */
 	public Collection retrieve(SuperVO vo, boolean isAnd) throws DAOException {
 		PersistenceManager manager = null;
@@ -361,12 +361,12 @@ final public class BaseDAO {
 	}
 
 	/**
-	 * 鏍规嵁鎸囧畾VO鐨勫�浠ュ強閫昏緫鏉′欢杩斿洖鎸囧畾瀛楁鐨刅O闆嗗悎
+	 * 根据指定VO的值以及逻辑条件返回指定字段的VO集合
 	 * 
 	 * @param vo
-	 *            鏉′欢VO
+	 *            条件VO
 	 * @param isAnd
-	 *            閫昏緫鏉′欢锛宼rue浠ｈ〃涓庤繍绠梖alse浠ｈ〃鎴栬繍绠�
+	 *            逻辑条件，true代表与运算false代表或运算
 	 * 
 	 * 
 	 */
@@ -389,14 +389,14 @@ final public class BaseDAO {
 	}
 
 	/**
-	 * 鏍规嵁鍏徃鍚嶅拰鎸囧畾瀛楁杩斿洖VO闆嗗悎
+	 * 根据公司名和指定字段返回VO集合
 	 * 
 	 * @param className
-	 *            VO绫诲悕
+	 *            VO类名
 	 * @param pkCorp
-	 *            鍏徃涓婚敭
+	 *            公司主键
 	 * @param selectedFields
-	 *            鏌ヨ瀛楁
+	 *            查询字段
 	 * 
 	 */
 	public Collection retrieveByCorp(Class className, String pkCorp,
@@ -419,11 +419,11 @@ final public class BaseDAO {
 	}
 
 	/**
-	 * 鏍规嵁鍏徃PK杩斿洖鎸囧畾VO闆嗗悎
+	 * 根据公司PK返回指定VO集合
 	 * 
 	 * @param className
-	 *            VO鍚嶇О
-	 * @param 鍏徃PK
+	 *            VO名称
+	 * @param 公司PK
 	 * 
 	 */
 	public Collection retrieveByCorp(Class className, String pkCorp)
@@ -444,11 +444,11 @@ final public class BaseDAO {
 	}
 
 	/**
-	 * 鏍规嵁PK鏌ヨ鎸囧畾VO
+	 * 根据PK查询指定VO
 	 * 
-	 * @param VO绫诲悕
+	 * @param VO类名
 	 * @param pk
-	 *            涓婚敭
+	 *            主键
 	 * 
 	 */
 	public Object retrieveByPK(Class className, String pk) throws DAOException {
@@ -469,7 +469,7 @@ final public class BaseDAO {
 	}
 
 	/**
-	 * 鏍规嵁涓婚敭杩斿洖鎸囧畾鍒楃殑VO瀵硅薄
+	 * 根据主键返回指定列的VO对象
 	 */
 	public Object retrieveByPK(Class className, String pk,
 			String[] selectedFields) throws DAOException {
@@ -490,7 +490,7 @@ final public class BaseDAO {
 	}
 
 	/**
-	 * 鎻掑叆涓�釜VO瀵硅薄锛屽鏋滆VO鐨勪富閿�闈炵┖鍒欐彃鍏O鐨勫師鏈変富閿�
+	 * 插入一个VO对象，如果该VO的主键值非空则插入VO的原有主键
 	 * 
 	 * @param vo
 	 * @return
@@ -515,10 +515,10 @@ final public class BaseDAO {
 	}
 
 	/**
-	 * 鎻掑叆涓�釜VO瀵硅薄
+	 * 插入一个VO对象
 	 * 
 	 * @param vo
-	 *            SuperVO瀵硅薄
+	 *            SuperVO对象
 	 * 
 	 */
 	public String insertVO(String pk_corp,SuperVO vo) throws DAOException {
@@ -541,7 +541,7 @@ final public class BaseDAO {
 	}
 
 	/**
-	 * 鎻掑叆涓�釜VO鏁扮粍濡傛灉璇O鐨勪富閿�闈炵┖鍒欐彃鍏O鐨勫師鏈変富閿�
+	 * 插入一个VO数组如果该VO的主键值非空则插入VO的原有主键
 	 * 
 	 * @param vo
 	 * @return
@@ -566,10 +566,10 @@ final public class BaseDAO {
 	}
 
 	/**
-	 * 鎻掑叆VO鏁扮粍
+	 * 插入VO数组
 	 * 
 	 * @param vo
-	 *            VO鏁扮粍
+	 *            VO数组
 	 */
 	public String[] insertVOArray(String pk_corp,SuperVO[] vo) throws DAOException {
 		PersistenceManager manager = null;
@@ -589,7 +589,7 @@ final public class BaseDAO {
 		return pk;
 	}
 	/*
-	 * 璇ユ柟娉曞彧鑳借singleObejctBO璋冪敤
+	 * 该方法只能被singleObejctBO调用
 	 * */
 	public SuperVO execute(ConnectionCallback<SuperVO> action) throws Exception{
 		PersistenceManager manager = null;
@@ -609,7 +609,7 @@ final public class BaseDAO {
 		return svo;
 	}
 	/*
-	 * 璇ユ柟娉曞彧鑳借singleObejctBO璋冪敤
+	 * 该方法只能被singleObejctBO调用
 	 * */
 	public String[] insertVOArray(Connection conn,String pk_corp,SuperVO[] vo) throws DAOException {
 		PersistenceManager manager = null;
@@ -629,10 +629,10 @@ final public class BaseDAO {
 		return pk;
 	}
 	/**
-	 * 鎻掑叆VO闆嗗悎
+	 * 插入VO集合
 	 * 
 	 * @param vos
-	 *            VO闆嗗悎
+	 *            VO集合
 	 */
 	public String[] insertVOList(String pk_corp,List vos) throws DAOException {
 		PersistenceManager manager = null;
@@ -653,10 +653,10 @@ final public class BaseDAO {
 	}
 
 	/**
-	 * 鏍规嵁IMappingMeta鎻掑叆涓�釜VO瀵硅薄锛岃VO鐨勪富閿�闈炵┖鍒欐彃鍏O鐨勫師鏈変富閿�
+	 * 根据IMappingMeta插入一个VO对象，该VO的主键值非空则插入VO的原有主键
 	 * 
 	 * @param vo
-	 *            VO瀵硅薄
+	 *            VO对象
 	 * @param meta
 	 *            IMappingMeta
 	 * @return
@@ -681,10 +681,10 @@ final public class BaseDAO {
 //	}
 
 	/**
-	 * 鏍规嵁IMappingMeta鎻掑叆涓�釜VO瀵硅薄
+	 * 根据IMappingMeta插入一个VO对象
 	 * 
 	 * @param vo
-	 *            VO瀵硅薄
+	 *            VO对象
 	 * @param meta
 	 *            IMappingMeta
 	 */
@@ -707,10 +707,10 @@ final public class BaseDAO {
 //	}
 //
 //	/**
-//	 * 鏍规嵁IMappingMeta鎻掑叆VO瀵硅薄闆嗗悎锛岃VO鐨勪富閿�闈炵┖鍒欐彃鍏O鐨勫師鏈変富閿�
+//	 * 根据IMappingMeta插入VO对象集合，该VO的主键值非空则插入VO的原有主键
 //	 * 
 //	 * @param vo
-//	 *            VO瀵硅薄闆嗗悎
+//	 *            VO对象集合
 //	 * @param meta
 //	 *            IMappingMeta
 //	 * @return
@@ -733,10 +733,10 @@ final public class BaseDAO {
 //	}
 //
 //	/**
-//	 * 鏍规嵁IMappingMeta鎻掑叆VO瀵硅薄闆嗗悎
+//	 * 根据IMappingMeta插入VO对象集合
 //	 * 
 //	 * @param vo
-//	 *            VO瀵硅薄闆嗗悎
+//	 *            VO对象集合
 //	 * @param meta
 //	 *            IMappingMeta
 //	 * @return
@@ -759,22 +759,22 @@ final public class BaseDAO {
 //	}
 
 	/**
-	 * 鏍规嵁VO瀵硅薄鏇存柊鏁版嵁搴�
+	 * 根据VO对象更新数据库
 	 * 
 	 * @param vo
-	 *            VO瀵硅薄
+	 *            VO对象
 	 */
 	public int updateVO(SuperVO vo) throws DAOException {
 		return updateVOArray(new SuperVO[] { vo });
 	}
 
 	/**
-	 * 鏍规嵁VO瀵硅薄涓寚瀹氬垪鏇存柊鏁版嵁搴�
+	 * 根据VO对象中指定列更新数据库
 	 * 
 	 * @param vos
-	 *            VO瀵硅薄
+	 *            VO对象
 	 * @param fieldNames
-	 *            鎸囧畾鍒�
+	 *            指定列
 	 * @throws DAOException
 	 */
 	public void updateVO(SuperVO vo, String[] fieldNames) throws DAOException {
@@ -782,22 +782,22 @@ final public class BaseDAO {
 	}
 
 	/**
-	 * 鏍规嵁VO瀵硅薄鏁扮粍鏇存柊鏁版嵁搴�
+	 * 根据VO对象数组更新数据库
 	 * 
 	 * @param vo
-	 *            VO瀵硅薄
+	 *            VO对象
 	 */
 	public int updateVOArray(SuperVO[] vos) throws DAOException {
 		return updateVOArray(vos, null);
 	}
 
 	/**
-	 * 鏍规嵁VO瀵硅薄鏁扮粍涓寚瀹氬垪鏇存柊鏁版嵁搴�
+	 * 根据VO对象数组中指定列更新数据库
 	 * 
 	 * @param vos
-	 *            VO瀵硅薄
+	 *            VO对象
 	 * @param fieldNames
-	 *            鎸囧畾鍒�
+	 *            指定列
 	 */
 	public int updateVOArray(SuperVO[] vos, String[] fieldNames)
 			throws DAOException {
@@ -806,9 +806,9 @@ final public class BaseDAO {
 	}
 
 	/**
-	 * 鏍规嵁VO瀵硅薄闆嗗悎鏇存柊鏁版嵁搴�
+	 * 根据VO对象集合更新数据库
 	 * 
-	 * @paramvos VO瀵硅薄闆嗗悎
+	 * @paramvos VO对象集合
 	 */
 	public void updateVOList(List vos) throws DAOException {
 		PersistenceManager manager = null;
@@ -826,12 +826,12 @@ final public class BaseDAO {
 	}
 
 	/**
-	 * 鏍规嵁VO瀵硅薄鍜孧appingMeta淇℃伅鏇存柊鏁版嵁搴�
+	 * 根据VO对象和MappingMeta信息更新数据库
 	 * 
 	 * @param vo
-	 *            VO瀵硅薄
+	 *            VO对象
 	 * @param meta
-	 *            MappingMeta淇℃伅
+	 *            MappingMeta信息
 	 */
 //	public int updateObject(Object vo, IMappingMeta meta) throws DAOException {
 //		return updateObject(vo, meta, null);
@@ -843,12 +843,12 @@ final public class BaseDAO {
 //	}
 
 	/**
-	 * 鍦ㄦ暟鎹簱涓垹闄や竴缁刅O瀵硅薄銆�
+	 * 在数据库中删除一组VO对象。
 	 * 
 	 * @param SuperVO
 	 *            [] vos
 	 * @throws Exception
-	 *             寮傚父璇存槑銆�
+	 *             异常说明。
 	 */
 //	public UpdateResultVO execUpdateByVoState(SuperVO[] vos,
 //			String[] selectedFields) throws DAOException {
@@ -882,12 +882,12 @@ final public class BaseDAO {
 //	}
 
 	/**
-	 * 鍦ㄦ暟鎹簱涓垹闄や竴缁刅O瀵硅薄銆�
+	 * 在数据库中删除一组VO对象。
 	 * 
 	 * @param SuperVO
 	 *            [] vos
 	 * @throws Exception
-	 *             寮傚父璇存槑銆�
+	 *             异常说明。
 	 */
 //	public UpdateResultVO execUpdateByVoState(SuperVO[] vos)
 //			throws DAOException {
@@ -895,12 +895,12 @@ final public class BaseDAO {
 //	}
 
 	/**
-	 * 鍦ㄦ暟鎹簱涓垹闄や竴涓猇O瀵硅薄銆�
+	 * 在数据库中删除一个VO对象。
 	 * 
 	 * @param vo
-	 *            VO瀵硅薄
+	 *            VO对象
 	 * @throws DAOException
-	 *             濡傛灉鍒犻櫎鍑洪敊鎶涘嚭DAOException
+	 *             如果删除出错抛出DAOException
 	 */
 	public void deleteVO(SuperVO vo) throws DAOException {
 		PersistenceManager manager = null;
@@ -918,12 +918,12 @@ final public class BaseDAO {
 	}
 
 	/**
-	 * 鍦ㄦ暟鎹簱涓垹闄や竴缁刅O瀵硅薄銆�
+	 * 在数据库中删除一组VO对象。
 	 * 
 	 * @param vos
-	 *            VO鏁扮粍瀵硅薄
+	 *            VO数组对象
 	 * @throws DAOException
-	 *             濡傛灉鍒犻櫎鍑洪敊鎶涘嚭DAOException
+	 *             如果删除出错抛出DAOException
 	 */
 	public void deleteVOArray(SuperVO[] vos) throws DAOException {
 		PersistenceManager manager = null;
@@ -942,14 +942,14 @@ final public class BaseDAO {
 	}
 
 	/**
-	 * 鍦ㄦ暟鎹簱涓牴鎹被鍚嶅拰PK鏁扮粍鍒犻櫎涓�粍VO瀵硅薄闆嗗悎
+	 * 在数据库中根据类名和PK数组删除一组VO对象集合
 	 * 
 	 * @param className
-	 *            瑕佸垹闄ょ殑VO绫诲悕
+	 *            要删除的VO类名
 	 * @param pks
-	 *            PK鏁扮粍
+	 *            PK数组
 	 * @throws DAOException
-	 *             濡傛灉鍒犻櫎鍑洪敊鎶涘嚭DAOException
+	 *             如果删除出错抛出DAOException
 	 */
 	public void deleteByPKs(Class className, String[] pks) throws DAOException {
 		PersistenceManager manager = null;
@@ -986,20 +986,20 @@ final public class BaseDAO {
 	}
 
 	/**
-	 * 鍦ㄦ暟鎹簱涓牴鎹被鍚嶅拰PK鍒犻櫎涓�釜VO瀵硅薄闆嗗悎
+	 * 在数据库中根据类名和PK删除一个VO对象集合
 	 * 
 	 * @param className
-	 *            VO绫诲悕
+	 *            VO类名
 	 * @param pk
-	 *            PK鍊�
+	 *            PK值
 	 * @throws DAOException
-	 *             濡傛灉鍒犻櫎鍑洪敊鎶涘嚭DAOException
+	 *             如果删除出错抛出DAOException
 	 */
-	public int deleteByPK(Class className, String pk) throws DAOException {
+	public void deleteByPK(Class className, String pk) throws DAOException {
 		PersistenceManager manager = null;
 		try {
 			manager = createPersistenceManager(dataSource);
-			return manager.deleteByPK(className, pk);
+			manager.deleteByPK(className, pk);
 		} catch (DbException e) {
 			Logger.error(this,e.getMessage(), e);
 			throw new DAOException(e.getMessage());
@@ -1011,12 +1011,12 @@ final public class BaseDAO {
 	}
 
 	/**
-	 * 鍦ㄦ暟鎹簱涓垹闄や竴缁刅O瀵硅薄闆嗗悎
+	 * 在数据库中删除一组VO对象集合
 	 * 
 	 * @param vos
-	 *            VO瀵硅薄闆嗗悎
+	 *            VO对象集合
 	 * @throws DAOException
-	 *             濡傛灉鍒犻櫎鍑洪敊鎶涘嚭DAOException
+	 *             如果删除出错抛出DAOException
 	 */
 	public void deleteVOList(List vos) throws DAOException {
 		PersistenceManager manager = null;
@@ -1052,7 +1052,7 @@ final public class BaseDAO {
 		case DBConsts.ORACLE:
 		case DBConsts.OSCAR:
 		case DBConsts.DB2:
-			// ORACLE闇�皢琛ㄥ悕澶у啓
+			// ORACLE需将表名大写
 			strTn = tableName.toUpperCase();
 			break;
 		}
