@@ -1,5 +1,5 @@
 /*
- * 鍒涘缓鏃ユ湡 2005-6-14
+ * 创建日期 2005-6-14
  */
 package com.dzf.dao.bs;
 
@@ -131,12 +131,12 @@ public class SingleObjectBO {
 	
 	
 	/**
-	 * 鏍规嵁SQL 鎵ц鏁版嵁搴撴煡璇�骞惰繑鍥濺esultSetProcessor澶勭悊鍚庣殑瀵硅薄 锛堥潪 Javadoc锛�
+	 * 根据SQL 执行数据库查询,并返回ResultSetProcessor处理后的对象 （非 Javadoc）
 	 * 
 	 * @param sql
-	 *            鏌ヨ鐨凷QL
+	 *            查询的SQL
 	 * @param processor
-	 *            缁撴灉闆嗗鐞嗗櫒
+	 *            结果集处理器
 	 */
 	public Object executeQuery(String sql, SQLParameter parameter, ResultSetProcessor processor) throws DAOException {
 		BaseDAO dao = new BaseDAO(dataSource);
@@ -156,7 +156,7 @@ public class SingleObjectBO {
 			sql="select t1.* from "+so1.getTableName()+" t1,"+sql+" t2 where t1.pk_corp=t2.pk_corp and t2.f1=t1."+so1.getParentPKFieldName();
 			List svos= (List) dao.executeQuery(sql, parameter, new BeanListProcessor(cs[1]));
 			
-			Map<String, List<SuperVO>> map = DZfcommonTools.hashlizeObject(svos, new String[]{so1.getParentPKFieldName()});//杩斿洖MAP淇℃伅
+			Map<String, List<SuperVO>> map = DZfcommonTools.hashlizeObject(svos, new String[]{so1.getParentPKFieldName()});//返回MAP信息
 			svos=null;
 			//len=svo==null?0:svo.length;
 			String s=null;
@@ -374,11 +374,11 @@ public boolean lock(SuperVO svo) throws DAOException{
 
 		}
 	}
-	/** 鍒嗛〉鏌ヨ
+	/** 分页查询
 	 * @param className
 	 * @param tableName
-	 * @param condition 鍙互涓虹┖ " AND C = ?" 
-	 * @param params 鍙互涓虹┖
+	 * @param condition 可以为空 " AND C = ?" 
+	 * @param params 可以为空
 	 * @param pageNo 
 	 * @param pageSize
 	 * @param order
@@ -410,8 +410,8 @@ public boolean lock(SuperVO svo) throws DAOException{
 	}
 	
 	/**
-	 * 鑾峰彇琛屾暟
-	 * @param sql 锛�select count(*) from dual where 1=1
+	 * 获取行数
+	 * @param sql ： select count(*) from dual where 1=1
 	 * */
 	@Deprecated
 	public int getTotalRow(String sql) throws DAOException{
@@ -422,7 +422,7 @@ public boolean lock(SuperVO svo) throws DAOException{
 	public int getTotalRow(String tablename,String Condition, SQLParameter parameter) throws DAOException{
 		BaseDAO dao = new BaseDAO(dataSource);
 		if(tablename.contains(";")||Condition.contains(";")){
-			throw new DAOException("浼犲叆琛ㄥ悕鍙婂弬鏁版垨鍚湁闈炴硶瀛楃");
+			throw new DAOException("传入表名及参数或含有非法字符");
 		}
 		String sql = " SELECT COUNT(*) FROM "+tablename;
 		if(Condition!=null&&Condition.length()>0){
@@ -462,7 +462,7 @@ public boolean lock(SuperVO svo) throws DAOException{
 	}
 	
 	/**
-	 * 鎻掑叆涓�釜VO瀵硅薄锛屽鏋滆VO鐨勪富閿�闈炵┖鍒欐彃鍏O鐨勫師鏈変富閿�
+	 * 插入一个VO对象，如果该VO的主键值非空则插入VO的原有主键
 	 * 
 	 * @param vo
 	 * @return
@@ -472,8 +472,5 @@ public boolean lock(SuperVO svo) throws DAOException{
 		BaseDAO dao = new BaseDAO(dataSource);
 		return dao.insertVOWithPK(vo.getAttributeValue("pk_corp").toString(), vo);
 	}
-	public String[] insertVOWithPK(String pk_corp,SuperVO[] vo) throws DAOException {
-		BaseDAO dao = new BaseDAO(dataSource);
-		return dao.insertVOArrayWithPK(pk_corp, vo);//.insertVOWithPK(vo.getAttributeValue("pk_corp").toString(), vo);
-	}
+	
 }
