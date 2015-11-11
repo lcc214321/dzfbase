@@ -105,6 +105,10 @@ public class QueryParamVO extends SuperVO {
 	
 	private DZFBoolean isclear;//是否清理
 	
+	private DZFBoolean iscarover;//仅显示已结转
+	
+	private DZFBoolean isuncarover;//仅显示未结转
+	
 	//区间查询
 	private String kms_first;
 	
@@ -429,7 +433,20 @@ public class QueryParamVO extends SuperVO {
 	public void setZcsx(String zcsx) {
 		this.zcsx = zcsx;
 	}
-	
-	
-	
+
+	public DZFBoolean getIscarover() {
+		return iscarover;
+	}
+
+	public void setIscarover(DZFBoolean iscarover) {
+		this.iscarover = iscarover;
+	}
+
+	public DZFBoolean getIsuncarover() {
+		return isuncarover;
+	}
+
+	public void setIsuncarover(DZFBoolean isuncarover) {
+		this.isuncarover = isuncarover;
+	}
 }
