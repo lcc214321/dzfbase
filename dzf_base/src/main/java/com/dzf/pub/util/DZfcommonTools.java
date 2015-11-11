@@ -10,7 +10,6 @@ import java.util.StringTokenizer;
 import com.dzf.pub.BeanHelper;
 import com.dzf.pub.BusinessException;
 import com.dzf.pub.SuperVO;
-import com.dzf.pub.dzfconstant.DZFConstant;
 
 /**
  * 常用的工具类
