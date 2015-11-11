@@ -137,6 +137,15 @@ public class DZfcommonTools {
 		return result;
 	}
 
+	public static String getFirstCode(String childCode,String codeRule) {
+		String firstCode = "";
+		int[] codeSection = parseCodeRule(codeRule);
+		if(codeSection.length > 0 && childCode.length() >= codeSection[0]){
+			firstCode = childCode.substring(0, codeSection[0]);
+		}
+		return firstCode;
+	}
+
 	
 	public static String getParentCode(String childCode,String codeRule) {
 		String parentCode = null;

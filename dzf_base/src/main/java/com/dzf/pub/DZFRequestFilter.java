@@ -12,6 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import com.dzf.dao.bs.SingleObjectBO;
+import com.dzf.dao.jdbc.framework.SQLParameter;
+import com.dzf.dao.jdbc.framework.processor.ColumnProcessor;
 import com.dzf.model.sys.sys_power.CorpVO;
 import com.dzf.pub.cache.CorpCache;
 /**
@@ -27,6 +33,8 @@ public class DZFRequestFilter implements Filter {
     }  
 
 	private FilterConfig filterConfig;
+	
+	private String errorPage;
 
 	public DZFRequestFilter() {
 		super();
@@ -64,6 +72,13 @@ public class DZFRequestFilter implements Filter {
 		    		req.getRequestDispatcher("/login.jsp").forward(req,res);
    				 	return;
 		    	}
+
+//				String path =req.getServletPath();
+//		    	if(userid!=null&&corpVo!=null&&!path.endsWith("/index.jsp")){
+//		    		if(!checkPageAuth( (HttpServletRequest)request,userid,corpVo.getPk_corp())){
+//		    			request.getRequestDispatcher(errorPage).forward(request, response);//跳转到信息提示页面！！ 
+//		    		}
+//		    	}
 		    }
 			
 	        filterChain.doFilter(request, response);
@@ -84,4 +99,27 @@ public class DZFRequestFilter implements Filter {
 	public void destroy() {
 		this.filterConfig = null;
 	}
+	
+	private Boolean checkPageAuth(HttpServletRequest request,String userid,String pk_corp){
+		
+		String path = request.getRequestURI();
+//		String path = request.getServletPath().substring(0, request.getServletPath().indexOf("!"));
+		
+		String sql = new String("SELECT 1 FROM SM_POWER_FUNC POWER "+
+				" INNER JOIN SM_FUNNODE FUN ON POWER.RESOURCE_DATA_ID=FUN.PK_FUNNODE "+
+				" INNER JOIN SM_USER_ROLE ROL ON ROL.PK_ROLE=POWER.PK_ROLE "+
+				" WHERE ROL.CUSERID =? AND ROL.PK_CORP=?  AND FILE_DIR = ? AND NVL(POWER.DR,0)=0 AND NVL(ROL.DR,0)=0 ");
+		SQLParameter sp = new SQLParameter();
+		sp.addParam(userid);
+		sp.addParam(pk_corp);
+		sp.addParam(path);
+		
+		WebApplicationContext wc = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext());
+		SingleObjectBO sbo = wc.getBean(SingleObjectBO.class);
+		
+		String c = (String)sbo.executeQuery(sql, sp, new ColumnProcessor());
+		
+		return c!=null;
+	}
+	
 }
