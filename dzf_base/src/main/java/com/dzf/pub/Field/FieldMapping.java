@@ -78,6 +78,11 @@ public class FieldMapping {
 				map.put(fields[i].getName(), comment.value());
 			}
 		}
+	    Class superClazz = classDef.getSuperclass();
+	    if (superClazz != null) {
+	    	
+	      getFieldAlias(superClazz, map);
+	    }
 		return map;
 	}
 }
