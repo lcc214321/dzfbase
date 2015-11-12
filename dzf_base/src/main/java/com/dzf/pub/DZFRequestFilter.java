@@ -68,7 +68,7 @@ public class DZFRequestFilter implements Filter {
 		    	CorpVO corpVo =null;
 		    	if(StringUtil.isEmptyWithTrim(corp)==false)
 		    		corpVo=CorpCache.getInstance().get(userid,corp ) ;//(CorpVO)session.getAttribute(IGlobalConstants.login_corp);
-		    	if(userid == null && !url.endsWith("/sys/sm_user!login.action") && (corpVo == null && !url.endsWith("/gs_select.jsp") && !url.endsWith("/sys/sm_user!gsSelect.action") && !url.endsWith("/sys/sm_user!gsQuery.action"))){
+		    	if(userid == null && !url.endsWith("/sys/sm_user!login.action") && !url.endsWith("/sys/sm_user!dzfLogin.action") && (corpVo == null && !url.endsWith("/gs_select.jsp") && !url.endsWith("/sys/sm_user!gsSelect.action") && !url.endsWith("/sys/sm_user!gsQuery.action"))){
 		    		req.getRequestDispatcher("/login.jsp").forward(req,res);
    				 	return;
 		    	}
