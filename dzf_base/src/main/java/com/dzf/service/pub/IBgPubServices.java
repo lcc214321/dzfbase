@@ -24,6 +24,8 @@ public interface IBgPubServices {
 	
 	//删除
 	public void delteInfovo(SuperVO bean)  throws BusinessException ;
+	//删除
+	public void delteInfovoDzf(SuperVO bean)  throws BusinessException ;
 	
 	//获取总行数
 	public int getTotalRow(String tablename,String condition,SQLParameter sp)  throws BusinessException ;
@@ -33,6 +35,9 @@ public interface IBgPubServices {
 
 	//更新
 	public void update(SuperVO vo) throws BusinessException;
+
+	//更新
+	public void updateDzf(SuperVO vo) throws BusinessException;
 	
 	//按字段更新
 	public void updateByColumn(SuperVO vo,String[] columns) throws BusinessException;

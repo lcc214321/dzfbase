@@ -35,7 +35,7 @@ public class UserVO extends SuperVO {
 	private DZFDate disable_time;
 	private DZFDateTime ts;
 	@FieldAlias("u_pwd")
-	@FieldValidate("密码不能为空:user_password is not null;")
+//	@FieldValidate("密码不能为空:user_password is not null;")
 	private String user_password;
 	@FieldAlias("yyyyy")
 	private DZFBoolean bappuser;

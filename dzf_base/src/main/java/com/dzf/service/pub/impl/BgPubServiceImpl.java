@@ -180,6 +180,12 @@ public class BgPubServiceImpl implements IBgPubServices {
 		
 		singleObjectBO.saveObject((String)tvo.getAttributeValue("pk_corp"), tvo);
 	}
+	@Override
+	public void updateDzf(SuperVO vo) throws BusinessException {
+		SuperVO tvo =(SuperVO)vo.clone();
+		FieldValidateUtils.Validate(tvo);
+		singleObjectBO.saveObject((String)tvo.getAttributeValue("pk_corp"), tvo);
+	}
 	
 	
 	/**
@@ -245,6 +251,11 @@ public class BgPubServiceImpl implements IBgPubServices {
 	 * */
 	public DZFBoolean checkBeforeSaveNew(SuperVO vo)throws  BusinessException{
 		return DZFBoolean.TRUE;
+	}
+	@Override
+	public void delteInfovoDzf(SuperVO bean) throws BusinessException {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
