@@ -12,4 +12,5 @@ public class SessionUtil {
 	public static HttpSession getSession(){
 	return ServletActionContext.getRequest().getSession();
 	}
+
 }
