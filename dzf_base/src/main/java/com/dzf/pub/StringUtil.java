@@ -9,6 +9,7 @@ import java.net.URLConnection;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -417,7 +418,15 @@ public class StringUtil
       return null;
     return str.trim();
   }
-
+  public static String getSpaceStr(int len)
+  {
+   if(len==0)return "";
+   else{
+	   char[] cs=new char[len];
+	   Arrays.fill(cs,' ');
+	   return new String(cs);
+   }
+  }
   public static String removeCharFromString(String value, char removeChar)
   {
     if (value == null)
