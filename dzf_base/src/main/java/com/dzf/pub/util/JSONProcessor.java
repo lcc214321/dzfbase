@@ -23,6 +23,7 @@ import com.dzf.pub.lang.DZFDateSerializer;
 import com.dzf.pub.lang.DZFDateTime;
 import com.dzf.pub.lang.DZFDateTimeSerializer;
 import com.dzf.pub.lang.DZFDouble;
+import com.dzf.pub.lang.DZFDoubleQfSerializer;
 import com.dzf.pub.lang.DZFDoubleSerializer;
 
 public class JSONProcessor extends JSON{
@@ -31,6 +32,12 @@ public class JSONProcessor extends JSON{
 	 }
 
     public static String toJSONString(Object object,Map<String, String> fieldMapping, SerializeFilter filter, SerializerFeature... features) {
+    	return toJSONString(object, fieldMapping,  false, filter,  features);
+    }
+	 public static String toJSONString(Object object,SerializeFilter filter, boolean isqff,SerializerFeature... features) {
+	    	return toJSONString(object,new HashMap<String, String>(),isqff,filter,features);
+	 }
+    public static String toJSONString(Object object,Map<String, String> fieldMapping, boolean isqff, SerializeFilter filter, SerializerFeature... features) {
     	DzfSerializeWriter out = new DzfSerializeWriter();
         try {
         	if(filter instanceof FastjsonFilter){
@@ -42,11 +49,7 @@ public class JSONProcessor extends JSON{
 			ft.getExcludes().add("attributeNames");
 			ft.getExcludes().add("order");
         	}
-    		SerializeConfig config = SerializeConfig.getGlobalInstance();
-    		config.put(DZFDouble.class, DZFDoubleSerializer.instance);
-    		config.put(DZFBoolean.class, DZFBooleanSerializer.instance);
-    		config.put(DZFDate.class, DZFDateSerializer.instance);
-    		config.put(DZFDateTime.class, DZFDateTimeSerializer.instance);
+    		SerializeConfig config = getSerializeConfig(isqff);
     	//	out.setFieldMapping(fieldMapping);
     		DzfJSONSerializer serializer = new DzfJSONSerializer((SerializeWriter)out, config);
     		//out.setSerializer( serializer);
@@ -62,6 +65,17 @@ public class JSONProcessor extends JSON{
             out.close();
         }
     }
+	protected static SerializeConfig getSerializeConfig(boolean isqff) {
+		SerializeConfig config = SerializeConfig.getGlobalInstance();
+		if(isqff)
+			config.put(DZFDouble.class, DZFDoubleQfSerializer.instance);
+		else
+		config.put(DZFDouble.class, DZFDoubleSerializer.instance);
+		config.put(DZFBoolean.class, DZFBooleanSerializer.instance);
+		config.put(DZFDate.class, DZFDateSerializer.instance);
+		config.put(DZFDateTime.class, DZFDateTimeSerializer.instance);
+		return config;
+	}
     private static void setFilter(JSONSerializer serializer, SerializeFilter filter) {
         if (filter == null) {
             return;
