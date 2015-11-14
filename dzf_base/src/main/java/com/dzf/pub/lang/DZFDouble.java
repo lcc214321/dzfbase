@@ -3,6 +3,8 @@ package com.dzf.pub.lang;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
+import com.dzf.pub.Common;
+
 
 public class DZFDouble extends java.lang.Number implements java.io.Serializable,
 		Comparable {
@@ -686,7 +688,12 @@ public class DZFDouble extends java.lang.Number implements java.io.Serializable,
 	public Double toDouble() {
 		return new Double(getDouble());
 	}
-
+	public static String getThousandsStr(DZFDouble d) {
+		if(d == null || d.equals(DZFDouble.ZERO_DBL)){
+			return "--";
+		}
+		return Common.format(d);
+	}
 
 	private void toPlus() {
 		if (si == 1)
