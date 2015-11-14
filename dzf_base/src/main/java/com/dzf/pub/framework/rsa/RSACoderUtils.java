@@ -35,10 +35,7 @@ public class RSACoderUtils {
   		try{
   			String userid=(String) hs.getAttribute(IGlobalConstants.login_user);
   	  		String corp=(String) hs.getAttribute(IGlobalConstants.login_corp);
-  	  		StringBuffer sb=new StringBuffer();
-  	  		sb.append(userid).append("    ").append(corp);
-  	  		sb.append("     ").append(hs.getId());
-  	  		corp= new String(RSACoder.encryptByPublicKey(sb.toString().getBytes(), publicKey));  
+  	  		corp = getToken(hs, userid, corp);  
   	  		hs.setAttribute(IGlobalConstants.login_token,corp);
   		}catch(Exception e){
   			throw new BusinessException(e.getMessage());
@@ -46,18 +43,28 @@ public class RSACoderUtils {
   		
   	}
   	//加密
-  	public static boolean validateToken(HttpSession hs){
+  	public static boolean validateToken(HttpSession hs,String uid,String cp){
   		try{
   			String userid=(String) hs.getAttribute(IGlobalConstants.login_user);
   	  		String corp=(String) hs.getAttribute(IGlobalConstants.login_corp);
-  	  		StringBuffer sb=new StringBuffer();
-  	  		sb.append(userid).append("    ").append(corp);
-  	  		sb.append("     ").append(hs.getId());
-  	  		corp= new String(RSACoder.encryptByPublicKey(sb.toString().getBytes(), publicKey));
-  	  		hs.setAttribute(IGlobalConstants.login_token,corp);
-  	  		return (corp.equals(hs.getAttribute(IGlobalConstants.login_token)));
+  	  		String s1 = getToken(hs, userid, corp);
+  	  		boolean b=(corp.equals(hs.getAttribute(IGlobalConstants.login_token)));
+  	  		if(b){
+  	  			s1=getToken(hs, uid, cp);
+  	  		b=(corp.equals(hs.getAttribute(IGlobalConstants.login_token)));
+  	  		}
+  	  		//hs.setAttribute(IGlobalConstants.login_token,corp);
+  	  		return b;
   		}catch(Exception e){
   			throw new BusinessException(e.getMessage());
   		}
   	}
+	private static String getToken(HttpSession hs, String userid, String corp)
+			throws Exception {
+		StringBuffer sb=new StringBuffer();
+		sb.append(userid).append("    ").append(corp);
+		sb.append("     ").append(hs.getId());
+		corp= new String(RSACoder.encryptByPublicKey(sb.toString().getBytes(), publicKey));
+		return corp;
+	}
 }
