@@ -1,5 +1,6 @@
 package com.dzf.pub.framework.rsa;
 
+
 /** *//**
 *  
 * @version 1.0
@@ -7,7 +8,8 @@ package com.dzf.pub.framework.rsa;
 */
 public class RSACoderTest {  
 	public static void main(String[] s){
-	RSACoderUtils.test();	
+	String[] str={"bccc","bbb"};
+	
 	}
 //    private String publicKey;  
 //    private String privateKey;  

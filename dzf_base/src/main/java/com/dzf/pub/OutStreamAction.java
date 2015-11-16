@@ -7,9 +7,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import nc.bs.framework.comn.NetObjectInputStream;
-import nc.bs.framework.comn.NetObjectOutputStream;
-
+import com.dzf.framework.comn.NetObjectInputStream;
+import com.dzf.framework.comn.NetObjectOutputStream;
 import com.dzf.pub.BusinessException;
 
 public class OutStreamAction extends BaseAppAction{
