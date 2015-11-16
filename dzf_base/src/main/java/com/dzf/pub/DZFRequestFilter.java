@@ -46,6 +46,19 @@ public class DZFRequestFilter implements Filter {
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws 
 	IOException, ServletException {
+			boolean needClearTl = false;
+			try {
+	    			getTlCurrentRequest().set(request);
+//	    			needClearTl = true;
+			} finally {
+				if(needClearTl) {				
+					try {
+						getTlCurrentRequest().remove();
+					} catch (Exception e) {
+					}
+				}
+			}
+		
 			if(request != null)
 		   	request.setCharacterEncoding("UTF-8");
 		   	response.setContentType("text/html;charset=UTF-8");
