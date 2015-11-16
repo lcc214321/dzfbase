@@ -31,6 +31,9 @@ public class CorpVO extends SuperVO  {
 	@FieldAlias("carea")
 	public String countryarea;
 	
+	@FieldAlias("icbegindate")
+	private DZFDate icbegindate;//库存启用日期
+	
 	@FieldAlias("cdate")
 	public DZFDate createdate;
 	
@@ -2187,6 +2190,14 @@ public void setUnitdistinction(String newUnitdistinction) {
 	
 	public void setIsuseretail(DZFBoolean isuseretail) {
 		this.isuseretail = isuseretail;
+	}
+
+	public DZFDate getIcbegindate() {
+		return icbegindate;
+	}
+
+	public void setIcbegindate(DZFDate icbegindate) {
+		this.icbegindate = icbegindate;
 	}
 
 	

@@ -46,6 +46,19 @@ public class DZFRequestFilter implements Filter {
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws 
 	IOException, ServletException {
+			boolean needClearTl = false;
+			try {
+	    			getTlCurrentRequest().set(request);
+//	    			needClearTl = true;
+			} finally {
+				if(needClearTl) {				
+					try {
+						getTlCurrentRequest().remove();
+					} catch (Exception e) {
+					}
+				}
+			}
+		
 			if(request != null)
 		   	request.setCharacterEncoding("UTF-8");
 		   	response.setContentType("text/html;charset=UTF-8");
@@ -66,9 +79,9 @@ public class DZFRequestFilter implements Filter {
 		    	String corp=(String) session.getAttribute(IGlobalConstants.login_corp);
 		    	
 		    	CorpVO corpVo =null;
-		    	if(StringUtil.isEmptyWithTrim(corp)==false)
+/*		    	if(StringUtil.isEmptyWithTrim(corp)==false)
 		    		corpVo=CorpCache.getInstance().get(userid,corp ) ;//(CorpVO)session.getAttribute(IGlobalConstants.login_corp);
-		    	if(userid == null && !url.endsWith("/sys/sm_user!login.action") && !url.endsWith("/sys/sm_user!dzfLogin.action") && (corpVo == null && !url.endsWith("/gs_select.jsp") && !url.endsWith("/sys/sm_user!gsSelect.action") && !url.endsWith("/sys/sm_user!gsQuery.action"))){
+*/		    	if(userid == null && !url.endsWith("/sys/sm_user!login.action") && !url.endsWith("/sys/sm_user!login2.action") && !url.endsWith("/sys/sm_user!dzfLogin.action") && (corp == null && !url.endsWith("/gs_select.jsp") && !url.endsWith("/sys/sm_user!gsSelect.action") && !url.endsWith("/sys/sm_user!gsQuery.action"))){
 		    		req.getRequestDispatcher("/login.jsp").forward(req,res);
    				 	return;
 		    	}

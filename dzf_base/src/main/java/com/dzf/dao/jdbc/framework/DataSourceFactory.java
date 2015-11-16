@@ -9,6 +9,16 @@ public static DataSource getDataSource(String user,String corp){
 //    BeanFactory factory = new ClassPathXmlApplicationContext("applicationContext.xml");
 //    
 //    return (DataSource)factory.getBean("datasource");
-    return (DataSource) SpringUtils.getBean("dataSource");
+    DataSource ds = null;
+    try{
+    	ds = (DataSource) SpringUtils.getBean("dataSource");
+    }catch(Exception e){
+    	e.printStackTrace();
+    }
+    if(ds == null){
+    	ds  = (DataSource) SpringUtils.getBean2("dataSource");
+    }
+    
+    return ds;
 }
 }
