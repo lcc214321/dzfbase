@@ -32,7 +32,7 @@ public class CorpVO extends SuperVO  {
 	public String countryarea;
 	
 	@FieldAlias("icbegindate")
-	private DZFDate icbegindate;//库存启用日期
+	public DZFDate icbegindate;//库存启用日期
 	
 	@FieldAlias("cdate")
 	public DZFDate createdate;
