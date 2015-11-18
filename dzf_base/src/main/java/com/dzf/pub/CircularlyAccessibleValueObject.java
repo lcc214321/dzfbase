@@ -69,7 +69,7 @@ public abstract class CircularlyAccessibleValueObject implements Cloneable, Seri
   public DZFBoolean getUFBoolean(String attributeName)
   {
     Object obj = getAttributeValue(attributeName);
-    DZFBoolean ufBoolean = new DZFBoolean(false);
+    DZFBoolean ufBoolean = DZFBoolean.FALSE;
     if (obj != null) {
       if ((obj instanceof DZFBoolean))
         ufBoolean = (DZFBoolean)obj;

@@ -111,7 +111,7 @@ public class NetObjectInputStream extends ObjectInputStream {
 				||bs[1] != NetStreamConstants.NC_STREAM_HEADER[1]
 					||bs[2] != NetStreamConstants.NC_STREAM_HEADER[2]
 					) {
-				throw new IOException("���ǺϷ���NC���,�����Ƕ��⹥��ϵͳ�����߰汾������(V5x). VER");
+				throw new IOException("不扶持的数据流");
 			}
 
 			int header = input.read();
