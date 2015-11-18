@@ -47,6 +47,8 @@ public class OutStreamAction extends BaseAppAction{
 			os=hr.getOutputStream();
 			NetObjectOutputStream nis=new NetObjectOutputStream(os);
 			nis.writeObject(obj);
+			nis.flush();
+			nis.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			throw new BusinessException(e);
