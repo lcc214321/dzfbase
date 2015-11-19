@@ -27,6 +27,8 @@ public class QueryParamVO extends SuperVO {
 	@FieldAlias("corpname")
 	private String corpname;
 	
+	private String userid;
+	
 	@FieldAlias("corpIdss")
 	private String[] pk_corps;//公司s
 	
@@ -70,6 +72,8 @@ public class QueryParamVO extends SuperVO {
 	private List<String> kmcodelist;// 科目编码集合
 	
 	private String fathercorp;//登录公司的上级公司
+	
+	private String year;//年
 	
 	@FieldAlias("cjq")
 	private Integer cjq;
@@ -461,5 +465,21 @@ public class QueryParamVO extends SuperVO {
 
 	public void setIsuncarover(DZFBoolean isuncarover) {
 		this.isuncarover = isuncarover;
+	}
+
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
+	}
+
+	public String getUserid() {
+		return userid;
+	}
+
+	public void setUserid(String userid) {
+		this.userid = userid;
 	}
 }
