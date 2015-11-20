@@ -126,6 +126,8 @@ public class QueryParamVO extends SuperVO {
 	
 	private DZFBoolean isuncarover;//仅显示未结转
 	
+	private String hc;//行次,为了现金流量用
+	
 	//区间查询
 	private String kms_first;
 	
@@ -481,5 +483,13 @@ public class QueryParamVO extends SuperVO {
 
 	public void setUserid(String userid) {
 		this.userid = userid;
+	}
+
+	public String getHc() {
+		return hc;
+	}
+
+	public void setHc(String hc) {
+		this.hc = hc;
 	}
 }
