@@ -27,4 +27,11 @@ public interface IGlobalConstants extends IDefaultValue{
 	    put("1009", true);
 	    put("1012", true);
 	    }};
+	    
+    public static String DZF_KJ="dzf_kj";
+    public static String SYS_DZF="sys_dzf";
+    public static String SYS_DATA="sys_data";
+    public static String ADMIN_KJ="admin_kj";
+    
+    public static String POWER_MAP="powerMap";
 }
