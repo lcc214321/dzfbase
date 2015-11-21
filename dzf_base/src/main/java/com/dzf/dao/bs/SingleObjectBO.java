@@ -81,6 +81,22 @@ public class SingleObjectBO {
 
 		}
 	}
+	
+	
+	public void deleteVOArray(SuperVO[] svos) throws DAOException {
+		int len = 0;
+		try {
+			BaseDAO dao = new BaseDAO(dataSource);
+			len = svos == null ? 0 : svos.length;
+			if (len > 0) {
+				dao.deleteVOArray(svos);
+			}
+		} catch (Exception e) {
+			throw new DAOException(e);
+		} finally {
+
+		}
+	}
 
 	public int deleteObjectByID(String pk, Class[] cs) throws DAOException {
 		String[] keys = null;
