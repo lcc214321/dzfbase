@@ -81,7 +81,7 @@ public class DZFRequestFilter implements Filter {
 		    	CorpVO corpVo =null;
 /*		    	if(StringUtil.isEmptyWithTrim(corp)==false)
 		    		corpVo=CorpCache.getInstance().get(userid,corp ) ;//(CorpVO)session.getAttribute(IGlobalConstants.login_corp);
-*/		    	if(userid == null && !url.endsWith("/sys/sm_user!login.action") && !url.endsWith("/sys/sm_user!login2.action") && !url.endsWith("/sys/sm_user!dzfLogin.action") && (corp == null && !url.endsWith("/gs_select.jsp") && !url.endsWith("/sys/sm_user!gsSelect.action") && !url.endsWith("/sys/sm_user!gsQuery.action"))){
+*/		    	if((userid == null || (corp == null && !url.endsWith("/gs_select.jsp") && !url.endsWith("/sys/sm_user!gsSelect.action") && !url.endsWith("/sys/sm_user!gsQuery.action"))) && !url.endsWith("/sys/sm_user!login.action") && !url.endsWith("/sys/sm_user!login2.action") && !url.endsWith("/sys/sm_user!dzfLogin.action")){
 		    		req.getRequestDispatcher("/login.jsp").forward(req,res);
    				 	return;
 		    	}
@@ -89,7 +89,7 @@ public class DZFRequestFilter implements Filter {
 //				String path =req.getServletPath();
 //		    	if(userid!=null&&corpVo!=null&&!path.endsWith("/index.jsp")){
 //		    		if(!checkPageAuth( (HttpServletRequest)request,userid,corpVo.getPk_corp())){
-//		    			request.getRequestDispatcher(errorPage).forward(request, response);//跳转到信息提示页面！！ 
+//		    			request.getRequestDispatcher(errorPage).forward(request, response);//璺宠浆鍒颁俊鎭彁绀洪〉闈紒锛�
 //		    		}
 //		    	}
 		    }
