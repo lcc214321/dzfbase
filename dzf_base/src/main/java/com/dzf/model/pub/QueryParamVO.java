@@ -80,19 +80,6 @@ public class QueryParamVO extends SuperVO {
 	@FieldAlias("cjz")
 	private Integer cjz;
 
-	/**
-	 * @return the fathercorp
-	 */
-	public String getFathercorp() {
-		return fathercorp;
-	} 
-	/**
-	 * @param fathercorp the fathercorp to set
-	 */
-	public void setFathercorp(String fathercorp) {
-		this.fathercorp = fathercorp;
-	}
-
 	private Integer levelq;// 科目级次开始
 
 	private Integer levelz;// 科目级次结束
