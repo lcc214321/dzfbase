@@ -263,7 +263,8 @@ public class CorpVO extends SuperVO  {
 	@FieldAlias("useretail")
 	public DZFBoolean isuseretail; //是否用于零售
 	
-	
+	@FieldAlias("hykmId")
+	public String hykmId;//行业科目的主键
 
 	
 /**
@@ -2198,6 +2199,14 @@ public void setUnitdistinction(String newUnitdistinction) {
 
 	public void setIcbegindate(DZFDate icbegindate) {
 		this.icbegindate = icbegindate;
+	}
+
+	public String getHykmId() {
+		return hykmId;
+	}
+
+	public void setHykmId(String hykmId) {
+		this.hykmId = hykmId;
 	}
 
 	
