@@ -18,6 +18,8 @@ import com.dzf.pub.lang.DZFDouble;
 public class Common {
 	public static String virtualcorp = "10n3";
 	public static String fathercorp = "10k:";
+	public static String tempidcreate="appuse";
+	public static String appzipfile = "uploadfile";
 	public static String format(Object val) {
 		String value = "0.00";
 		if(val != null){
