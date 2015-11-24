@@ -26,7 +26,7 @@ public class CorpVO extends SuperVO  {
 	public String citycounty;
 	
 	@FieldAlias("ctype")
-	public String corptype;
+	public String corptype;//科目方案
 	
 	@FieldAlias("carea")
 	public String countryarea;
@@ -132,7 +132,7 @@ public class CorpVO extends SuperVO  {
 	public String idnumber;
 	
 	@FieldAlias("indus")
-	public String industry;
+	public String industry;//行业
 	
 	@FieldAlias("incode")
 	public String innercode;
