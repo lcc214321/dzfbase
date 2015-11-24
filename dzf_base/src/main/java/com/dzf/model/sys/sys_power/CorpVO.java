@@ -1000,19 +1000,6 @@ public String getPk_currency() {
 
 /**
  * 此处插入方法说明。
- * 创建日期：(04-3-1 16:51:19)
- * @return String
- * Chenwei
- */
-public String getpkCorpkind() {
-	//if(pk_corpkind == null || pk_corpkind.length() == 0) {
-		//pk_corpkind = nc.bs.bd.CorpDMO.CORPKIND_COMMON;
-	//}
-	return pk_corpkind;
-}
-
-/**
- * 此处插入方法说明。
  * 创建日期：(2004-4-26 13:53:19)
  * @return String
  */
@@ -1940,18 +1927,6 @@ public void setPk_corpkind(String newPk_corpkind) {
 public void setPk_currency(String newPk_currency) {
 	pk_currency = newPk_currency;
 }
-
-/**
- * 此处插入方法说明。
- * 创建日期：(04-3-1 16:51:19)
- * @param  newPkCorpkind String
- * Chenwei
- */
-public void setpkCorpkind(String newPkCorpkind) {
-	pk_corpkind =  newPkCorpkind;
-}
-
-
 
 /**
  * 属性postaddr的setter方法。
