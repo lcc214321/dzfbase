@@ -242,7 +242,7 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 	 */
 	private String getInSqlQeury(String inSql, BD_Realtion relation) {
 		StringBuffer buf = new StringBuffer();
-		buf.append("select count(1) from bd_currtype where exists (");
+		buf.append("select count(1) from dual where exists (");
 		buf.append("select ");
 		// buf.append(relation.fieldName);
 		buf.append("1");
@@ -261,7 +261,7 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 	private String getInSqlQeuryWithCorp(String inSql, String pk_corp,
 			BD_Realtion relation) {
 		StringBuffer buf = new StringBuffer();
-		buf.append("select count(1) from bd_currtype where exists (");
+		buf.append("select count(1) from dual where exists (");
 		buf.append("select ");
 		// buf.append(relation.fieldName);
 		buf.append("1");
@@ -535,7 +535,7 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 		// 利用where exists的短路特性来提高效率, 选用bd_currtype是因为
 		// 对于NC来说该表一定存在而且数据量够小。 以后可也考虑建立一个专门的辅助表.
 		StringBuilder buf = new StringBuilder();
-		buf.append("select count(1) from bd_currtype where exists (");
+		buf.append("select count(1) from dual where exists (");
 		buf.append("select ");
 		buf.append("1");
 		buf.append(" from ");
@@ -557,7 +557,7 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 
 	private String getSqlQeuryWithDr(String key, BD_Realtion relation) {
 		StringBuffer buf = new StringBuffer();
-		buf.append("select count(1) from bd_currtype where exists (");
+		buf.append("select count(1) from dual where exists (");
 		buf.append("select ");
 		buf.append("1");
 		buf.append(" from ");
