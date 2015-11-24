@@ -263,8 +263,11 @@ public class CorpVO extends SuperVO  {
 	@FieldAlias("useretail")
 	public DZFBoolean isuseretail; //是否用于零售
 	
-	@FieldAlias("hykmId")
-	public String hykmId;//行业科目的主键
+	@FieldAlias("indusname")
+	public String indusname;//
+	
+	@FieldAlias("ctypename")
+	public String ctypename;//行业科目名称
 
 	
 /**
@@ -2201,13 +2204,20 @@ public void setUnitdistinction(String newUnitdistinction) {
 		this.icbegindate = icbegindate;
 	}
 
-	public String getHykmId() {
-		return hykmId;
+	public String getIndusname() {
+		return indusname;
 	}
 
-	public void setHykmId(String hykmId) {
-		this.hykmId = hykmId;
+	public void setIndusname(String indusname) {
+		this.indusname = indusname;
 	}
 
-	
+	public String getCtypename() {
+		return ctypename;
+	}
+
+	public void setCtypename(String ctypename) {
+		this.ctypename = ctypename;
+	}
+
 }
