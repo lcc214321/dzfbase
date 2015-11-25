@@ -35,7 +35,7 @@ public class DzfParametersInterceptor extends ParametersInterceptor {
 		for (int i = 0; i < len; i++) {
 			s=strs[i];
 			value=map.get(s);
-			s=s.replaceAll("data.","");
+			s=s.replace("data.","");
 			s1=m.get(s);
 			if(StringUtil.isEmptyWithTrim(s1)==false){//&&s1.equals(s)==false
 				s=s1;
