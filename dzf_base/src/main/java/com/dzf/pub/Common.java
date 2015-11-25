@@ -47,20 +47,13 @@ public class Common {
 	  static
 	  {
 	    imageBasePath ="";
-	    if (!imageBasePath.endsWith("/"))
-	      imageBasePath += "/";
-	    imageBasePath += "ImageUpload/";
+	    if (!imageBasePath.endsWith(File.separator))
+	      imageBasePath += File.separator;
+	    imageBasePath += "ImageUpload"+File.separator;
 	    new File(imageBasePath).mkdir();
 	  }
 	public static final double EARTH_RADIUS = 6378137;
-//	public static String getToken(String usercode)
-//			throws Exception {
-////		InvocationInfoProxy.getInstance().setUserCode(usercode);
-////		ISecurityTokenCallback sc = (ISecurityTokenCallback) NCLocator.getInstance().lookup(ISecurityTokenCallback.class);
-////		sc.token(usercode.getBytes("UTF-8"),genSessionID(new Random(2015)).getBytes("UTF-8"));
-//		String token = Base64.encode(NetStreamContext.getToken());
-//		return token;
-//	}
+
 	public static String genSessionID(Random m_rand) {
 		long rand = m_rand.nextLong();
 		long currentTimeMillis = System.currentTimeMillis();
