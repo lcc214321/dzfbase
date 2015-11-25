@@ -11,7 +11,7 @@ public class CorpVO extends SuperVO  {
 	private static final long serialVersionUID = -7255675917825048433L;
 	
 	@FieldAlias("bdate")
-	public DZFDate begindate;
+	public DZFDate begindate;//(建账日期)
 	
 	@FieldAlias("bintro")
 	public String briefintro;
@@ -237,7 +237,7 @@ public class CorpVO extends SuperVO  {
 	public DZFBoolean issettlecenter;
 	
 	@FieldAlias("bb_date")
-	private DZFDate busibegindate; //hr业务开始日期
+	private DZFDate busibegindate; //固定资产启用日期
 	
 	@FieldAlias("bd_date")
 	private DZFDate busienddate; //HR业务结束日期
