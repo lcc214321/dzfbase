@@ -172,7 +172,7 @@ public class ConsistentHash<T> {
 	public static void showDataMap(ConsistentHash<String> consHash) {
 		for (int i = 0; i < 50; i++) {
 			//System.out.println("Data" + i + " mapped at "
-					+ consHash.getByData("Data"+i));
+			//		+ consHash.getByData("Data"+i));
 		}
 
 	}
