@@ -156,6 +156,6 @@ public static void main(String[] s){
 //		
 //	}.start();
 //String[] ss=	new IDGenerate().getNextIDS("0002", 5);
-//System.out.print(ss[0]);
+////System.out.print(ss[0]);
 }
 }

@@ -156,22 +156,22 @@ public class ConsistentHash<T> {
 		list.add(servers[3]);
 		list.add(servers[4]);
 		ConsistentHash<String> consHash = new ConsistentHash<String>(100,list);
-		System.out.println("服务器映射信息：");
+		//System.out.println("服务器映射信息：");
 		consHash.printServerMapOrder();
-		System.out.println("数据映射信息：");
+		//System.out.println("数据映射信息：");
 		showDataMap(consHash);
 		// 移除server2
 		consHash.remove(servers[2]);
-		System.out.println("移除server 3后数据映射信息：");
+		//System.out.println("移除server 3后数据映射信息：");
 		showDataMap(consHash);
 
 	}
 	public void printServerMapOrder() {
-		System.out.println(circle);
+		//System.out.println(circle);
 	}
 	public static void showDataMap(ConsistentHash<String> consHash) {
 		for (int i = 0; i < 50; i++) {
-			System.out.println("Data" + i + " mapped at "
+			//System.out.println("Data" + i + " mapped at "
 					+ consHash.getByData("Data"+i));
 		}
 

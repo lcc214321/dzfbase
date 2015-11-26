@@ -39,7 +39,7 @@ public class Common {
 	public static void print(HttpServletRequest r){
 	Enumeration<String> en=	r.getAttributeNames();
 	while(en.hasMoreElements()){
-		System.out.println(en.nextElement());
+		//System.out.println(en.nextElement());
 	}
 	
 	}

@@ -25,7 +25,7 @@ public class test {
 		      DataInputStream dis = new DataInputStream(bin); 
 		      String newName = dis.readUTF(); 
 		      int newAge = dis.readInt(); 
-		      System.out.println(newName+":"+newAge); 
+		      //System.out.println(newName+":"+newAge); 
 		      
 		       bout = new ByteArrayOutputStream(); 
 		       NetObjectOutputStream nos=	new NetObjectOutputStream(bout);
@@ -35,7 +35,7 @@ public class test {
 				 bin = new ByteArrayInputStream(bout.toByteArray());
 			Object obj= new NetObjectInputStream(bin).readObject();
 				if(obj!=null){
-					System.out.println(obj);
+					//System.out.println(obj);
 				}
 		}catch(Exception e){
 			e.printStackTrace();
