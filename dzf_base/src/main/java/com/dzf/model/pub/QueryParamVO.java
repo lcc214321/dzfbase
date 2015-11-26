@@ -120,7 +120,31 @@ public class QueryParamVO extends SuperVO {
 	
 	private String kms_last;
 	
+	@FieldAlias("bcreatedate")
+	private DZFDate bcreatedate;// 创建日期开始
+
+	@FieldAlias("ecreatedate")
+	private DZFDate ecreatedate;// 创建日期结束
 	
+	
+	
+	
+	public DZFDate getBcreatedate() {
+		return bcreatedate;
+	}
+
+	public void setBcreatedate(DZFDate bcreatedate) {
+		this.bcreatedate = bcreatedate;
+	}
+
+	public DZFDate getEcreatedate() {
+		return ecreatedate;
+	}
+
+	public void setEcreatedate(DZFDate ecreatedate) {
+		this.ecreatedate = ecreatedate;
+	}
+
 	public DZFBoolean getIsqc() {
 		return isqc;
 	}
