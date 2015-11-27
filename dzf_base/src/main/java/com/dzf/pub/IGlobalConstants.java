@@ -28,6 +28,14 @@ public interface IGlobalConstants extends IDefaultValue{
 	    put("1012", true);
 	    }};
 	    
+//	    合同付款方式
+	 public final static Map<Integer,String> contractPayMode = new TreeMap<Integer, String>(){{
+		 put(1, "月付");
+		 put(2, "季付");
+		 put(3, "年付");
+		 put(4, "一次付");
+	 }};
+	    
     public static String DZF_KJ="dzf_kj";
     public static String SYS_DZF="sys_dzf";
     public static String SYS_DATA="sys_data";
