@@ -34,6 +34,7 @@ public interface IGlobalConstants extends IDefaultValue{
 		 put(2, "季付");
 		 put(3, "年付");
 		 put(4, "一次付");
+		 put(5, "半年付");
 	 }};
 	    
     public static String DZF_KJ="dzf_kj";
