@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import com.dzf.framework.comn.IOUtils;
 import com.dzf.pub.BusinessException;
 import com.dzf.pub.IGlobalConstants;
+import com.dzf.pub.MD516;
 import com.dzf.pub.StringUtil;
 
 
@@ -126,7 +127,8 @@ public class RSACoderUtils {
 //		sb.append(userid).append("    ").append(corp);
 //		sb.append("     ").append(hs.getId());
 //		return sb.toString();
-		return IOUtils.getBytes(new String[]{userid,corp,hs.getId(),new String(IOUtils.getBytes(set))});
+		String setmd5=MD516.Md5(new String(IOUtils.getBytes(set)));
+		return IOUtils.getBytes(new String[]{userid,corp,hs.getId(),setmd5});
 	}
 	public static void test(){
 		StringBuffer sb=new StringBuffer();
