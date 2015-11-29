@@ -22,6 +22,20 @@ public static byte[] getBytes(String[] obj) throws Exception{
 		nos.close();
 		return bout.toByteArray();
 }
+public static byte[] getBytes(Object obj) throws Exception{
+	ByteArrayOutputStream bout = new ByteArrayOutputStream(); 
+     NetObjectOutputStream nos=	new NetObjectOutputStream(bout);
+     nos.writeObject(obj);
+//     int len=obj==null?0:obj.length;
+//     nos.write(len);
+//     for(int i=0;i<len;i++){
+//    	 nos.writeUTF(obj[i]);
+//     }
+    // nos.writeObject(obj);
+		nos.flush();
+		nos.close();
+		return bout.toByteArray();
+}
 public static String[] getObject(byte[] bs) throws Exception{
 	ByteArrayInputStream bin = new ByteArrayInputStream(bs);
 	NetObjectInputStream is=new NetObjectInputStream(bin);

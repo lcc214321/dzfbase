@@ -1,5 +1,6 @@
 package com.dzf.pub.framework.rsa;
 
+import java.util.HashSet;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -37,26 +38,38 @@ public class RSACoderUtils {
   		try{
   			String userid=(String) hs.getAttribute(IGlobalConstants.login_user);
   	  		String corp=(String) hs.getAttribute(IGlobalConstants.login_corp);
-  	  		corp = getToken(hs, userid, corp);  
+  	  		corp = getToken(hs, userid, corp,(HashSet<String>) hs.getAttribute(IGlobalConstants.POWER_MAP));  
   	  		hs.setAttribute(IGlobalConstants.login_token,corp);
   		}catch(Exception e){
   			throw new BusinessException(e.getMessage());
   		}
   		
   	}
-  	//加密
-  	public static boolean validateToken(HttpSession hs,String uid,String cp){
+  	public static boolean validateToken(HttpSession hs){
   		try{
   			String userid=(String) hs.getAttribute(IGlobalConstants.login_user);
   	  		String corp=(String) hs.getAttribute(IGlobalConstants.login_corp);
-  	  		byte[] s1 = getTokenString(hs, userid, corp);
+  	  	HashSet<String> set=(HashSet<String>) hs.getAttribute(IGlobalConstants.POWER_MAP);
+  	  	return validateToken(hs);
+  		}catch(Exception e){
+  			throw new BusinessException(e.getMessage());
+  		}
+  	}
+  	//加密
+  	public static boolean validateToken(HttpSession hs,String uid,String cp,HashSet<String> set){
+  		try{
+  			String userid=(String) hs.getAttribute(IGlobalConstants.login_user);
+  	  		String corp=(String) hs.getAttribute(IGlobalConstants.login_corp);
+  	  		byte[] s1 = getTokenString(hs, userid, corp,(HashSet<String>) hs.getAttribute(IGlobalConstants.POWER_MAP));
   	  		String s2=(String) hs.getAttribute(IGlobalConstants.login_token);
   	  		byte[] s3=getValue(s2);
   	  		s2=new String(s3);
   	  		s3=null;
   	  		boolean b=(new String(s1).equals(s2));
+  	  		
+  	  		
   	  		if(b){
-  	  			s1=getTokenString(hs, uid, cp);
+  	  			s1=getTokenString(hs, uid, cp,set);
   	  		b=(new String(s1).equals(s2));
   	  		}
   	  		//hs.setAttribute(IGlobalConstants.login_token,corp);
@@ -97,23 +110,23 @@ public class RSACoderUtils {
   		}
   		return bs;
   	}
-	private static String getToken(HttpSession hs, String userid, String corp)
+	private static String getToken(HttpSession hs, String userid, String corp,HashSet<String> set)
 			throws Exception {
 		
 //		StringBuffer sb=new StringBuffer();
 //		sb.append(userid).append("    ").append(corp);
 //		sb.append("     ").append(hs.getId());
-		corp= Base64Util.getBASE64(RSACoder.encryptByPublicKey(getTokenString(hs,userid,corp), publicKey));
+		corp= Base64Util.getBASE64(RSACoder.encryptByPublicKey(getTokenString(hs,userid,corp,set), publicKey));
 		return corp;
 	}
-	private static byte[] getTokenString(HttpSession hs, String userid, String corp)
+	private static byte[] getTokenString(HttpSession hs, String userid, String corp,HashSet<String> set)
 			throws Exception {
 		
 //		StringBuffer sb=new StringBuffer();
 //		sb.append(userid).append("    ").append(corp);
 //		sb.append("     ").append(hs.getId());
 //		return sb.toString();
-		return IOUtils.getBytes(new String[]{userid,corp,hs.getId()});
+		return IOUtils.getBytes(new String[]{userid,corp,hs.getId(),new String(IOUtils.getBytes(set))});
 	}
 	public static void test(){
 		StringBuffer sb=new StringBuffer();
