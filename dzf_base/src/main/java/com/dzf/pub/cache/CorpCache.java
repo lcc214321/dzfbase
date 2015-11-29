@@ -31,7 +31,21 @@ public CorpVO get(String userid,String corp){
 	}
 	return cvo;
 }
-
+public CorpVO get(String userid,String corp,boolean isforce){
+	map.remove(corp);
+	CorpVO cvo= map.get(corp);
+	if(cvo==null){
+		synchronized(CorpCache.class){
+			if(cvo==null){
+	DataSource ds=DataSourceFactory.getDataSource(userid, corp);
+	SingleObjectBO sob=new SingleObjectBO(ds);
+	cvo=	(CorpVO) sob.queryVOByID(corp, CorpVO.class);
+	map.put(corp, cvo);
+			}
+		}
+	}
+	return cvo;
+}
 	private CorpCache() {
 
 	}
