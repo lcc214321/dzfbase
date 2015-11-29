@@ -10,11 +10,11 @@ public static DataSource getDataSource(String user,String corp){
 //    
 //    return (DataSource)factory.getBean("datasource");
     DataSource ds = null;
-//    try{
-//    	ds = (DataSource) SpringUtils.getBean("dataSource");
-//    }catch(Exception e){
-//    	e.printStackTrace();
-//    }
+    try{
+    	ds = (DataSource) SpringUtils.getBean("dataSource");
+    }catch(Exception e){
+    	//e.printStackTrace();
+    }
     if(ds == null){
     	ds  = (DataSource) SpringUtils.getBean2("dataSource");
     }
