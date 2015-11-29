@@ -30,6 +30,18 @@ public interface IGlobalConstants extends IDefaultValue{
 	    put("1009", true);
 	    put("1012", true);
 	    }};
+//		用户退出原因
+		public final static Map<Integer,String> logoutType = new TreeMap<Integer,String>(){{
+		    put(0, "未退出");
+		    put(1, "用户正常退出");
+		    put(2, "强制退出");
+		    put(3, "session超出");
+		    }};
+		//			用户退出原因
+		public final static Map<Integer,String> loginStatus = new TreeMap<Integer,String>(){{
+		    put(0, "登陆失败");
+			put(1, "登陆成功");
+		}};
 	    
 //	    合同付款方式
 	 public final static Map<Integer,String> contractPayMode = new TreeMap<Integer, String>(){{
