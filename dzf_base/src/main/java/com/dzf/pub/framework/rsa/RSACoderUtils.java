@@ -50,7 +50,7 @@ public class RSACoderUtils {
   			String userid=(String) hs.getAttribute(IGlobalConstants.login_user);
   	  		String corp=(String) hs.getAttribute(IGlobalConstants.login_corp);
   	  	HashSet<String> set=(HashSet<String>) hs.getAttribute(IGlobalConstants.POWER_MAP);
-  	  	return validateToken(hs);
+  	  	return validateToken(hs,userid,corp,set);
   		}catch(Exception e){
   			throw new BusinessException(e.getMessage());
   		}
