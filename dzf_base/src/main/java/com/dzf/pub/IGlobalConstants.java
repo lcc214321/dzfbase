@@ -15,6 +15,9 @@ public interface IGlobalConstants extends IDefaultValue{
 	//登录公司session
 	public final static String login_corp = "login_corp";
 	
+	//强制退出信息
+	public final static String logout_msg = "logout_msg";
+	
 //	获取币种cache的公司id
 	public final static String currency_corp = DefaultGroup;
 	
