@@ -15,6 +15,8 @@ import java.util.Map;
 
 import javax.crypto.Cipher;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 /** *//**
 * RSA安全编码组件
 *  
@@ -120,7 +122,16 @@ public abstract class RSACoder extends Coder {
         Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());  
         cipher.init(Cipher.DECRYPT_MODE, privateKey);  
 
-        return cipher.doFinal(data);  
+        //return cipher.doFinal(data);  
+        
+     // 解密时超过128字节就报错。为此采用分段解密的办法来解密
+        byte[] enBytes = null;
+        for (int i = 0; i < data.length; i += 256) {
+            byte[] doFinal = cipher.doFinal(ArrayUtils.subarray(data, i, i + 256));
+            enBytes = ArrayUtils.addAll(enBytes, doFinal);  
+        }
+        return enBytes;
+//       return cipher.doFinal(data);  
     }  
 
     /** *//**
@@ -146,7 +157,16 @@ public abstract class RSACoder extends Coder {
         Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());  
         cipher.init(Cipher.DECRYPT_MODE, publicKey);  
 
-        return cipher.doFinal(data);  
+      //  return cipher.doFinal(data);  
+        
+        // 解密时超过128字节就报错。为此采用分段解密的办法来解密
+        byte[] enBytes = null;
+        for (int i = 0; i < data.length; i += 256) {
+            byte[] doFinal = cipher.doFinal(ArrayUtils.subarray(data, i, i + 256));
+            enBytes = ArrayUtils.addAll(enBytes, doFinal);  
+        }
+        return enBytes;//
+        //return cipher.doFinal(data);  
     }  
 
     /** *//**
@@ -172,7 +192,15 @@ public abstract class RSACoder extends Coder {
         Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());  
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);  
 
-        return cipher.doFinal(data);  
+        
+        // 加密时超过117字节就报错。为此采用分段加密的办法来加密 
+        byte[] enBytes = null;
+        for (int i = 0; i < data.length; i += 64) {  
+        // 注意要使用2的倍数，否则会出现加密后的内容再解密时为乱码
+            byte[] doFinal = cipher.doFinal(ArrayUtils.subarray(data, i,i + 64));  
+            enBytes = ArrayUtils.addAll(enBytes, doFinal);  
+        }
+        return enBytes;//cipher.doFinal(data);  
     }  
 
     /** *//**
@@ -198,7 +226,15 @@ public abstract class RSACoder extends Coder {
         Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());  
         cipher.init(Cipher.ENCRYPT_MODE, privateKey);  
 
-        return cipher.doFinal(data);  
+       // return cipher.doFinal(data);  
+     // 加密时超过117字节就报错。为此采用分段加密的办法来加密 
+        byte[] enBytes = null;
+        for (int i = 0; i < data.length; i += 64) {  
+        // 注意要使用2的倍数，否则会出现加密后的内容再解密时为乱码
+            byte[] doFinal = cipher.doFinal(ArrayUtils.subarray(data, i,i + 64));  
+            enBytes = ArrayUtils.addAll(enBytes, doFinal);  
+        }
+        return enBytes;//cipher.doFinal(data);  
     }  
 
     /** *//**
