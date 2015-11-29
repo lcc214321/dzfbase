@@ -126,8 +126,8 @@ public abstract class RSACoder extends Coder {
         
      // 解密时超过128字节就报错。为此采用分段解密的办法来解密
         byte[] enBytes = null;
-        for (int i = 0; i < data.length; i += 256) {
-            byte[] doFinal = cipher.doFinal(ArrayUtils.subarray(data, i, i + 256));
+        for (int i = 0; i < data.length; i += 128) {
+            byte[] doFinal = cipher.doFinal(ArrayUtils.subarray(data, i, i + 128));
             enBytes = ArrayUtils.addAll(enBytes, doFinal);  
         }
         return enBytes;
@@ -161,8 +161,8 @@ public abstract class RSACoder extends Coder {
         
         // 解密时超过128字节就报错。为此采用分段解密的办法来解密
         byte[] enBytes = null;
-        for (int i = 0; i < data.length; i += 256) {
-            byte[] doFinal = cipher.doFinal(ArrayUtils.subarray(data, i, i + 256));
+        for (int i = 0; i < data.length; i += 128) {
+            byte[] doFinal = cipher.doFinal(ArrayUtils.subarray(data, i, i + 128));
             enBytes = ArrayUtils.addAll(enBytes, doFinal);  
         }
         return enBytes;//
