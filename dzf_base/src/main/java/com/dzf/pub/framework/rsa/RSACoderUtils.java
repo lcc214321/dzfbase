@@ -86,8 +86,8 @@ public class RSACoderUtils {
   		if(bs!=null&&bs.length>0){
   		try {
 			String[] strs=(String[]) IOUtils.getObject(bs);
-			if(strs!=null&&strs.length>2){
-				return strs[2];
+			if(strs!=null&&strs.length>1){
+				return strs[1];
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -127,8 +127,11 @@ public class RSACoderUtils {
 //		sb.append(userid).append("    ").append(corp);
 //		sb.append("     ").append(hs.getId());
 //		return sb.toString();
-		String setmd5=MD516.Md5(new String(IOUtils.getBytes(set)));
-		return IOUtils.getBytes(new String[]{userid,corp,hs.getId(),setmd5});
+		String str=MD516.Md5(IOUtils.getBytes(set));
+		//str=new String();
+		 str=MD516.Md5(IOUtils.getBytes(new String[]{userid,corp,str}));//new String(IOUtils.getBytes(set)));
+		
+		return IOUtils.getBytes(new String[]{str,hs.getId()});
 	}
 	public static void test(){
 		StringBuffer sb=new StringBuffer();

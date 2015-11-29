@@ -5,11 +5,14 @@ import java.security.NoSuchAlgorithmException;
 md5加密算法，有16位、32位加密，分别生成32位、64位密文
 */
 public class MD516 {
-public static String Md5(String plainText) {
+	public static String Md5(String plainText) {
+		 return Md5(plainText.getBytes());
+		}
+public static String Md5(byte[] plainText) {
   String result = null;
   try {
    MessageDigest md = MessageDigest.getInstance("MD5");
-   md.update(plainText.getBytes());
+   md.update(plainText);
    byte b[] = md.digest();
    int i;
    StringBuffer buf = new StringBuffer("");

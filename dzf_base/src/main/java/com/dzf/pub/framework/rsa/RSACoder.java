@@ -274,7 +274,7 @@ public abstract class RSACoder extends Coder {
     public static Map<String, Object> initKey() throws Exception {  
         KeyPairGenerator keyPairGen = KeyPairGenerator  
                 .getInstance(KEY_ALGORITHM);  
-        keyPairGen.initialize(2048);  
+        keyPairGen.initialize(1024);  
 
         KeyPair keyPair = keyPairGen.generateKeyPair();  
 
