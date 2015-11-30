@@ -1,8 +1,18 @@
 package com.dzf.framework.comn;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.List;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.StringWriter;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
+
+import com.dzf.pub.BusinessException;
+import com.dzf.pub.StringUtil;
 
 public class IOUtils {
 
@@ -11,11 +21,19 @@ public class IOUtils {
 	}
 public static byte[] getBytes(String[] obj) throws Exception{
 	ByteArrayOutputStream bout = new ByteArrayOutputStream(); 
-     NetObjectOutputStream nos=	new NetObjectOutputStream(bout);
+    NetObjectOutputStream nos=	new NetObjectOutputStream(bout);
+     
      int len=obj==null?0:obj.length;
      nos.write(len);
+    
      for(int i=0;i<len;i++){
-    	 nos.writeUTF(obj[i]);
+    	 if(StringUtil.isEmptyWithTrim(obj[i])){
+    	 nos.writeByte(0);
+    	// nos.write(obj[i].getBytes());
+    	 }else{
+    		 nos.writeByte(obj[i].length());
+        	 nos.write(obj[i].getBytes());
+    	 }
      }
     // nos.writeObject(obj);
 		nos.flush();
@@ -42,13 +60,20 @@ public static String[] getObject(byte[] bs) throws Exception{
 	
 	int len=is.read();
 	String[] strs=new String[len];
+	int len1=0;
+	byte[] bs1=null;
 	  for(int i=0;i<len;i++){
-		  strs[i]=is.readUTF();
-	    	
+		  len1=is.readByte();
+		  if(len1>0){
+			  bs1=new byte[len1];
+			  is.read(bs1);
+		  strs[i]=new String(bs1);//is.readUTF();
+		  }
 	     }
 	//Object obj= is.readObject();
 	is.close();
 	return strs;
 
 }
+
 }
