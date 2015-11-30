@@ -6,7 +6,12 @@
  */
 package com.dzf.pub.framework.uti;
 
+import java.lang.reflect.Method;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import oracle.sql.TIMESTAMP;
 
 import org.apache.commons.beanutils.ConversionException;
 import org.apache.commons.beanutils.Converter;
@@ -16,6 +21,8 @@ import com.dzf.pub.lang.DZFDateTime;
 public class DZFDateTimeConvertor implements Converter {
 
 	private Object defaultValue = null;
+	
+	private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//定义格式，不显示毫秒  /////"yyyy-MM-dd HH:mm:ss.S"
 
 	private boolean useDefault = true;
 
@@ -52,6 +59,13 @@ public class DZFDateTimeConvertor implements Converter {
 				return new DZFDateTime((java.util.Date) value);
 			} else if (value instanceof Calendar) {
 				return new DZFDateTime(((Calendar) value).getTimeInMillis());
+			} else if(value instanceof TIMESTAMP){//oracle ----TIMESTAMP
+				String zz = getDate(value);
+				if(zz == null || "".equals(zz)){
+					return null;
+				}else{
+					return new DZFDateTime(zz);
+				}
 			}
 			return (new DZFDateTime(value.toString().intern(), false));
 		} catch (Exception e) {
@@ -62,6 +76,32 @@ public class DZFDateTimeConvertor implements Converter {
 			}
 		}
 
+	}
+	
+	
+	private String getDate(Object value) {
+		Timestamp timestamp = null; 
+		try{
+			timestamp = (Timestamp) value; 
+		}catch (Exception e){
+			timestamp = getOracleTimestamp(value); 
+		}
+		if(timestamp!=null)
+			return df.format(timestamp); 
+		else
+			return null; 
+	}
+	
+	private Timestamp getOracleTimestamp(Object value) {
+		try {
+			Class clz = value.getClass(); 
+			Method m = clz.getMethod("timestampValue", null); 
+			                       //m = clz.getMethod("timeValue", null); 时间类型 
+			                       //m = clz.getMethod("dateValue", null); 日期类型 
+			return (Timestamp) m.invoke(value, null); 
+		} catch (Exception e) {
+			return null; 
+		}
 	}
 
 }
