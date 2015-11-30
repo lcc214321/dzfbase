@@ -52,6 +52,16 @@ public class SoftReferenceMap<K, V> extends HashMap<K, V> {
     }
  
     @Override
+	public V remove(Object key) {
+    	clearMap();
+    	SoftValue<K, V> softValue = temp.get(key);
+        if (softValue != null) {
+            return softValue.get();
+        }
+        return null;
+	}
+
+	@Override
     public V put(K key, V value) {
         SoftValue<K, V> softReference = new SoftValue<K, V>(key, value, queue);
         temp.put(key, softReference);
