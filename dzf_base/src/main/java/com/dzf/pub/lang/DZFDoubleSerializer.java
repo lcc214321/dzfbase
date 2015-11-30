@@ -12,7 +12,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 public class DZFDoubleSerializer implements ObjectSerializer {
 	public final static DZFDoubleSerializer instance      = new DZFDoubleSerializer();
 
-    private DecimalFormat decimalFormat = new DecimalFormat("######0.00");
+    private DecimalFormat decimalFormat = new DecimalFormat("######0.0000");
 
     public DZFDoubleSerializer(){
 
