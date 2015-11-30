@@ -31,6 +31,11 @@ public CorpVO get(String userid,String corp){
 	}
 	return cvo;
 }
+
+public void remove(String corp){
+	map.remove(corp);
+}
+
 public CorpVO get(String userid,String corp,boolean isforce){
 	if(isforce)
 	map.remove(corp);

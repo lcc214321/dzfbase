@@ -33,6 +33,10 @@ public class UserCache {
 		}
 		return cvo;
 	}
+
+	public void remove(String corp){
+		map.remove(corp);
+	}
 	
 	public String getUserName(String userid,String corp){
 		if(userid == null || userid.trim().length() == 0){
