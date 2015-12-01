@@ -690,7 +690,7 @@ public class DZFDouble extends java.lang.Number implements java.io.Serializable,
 	}
 	public static String getThousandsStr(DZFDouble d) {
 		if(d == null || d.equals(DZFDouble.ZERO_DBL)){
-			return "--";
+			return "-";
 		}
 		return Common.format(d);
 	}
