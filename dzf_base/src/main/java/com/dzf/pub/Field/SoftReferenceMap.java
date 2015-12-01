@@ -2,19 +2,22 @@ package com.dzf.pub.Field;
 
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 
 
-public class SoftReferenceMap<K, V> extends HashMap<K, V> {
+public class SoftReferenceMap<K, V>  {
 	public static void main(String[] args) {
 		SoftReferenceMap<String, Object> map=new SoftReferenceMap<String,Object>();
 		long l=0;
 		try{
 		while(true){
 			map.put(String.valueOf(l),new char[102400000]);
-			map.get(String.valueOf(l));
+			map.remove(String.valueOf(l));
 		l++;
 		}
 		}catch(OutOfMemoryError e){
@@ -33,14 +36,13 @@ public class SoftReferenceMap<K, V> extends HashMap<K, V> {
         queue = new ReferenceQueue<V>();
     }
  
-    @Override
+
     public boolean containsKey(Object key) {
         // 清空正在被系统回收队列, 否则可能拿到的SoftReference中可能已经没有了 key对应的对象了
         clearMap();
         return temp.containsKey(key);
     }
- 
-    @Override
+
     public V get(Object key) {
         clearMap();
         SoftValue<K, V> softValue = temp.get(key);
@@ -50,8 +52,7 @@ public class SoftReferenceMap<K, V> extends HashMap<K, V> {
  
         return null;
     }
- 
-    @Override
+
 	public V remove(Object key) {
     	clearMap();
     	
@@ -65,7 +66,7 @@ public class SoftReferenceMap<K, V> extends HashMap<K, V> {
         return null;
 	}
 
-	@Override
+
     public V put(K key, V value) {
         SoftValue<K, V> softReference = new SoftValue<K, V>(key, value, queue);
         temp.put(key, softReference);
@@ -93,5 +94,5 @@ public class SoftReferenceMap<K, V> extends HashMap<K, V> {
             this.key = k;
         }
     }
- 
+
 }
