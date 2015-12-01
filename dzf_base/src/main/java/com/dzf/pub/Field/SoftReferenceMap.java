@@ -54,10 +54,14 @@ public class SoftReferenceMap<K, V> extends HashMap<K, V> {
     @Override
 	public V remove(Object key) {
     	clearMap();
+    	
     	SoftValue<K, V> softValue = temp.get(key);
         if (softValue != null) {
-            return softValue.get();
+        	V v=softValue.get();
+        	temp.remove(key);
+            return v;
         }
+        temp.remove(key);
         return null;
 	}
 
