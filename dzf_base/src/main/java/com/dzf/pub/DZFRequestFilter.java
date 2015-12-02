@@ -74,6 +74,12 @@ public class DZFRequestFilter implements Filter {
 				filterChain.doFilter(request, response);
 	        	return;
 	        }
+			//会计公司注册.....zpm增加
+			if(url.endsWith("/do/dz_registered.jsp") || url.endsWith("/do/forgot_password.jsp") || url.endsWith("/do/results.jsp")
+					|| url.endsWith("register_act!sendMessage.action") || url.endsWith("register_act!saveRegistered.action") ){
+				filterChain.doFilter(request, response);
+	        	return;
+			}
 		    if(session!=null){
 		    	String userid = (String)session.getAttribute(IGlobalConstants.login_user);
 		    	String corp=(String) session.getAttribute(IGlobalConstants.login_corp);
