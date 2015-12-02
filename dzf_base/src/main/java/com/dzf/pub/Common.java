@@ -52,7 +52,7 @@ public class Common {
 	    imageBasePath += "ImageUpload"+File.separator;
 	    new File(imageBasePath).mkdir();
 	  }
-	public static final double EARTH_RADIUS = 6378137;
+	public static final double EARTH_RADIUS = 6378.137;
 
 	public static String genSessionID(Random m_rand) {
 		long rand = m_rand.nextLong();
