@@ -74,6 +74,7 @@ public class QueryParamVO extends SuperVO {
 	private String fathercorp;//登录公司的上级公司
 	
 	private String year;//年
+	private String ymonth;
 	
 	@FieldAlias("cjq")
 	private Integer cjq;
@@ -503,4 +504,19 @@ public class QueryParamVO extends SuperVO {
 	public void setHc(String hc) {
 		this.hc = hc;
 	}
+
+	/**
+	 * @return the ymonth
+	 */
+	public String getYmonth() {
+		return ymonth;
+	}
+
+	/**
+	 * @param ymonth the ymonth to set
+	 */
+	public void setYmonth(String ymonth) {
+		this.ymonth = ymonth;
+	}
+	
 }
