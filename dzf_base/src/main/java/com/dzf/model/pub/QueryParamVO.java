@@ -102,6 +102,8 @@ public class QueryParamVO extends SuperVO {
 	@FieldAlias("asname")
 	private String asname;//资产名称
 	
+	private String zccode;//资产编码
+
 	private String zcsx;//资产属性
 	
 	private DZFBoolean isqc;//是否期初
@@ -518,5 +520,17 @@ public class QueryParamVO extends SuperVO {
 	public void setYmonth(String ymonth) {
 		this.ymonth = ymonth;
 	}
+
+	public String getZccode() {
+		return zccode;
+	}
+
+	public void setZccode(String zccode) {
+		this.zccode = zccode;
+	}
+
+
+	
+	
 	
 }
