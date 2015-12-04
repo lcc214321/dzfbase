@@ -102,7 +102,7 @@ public class QueryParamVO extends SuperVO {
 	@FieldAlias("asname")
 	private String asname;//资产名称
 	
-	private String zccode;//资产编码
+	private String zccode;//资 产编码       
 
 	private String zcsx;//资产属性
 	
