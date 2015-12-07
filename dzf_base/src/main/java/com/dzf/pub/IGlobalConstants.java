@@ -15,6 +15,15 @@ public interface IGlobalConstants extends IDefaultValue{
 	//登录公司session
 	public final static String login_corp = "login_corp";
 	
+//	用户登陆失败次数，锁定
+	public final static int lock_fail_login	= 6;
+	
+//	用户登陆失败次数，验证码
+	public final static int verify_fail_login = 3;
+	
+//	用户登陆失败锁定时间，分钟
+	public final static int lock_login_min = 3;
+	
 	//强制退出信息
 	public final static String logout_msg = "logout_msg";
 	

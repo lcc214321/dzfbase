@@ -58,7 +58,7 @@ public class DzfSessionContext {
 			if(pk_user != null){
 				DelUserSession(session);
 			}
-			mymap.remove(pk_user);
+			mymap.remove(pk_user);  
 		}
 	}
 
@@ -76,15 +76,23 @@ public class DzfSessionContext {
 
 	public synchronized void DelUserSessionByPkUser(String pk_user,boolean isLogout) {
 			if(pk_user != null){
-				if(!isLogout && myUserMap.get(pk_user) != null){
-//					DelSession(myUserMap.get(pk_user));
-					myUserMap.get(pk_user).removeAttribute(IGlobalConstants.login_user);
-					myUserMap.get(pk_user).removeAttribute(IGlobalConstants.login_date);
-					myUserMap.get(pk_user).removeAttribute(IGlobalConstants.login_corp);
-					myUserMap.get(pk_user).setAttribute(IGlobalConstants.logout_msg,"被其它用户强制退出！");
-					//清空Session
+				try{
+					if(!isLogout && myUserMap.get(pk_user) != null){
+//						DelSession(myUserMap.get(pk_user));
+						myUserMap.get(pk_user).removeAttribute(IGlobalConstants.login_user);
+						myUserMap.get(pk_user).removeAttribute(IGlobalConstants.login_date);
+						myUserMap.get(pk_user).removeAttribute(IGlobalConstants.login_corp);
+						myUserMap.get(pk_user).setAttribute(IGlobalConstants.logout_msg,"被其它用户强制退出！");
+						//清空Session
+					}
+				}catch(Exception e){
+					e.printStackTrace();
 				}
-				myUserMap.remove(pk_user);
+				try{
+					myUserMap.remove(pk_user);
+				}catch(Exception e){
+					e.printStackTrace();
+				}
 			}
 	}
 
