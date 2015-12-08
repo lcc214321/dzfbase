@@ -22,7 +22,7 @@ public interface IGlobalConstants extends IDefaultValue{
 	public final static int verify_fail_login = 3;
 	
 //	用户登陆失败锁定时间，分钟
-	public final static int lock_login_min = 3;
+	public final static int lock_login_min = 15;
 	
 	//强制退出信息
 	public final static String logout_msg = "logout_msg";
