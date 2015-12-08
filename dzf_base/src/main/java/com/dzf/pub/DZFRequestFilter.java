@@ -20,17 +20,19 @@ import com.dzf.dao.jdbc.framework.SQLParameter;
 import com.dzf.dao.jdbc.framework.processor.ColumnProcessor;
 import com.dzf.model.sys.sys_power.CorpVO;
 import com.dzf.pub.cache.CorpCache;
+import com.dzf.pub.cache.ServletRequestCache;
+import com.dzf.pub.framework.rsa.RSACoderUtils;
 /**
  * @author   
  * 
  */
 public class DZFRequestFilter implements Filter {
 	//
-    private static final ThreadLocal<ServletRequest> tlCurrentRequest = new ThreadLocal<ServletRequest>();
-
-    public static ThreadLocal<ServletRequest> getTlCurrentRequest() {
-        return tlCurrentRequest;
-    }  
+//    private static final ThreadLocal<ServletRequest> tlCurrentRequest = new ThreadLocal<ServletRequest>();
+//
+//    public static ThreadLocal<ServletRequest> getTlCurrentRequest() {
+//        return tlCurrentRequest;
+//    }  
 
 	private FilterConfig filterConfig;
 	
@@ -48,12 +50,14 @@ public class DZFRequestFilter implements Filter {
 	IOException, ServletException {
 			boolean needClearTl = false;
 			try {
-	    			getTlCurrentRequest().set(request);
+				ServletRequestCache.getInstance().getThreadLocal().set(request);
+	    //			getTlCurrentRequest().set(request);
 //	    			needClearTl = true;
 			} finally {
 				if(needClearTl) {				
 					try {
-						getTlCurrentRequest().remove();
+						ServletRequestCache.getInstance().getThreadLocal().remove();
+//						getTlCurrentRequest().remove();
 					} catch (Exception e) {
 					}
 				}
@@ -91,7 +95,14 @@ public class DZFRequestFilter implements Filter {
 		    		req.getRequestDispatcher("/login.jsp").forward(req,res);
    				 	return;
 		    	}
-
+boolean b=false;
+try{
+	b = RSACoderUtils.validateToken(session);
+}catch(Exception e){
+	session.setAttribute("errorMsg", "无权操作,请联系管理员!");
+//	req.getRequestDispatcher("/error_kj.jsp").forward(req,res);
+	 	return;
+}
 //				String path =req.getServletPath();
 //		    	if(userid!=null&&corpVo!=null&&!path.endsWith("/index.jsp")){
 //		    		if(!checkPageAuth( (HttpServletRequest)request,userid,corpVo.getPk_corp())){
