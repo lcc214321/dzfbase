@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.dzf.pub.DZFRequestFilter;
+import com.dzf.pub.cache.ServletRequestCache;
 
 public class SpringUtils {
 
@@ -23,7 +24,7 @@ public class SpringUtils {
 	}
 	
 	 public static Object getBean2(String beanName) {
-	    	HttpServletRequest request = (HttpServletRequest)DZFRequestFilter.getTlCurrentRequest().get();
+	    	HttpServletRequest request = (HttpServletRequest)ServletRequestCache.getInstance().getThreadLocal().get();//ZFRequestFilter.getTlCurrentRequest().get();
 			HttpSession session = request.getSession();
 			ServletContext servletContext = session.getServletContext();		
 			ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(servletContext);
