@@ -95,14 +95,14 @@ public class DZFRequestFilter implements Filter {
 		    		req.getRequestDispatcher("/login.jsp").forward(req,res);
    				 	return;
 		    	}
-boolean b=false;
+/*boolean b=false;
 try{
 	b = RSACoderUtils.validateToken(session);
 }catch(Exception e){
 	session.setAttribute("errorMsg", "无权操作,请联系管理员!");
 //	req.getRequestDispatcher("/error_kj.jsp").forward(req,res);
 	 	return;
-}
+}*/
 //				String path =req.getServletPath();
 //		    	if(userid!=null&&corpVo!=null&&!path.endsWith("/index.jsp")){
 //		    		if(!checkPageAuth( (HttpServletRequest)request,userid,corpVo.getPk_corp())){
