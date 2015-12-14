@@ -3,6 +3,7 @@ package com.dzf.model.sys.sys_power;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import com.dzf.pub.IGlobalConstants;
 import com.dzf.pub.SuperVO;
 import com.dzf.pub.lang.DZFDateTime;
 
@@ -105,6 +106,8 @@ public class LoginLogVo extends SuperVO {
 	private Timestamp logindate;
 	private Timestamp logoutdate;
 	private Integer dr;
+//	1:用户正常退出，2：被其它人强制退出，3：session失效
+//	IGlobalConstants.logoutType
 	private Integer logouttype;
 	private Integer loginstatus;
 	private DZFDateTime ts;
