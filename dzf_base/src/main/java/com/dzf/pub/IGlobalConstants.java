@@ -67,4 +67,6 @@ public interface IGlobalConstants extends IDefaultValue{
     public static String ADMIN_KJ="admin_kj";
     
     public static String POWER_MAP="powerMap";
+    
+    public static String FONTPATH="/data1/webApp/font/SIMKAI.TTF";//打印字体  本地C:/windows/font/simkai.ttf
 }
