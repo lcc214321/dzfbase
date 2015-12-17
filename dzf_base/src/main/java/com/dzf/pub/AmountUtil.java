@@ -17,11 +17,17 @@ public class AmountUtil {
 	    str = str.replaceAll(",", "");// 去掉","
 	    String integerStr;// 整数部分数字
 	    String decimalStr;// 小数部分数字
-
+	    Boolean isNegative = false;
 	    // 初始化：分离整数部分和小数部分
 	    if (str.indexOf(".") > 0) {
-	      integerStr = str.substring(0, str.indexOf("."));
-	      decimalStr = str.substring(str.indexOf(".") + 1);
+	    	if (str.substring(0,1).equals("-")) {
+	    		integerStr = str.substring(1, str.indexOf("."));
+	    		isNegative = true;
+	    	} else {
+	    		integerStr = str.substring(0, str.indexOf("."));
+	    	}
+	    	
+	    	decimalStr = str.substring(str.indexOf(".") + 1);
 	    } else if (str.indexOf(".") == 0) {
 	      integerStr = "";
 	      decimalStr = str.substring(1);
@@ -45,7 +51,9 @@ public class AmountUtil {
 	    int[] integers = toArray(integerStr);// 整数部分数字
 	    boolean isMust5 = isMust5(integerStr);// 设置万单位
 	    int[] decimals = toArray(decimalStr);// 小数部分数字
-	    return getChineseInteger(integers, isMust5) + getChineseDecimal(decimals);
+	    
+	    String chinese = (isNegative ? "负" : "") + getChineseInteger(integers, isMust5) + getChineseDecimal(decimals);
+	    return chinese;
 	  }
 
 	  /**
