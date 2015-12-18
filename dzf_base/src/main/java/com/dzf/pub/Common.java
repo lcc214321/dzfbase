@@ -3,10 +3,7 @@ package com.dzf.pub;
 import java.io.File;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
-import java.util.Enumeration;
 import java.util.Random;
-
-import javax.servlet.http.HttpServletRequest;
 
 import com.dzf.pub.lang.DZFDouble;
 
@@ -36,13 +33,7 @@ public class Common {
 	}
 	public static final String subBetSubjectcode = "1200";
 	public static final String[] betSubjectcodes = new String[]{"1122", "1123", "1221", "2202", "2203", "2241"};  
-	public static void print(HttpServletRequest r){
-	Enumeration<String> en=	r.getAttributeNames();
-	while(en.hasMoreElements()){
-		//System.out.println(en.nextElement());
-	}
-	
-	}
+
 	public static String imageBasePath = "";
 	  static
 	  {
