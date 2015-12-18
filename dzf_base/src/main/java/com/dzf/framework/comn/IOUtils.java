@@ -13,6 +13,8 @@ import java.util.zip.ZipOutputStream;
 
 import com.dzf.pub.BusinessException;
 import com.dzf.pub.StringUtil;
+import com.dzf.pub.SuperVO;
+import com.dzf.pub.cache.IDzfSerializable;
 
 public class IOUtils {
 
@@ -40,6 +42,7 @@ public static byte[] getBytes(String[] obj) throws Exception{
 		nos.close();
 		return bout.toByteArray();
 }
+
 public static byte[] getBytes(Object obj) throws Exception{
 	ByteArrayOutputStream bout = new ByteArrayOutputStream(); 
      NetObjectOutputStream nos=	new NetObjectOutputStream(bout);
@@ -53,6 +56,24 @@ public static byte[] getBytes(Object obj) throws Exception{
 		nos.flush();
 		nos.close();
 		return bout.toByteArray();
+}
+public static byte[] getBytes(SuperVO svo,IDzfSerializable iser) throws Exception{
+	ByteArrayOutputStream bout = new ByteArrayOutputStream(); 
+     NetObjectOutputStream nos=	new NetObjectOutputStream(bout);
+    iser.setSerializable(svo, nos);
+
+		nos.flush();
+		nos.close();
+		return bout.toByteArray();
+}
+public static SuperVO getObject(byte[] bs,IDzfSerializable iser) throws Exception{
+	ByteArrayInputStream bin = new ByteArrayInputStream(bs);
+	NetObjectInputStream is=new NetObjectInputStream(bin);
+	SuperVO svo=(SuperVO) iser.getSerializable(is);
+	
+	is.close();
+	return svo;
+
 }
 public static String[] getObject(byte[] bs) throws Exception{
 	ByteArrayInputStream bin = new ByteArrayInputStream(bs);
