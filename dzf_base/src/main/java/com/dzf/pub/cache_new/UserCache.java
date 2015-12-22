@@ -59,7 +59,7 @@ public class UserCache {
 				if(cvo==null){
 		DataSource ds=DataSourceFactory.getDataSource(userid, corp);
 		SingleObjectBO sob=new SingleObjectBO(ds);
-		cvo=	(UserVO) sob.queryVOByID(corp, UserVO.class);
+		cvo=	(UserVO) sob.queryVOByID(userid, UserVO.class);
 		final UserVO cvo1=cvo;
 		RedisClient.getInstance().exec(new IRedisCallback() {
 			

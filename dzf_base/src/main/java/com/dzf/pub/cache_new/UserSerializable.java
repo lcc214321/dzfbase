@@ -26,10 +26,10 @@ public class UserSerializable implements IDzfSerializable<UserVO> {
 	nos.write(svo.getPk_corp().getBytes());
 	write(nos,svo.getPwdparam());
 	write(nos,svo.getUser_name());
-	nos.writeInt(svo.getIstate());
+	write(nos,svo.getIstate());
 write(nos,svo.getKeyuser());
 	nos.write(svo.getCuserid().getBytes());
-	nos.writeInt(svo.getPwdtype());
+	write(nos,svo.getPwdtype());
 	write(nos,svo.getPk_tempcorp());
 write(nos,svo.getPk_signcorp());
 write(nos,svo.getBdata());
@@ -68,8 +68,13 @@ write(nos,svo.getCrtcorp());
 	}
 	private void write(NetObjectOutputStream nos,String str) throws IOException{
 		int len=str==null?0:str.length();
+		nos.write(len);
 		if(len>0)
 			nos.write(str.getBytes());
+	}
+	private void write(NetObjectOutputStream nos,Integer v) throws IOException{
+		if(v==null)v=-1;
+		nos.writeInt(v);
 	}
 	private void write(NetObjectOutputStream nos,DZFBoolean b) throws IOException{
 			if(b==null)b=DZFBoolean.FALSE;
@@ -93,6 +98,7 @@ write(nos,svo.getCrtcorp());
 	private String readerString(NetObjectInputStream nos,int len) throws IOException{
 		if(len<0)len=nos.readInt();
 		byte[] bs=new byte[len];
+		if(len>0)
 		nos.read(bs);
 	return new String(bs);
 	}
