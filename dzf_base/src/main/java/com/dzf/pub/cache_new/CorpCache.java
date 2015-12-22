@@ -8,6 +8,7 @@ import com.dzf.dao.bs.SingleObjectBO;
 import com.dzf.dao.jdbc.framework.DataSourceFactory;
 import com.dzf.framework.comn.IOUtils;
 import com.dzf.model.sys.sys_power.CorpVO;
+import com.dzf.pub.BusinessException;
 import com.dzf.pub.Redis.IRedisCallback;
 import com.dzf.pub.Redis.RedisClient;
 import com.dzf.pub.cache.CorpSerializable;
@@ -42,8 +43,7 @@ public CorpVO get(String userid,final String corp){
 			try {
 				obj= IOUtils.getObject(bs, new CorpSerializable());
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-			//	e.printStackTrace();
+				throw new BusinessException(e);
 			}
 			return obj;
 		}
@@ -63,7 +63,7 @@ public CorpVO get(String userid,final String corp){
 			try {
 				jedis.set(corp.getBytes(),IOUtils.getBytes(cvo1, new CorpSerializable()));
 			} catch (Exception e) {
-				
+				throw new BusinessException(e);
 			}
 			return null;
 		}
@@ -83,7 +83,7 @@ RedisClient.getInstance().exec(new IRedisCallback() {
 			try {
 				jedis.del(corp.getBytes());//set(corp.getBytes(),IOUtils.getBytes(cvo1, new CorpSerializable()));
 			} catch (Exception e) {
-				
+				throw new BusinessException(e);
 			}
 			return null;
 		}

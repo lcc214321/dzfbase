@@ -8,9 +8,9 @@ import com.dzf.dao.bs.SingleObjectBO;
 import com.dzf.dao.jdbc.framework.DataSourceFactory;
 import com.dzf.framework.comn.IOUtils;
 import com.dzf.model.sys.sys_power.UserVO;
+import com.dzf.pub.BusinessException;
 import com.dzf.pub.Redis.IRedisCallback;
 import com.dzf.pub.Redis.RedisClient;
-import com.dzf.pub.cache.CorpSerializable;
 import com.dzf.pub.cache.UserSerializable;
 
 public class UserCache {
@@ -47,8 +47,7 @@ public class UserCache {
 				try {
 					obj= IOUtils.getObject(bs, new UserSerializable());
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-				//	e.printStackTrace();
+					throw new BusinessException(e);
 				}
 				return obj;
 			}
@@ -68,7 +67,7 @@ public class UserCache {
 				try {
 					jedis.set(userid.getBytes(),IOUtils.getBytes(cvo1, new UserSerializable()));
 				} catch (Exception e) {
-					
+					throw new BusinessException(e);
 				}
 				return null;
 			}
@@ -88,7 +87,7 @@ public class UserCache {
 				try {
 					jedis.del(userid.getBytes());//set(corp.getBytes(),IOUtils.getBytes(cvo1, new CorpSerializable()));
 				} catch (Exception e) {
-					
+					throw new BusinessException(e);
 				}
 				return null;
 			}
