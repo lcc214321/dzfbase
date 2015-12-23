@@ -41,6 +41,9 @@ public CorpVO get(String userid,final String corp){
 		byte[] bs=	jedis.get(corp.getBytes());
 		Object obj=null;
 			try {
+				if(bs == null){
+					return obj;
+				}
 				obj= IOUtils.getObject(bs, new CorpSerializable());
 			} catch (Exception e) {
 				throw new BusinessException(e);

@@ -43,6 +43,7 @@ public class UserCache {
 			@Override
 			public Object exec(Jedis jedis) {
 			byte[] bs=	jedis.get(userid.getBytes());
+			if(bs==null)return null;
 			Object obj=null;
 				try {
 					obj= IOUtils.getObject(bs, new UserSerializable());

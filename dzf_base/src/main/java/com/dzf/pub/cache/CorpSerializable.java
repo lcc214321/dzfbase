@@ -37,7 +37,7 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 		write(nos,svo.getIcbegindate());////库存启用日期
 		nos.write(svo.getPk_corp().toString().getBytes());
 		write(nos,svo.getPk_currency());
-		nos.write(svo.getTaxpayertype());
+		writeByte(nos,svo.getTaxpayertype());
 		write(nos,svo.getUnitcode());
 		write(nos,svo.getUnitname());
 		write(nos,svo.getBusibegindate());
@@ -69,7 +69,7 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 	cvo.setIcbegindate(reader(nos));
 	cvo.setPk_corp(readerString(nos,6));
 	cvo.setPk_currency(readerString(nos, -1));	
-	cvo.setTaxpayertype(nos.readInt());
+	cvo.setTaxpayertype((int) nos.readByte());
 
 	
 		cvo.setUnitcode(readerString(nos, -1));

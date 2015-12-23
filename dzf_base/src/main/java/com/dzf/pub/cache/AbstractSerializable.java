@@ -36,7 +36,7 @@ public abstract class AbstractSerializable<T> implements IDzfSerializable<T> {
 		sb.append(1);
 		for (int i = 0; i < len; i++) {
 			db=b[i];
-			sb.append(db.booleanValue()?1:0);
+			sb.append(db!=null&&db.booleanValue()?1:0);
 		}
 		nos.writeByte(Byte.parseByte(sb.toString(),2));
 		//nos.writeInt(v);
@@ -73,7 +73,7 @@ public abstract class AbstractSerializable<T> implements IDzfSerializable<T> {
 	return new DZFBoolean(nos.readBoolean());
 	}
 	protected String readerString(NetObjectInputStream nos,int len) throws IOException{
-		if(len<0)len=nos.readInt();
+		if(len<0)len=nos.readByte();
 		byte[] bs=new byte[len];
 		if(len>0)
 		nos.read(bs);
