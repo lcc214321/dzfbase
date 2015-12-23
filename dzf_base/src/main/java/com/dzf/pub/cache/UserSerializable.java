@@ -8,7 +8,7 @@ import com.dzf.model.sys.sys_power.UserVO;
 import com.dzf.pub.lang.DZFBoolean;
 import com.dzf.pub.lang.DZFDate;
 
-public class UserSerializable implements IDzfSerializable<UserVO> {
+public class UserSerializable extends AbstractSerializable<UserVO> {
 
 	public UserSerializable() {
 		// TODO Auto-generated constructor stub
@@ -17,23 +17,22 @@ public class UserSerializable implements IDzfSerializable<UserVO> {
 	@Override
 	public void setSerializable(UserVO svo, NetObjectOutputStream nos) throws IOException {
 		write(nos,svo.getPk_creatcorp());
-		write(nos,svo.getLocked_tag());
+		
 		write(nos,svo.getUser_code());
 		write(nos,svo.getAble_time());
 		write(nos,svo.getDisable_time());
-	write(nos,svo.getBappuser());
-	write(nos,svo.getIsmanager());
+	writeBytes(nos, svo.getLocked_tag(),svo.getBappuser(),svo.getIsmanager(),svo.getKeyuser(),svo.getBdata(),svo.getBaccount());
+	
 	nos.write(svo.getPk_corp().getBytes());
 	write(nos,svo.getPwdparam());
 	write(nos,svo.getUser_name());
-	write(nos,svo.getIstate());
-write(nos,svo.getKeyuser());
+	writeByte(nos,svo.getIstate());
+
 	nos.write(svo.getCuserid().getBytes());
-	write(nos,svo.getPwdtype());
+	writeByte(nos,svo.getPwdtype());
 	write(nos,svo.getPk_tempcorp());
 write(nos,svo.getPk_signcorp());
-write(nos,svo.getBdata());
-write(nos,svo.getBaccount());
+
 write(nos,svo.getCorpnm());
 write(nos,svo.getCrtcorp());
 
@@ -45,61 +44,32 @@ write(nos,svo.getCrtcorp());
 	public UserVO getSerializable( NetObjectInputStream nos) throws IOException {
 		UserVO svo=new UserVO();
 	svo.setPk_creatcorp(readerString(nos, -1));
-	svo.setLocked_tag(readerDZFBoolean(nos));
+	
 	svo.setUser_code(readerString(nos, -1));
 	svo.setAble_time(reader(nos));
 	svo.setDisable_time(reader(nos));
-	svo.setBappuser(readerDZFBoolean(nos));
-	svo.setIsmanager(readerDZFBoolean(nos));
+	
+	DZFBoolean[] bs=readerDZFBooleans(nos);
+	svo.setLocked_tag(bs[0]);
+	svo.setBappuser(bs[1]);
+	svo.setIsmanager(bs[2]);
+	svo.setKeyuser(bs[3]);
+	svo.setBdata(bs[4]);
+	svo.setBaccount(bs[5]);
+	
 	svo.setPk_corp(readerString(nos,6));
 	svo.setPwdparam(readerString(nos, -1));
 	svo.setUser_name(readerString(nos, -1));
-	svo.setIstate(nos.readInt());
-	svo.setKeyuser(readerDZFBoolean(nos));
+	svo.setIstate((int) nos.readByte());
+	
 	svo.setCuserid(readerString(nos,24));
-	svo.setPwdtype(nos.readInt());
+	svo.setPwdtype((int) nos.readByte());
 	svo.setPk_tempcorp(readerString(nos, -1));
 	svo.setPk_signcorp(readerString(nos, -1));
-	svo.setBdata(readerDZFBoolean(nos));
-	svo.setBaccount(readerDZFBoolean(nos));
+	
 	svo.setCorpnm(readerString(nos,-1));
 	svo.setCrtcorp(readerString(nos,-1));
 		return svo;
 	}
-	private void write(NetObjectOutputStream nos,String str) throws IOException{
-		int len=str==null?0:str.length();
-		nos.writeInt(len);
-		if(len>0)
-			nos.write(str.getBytes());
-	}
-	private void write(NetObjectOutputStream nos,DZFBoolean b) throws IOException{
-			if(b==null)b=DZFBoolean.FALSE;
-			nos.writeBoolean(b.booleanValue());
-			//nos.write(b.toString().getBytes());
-	}
-	private void write(NetObjectOutputStream nos,Integer v) throws IOException{
-		if(v==null)v=-1;
-		nos.writeInt(v);
-	}
-	private void write(NetObjectOutputStream nos,DZFDate b) throws IOException{
-		long l=0;
-		if(b!=null)l=b.toDate().getTime();
-		nos.writeLong(l);
 	
-}
-	private DZFDate reader(NetObjectInputStream nos) throws IOException{
-		long l=nos.readLong();
-	return new DZFDate(l);
-	
-}
-	private DZFBoolean readerDZFBoolean(NetObjectInputStream nos) throws IOException{
-	return new DZFBoolean(nos.readBoolean());
-	}
-	private String readerString(NetObjectInputStream nos,int len) throws IOException{
-		if(len<0)len=nos.readInt();
-		byte[] bs=new byte[len];
-		if(len>0)
-		nos.read(bs);
-	return new String(bs);
-	}
 }
