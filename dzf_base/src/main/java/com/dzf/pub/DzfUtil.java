@@ -31,7 +31,7 @@ public class DzfUtil {
 	}
 	
 	public static Set<String> years =new LinkedHashSet<String>();
-	static{
+	/*static{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 		Calendar ca = Calendar.getInstance();//得到一个Calendar的实例 
 		ca.setTime(new Date()); //设置时间为当前时间 
@@ -42,6 +42,16 @@ public class DzfUtil {
 			ca.setTime(new Date());
 			ca.add(Calendar.YEAR, -i); //年份减1 
 			year = ca.getTime();
+			years.add(sdf.format(year));
+		}
+	}*/
+	static{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+		for(int i = 0;i<10;i++){
+			Calendar ca = Calendar.getInstance();//得到一个Calendar的实例 
+			ca.setTime(new Date()); //设置时间为当前时间 
+			ca.add(Calendar.YEAR, -i); //年份减1 
+			Date year = ca.getTime();
 			years.add(sdf.format(year));
 		}
 	}
