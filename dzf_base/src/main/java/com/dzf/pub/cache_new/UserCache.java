@@ -66,6 +66,8 @@ public class UserCache {
 			@Override
 			public Object exec(Jedis jedis) {
 				try {
+					if(cvo1 == null)
+						return null;
 					jedis.set(userid.getBytes(),IOUtils.getBytes(cvo1, new UserSerializable()));
 				} catch (Exception e) {
 					throw new BusinessException(e);

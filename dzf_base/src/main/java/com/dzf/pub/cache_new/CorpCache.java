@@ -64,6 +64,9 @@ public CorpVO get(String userid,final String corp){
 		@Override
 		public Object exec(Jedis jedis) {
 			try {
+				if(cvo1 == null){
+					return null;
+				}
 				jedis.set(corp.getBytes(),IOUtils.getBytes(cvo1, new CorpSerializable()));
 			} catch (Exception e) {
 				throw new BusinessException(e);
