@@ -31,7 +31,7 @@ public class DzfUtil {
 	}
 	
 	public static Set<String> years =new LinkedHashSet<String>();
-	/*static{
+	static{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 		Calendar ca = Calendar.getInstance();//得到一个Calendar的实例 
 		ca.setTime(new Date()); //设置时间为当前时间 
@@ -44,8 +44,8 @@ public class DzfUtil {
 			year = ca.getTime();
 			years.add(sdf.format(year));
 		}
-	}*/
-	static{
+	}
+	/*static{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 		for(int i = 0;i<10;i++){
 			Calendar ca = Calendar.getInstance();//得到一个Calendar的实例 
@@ -54,11 +54,11 @@ public class DzfUtil {
 			Date year = ca.getTime();
 			years.add(sdf.format(year));
 		}
-	}
+	}*/
 	public static void WriteYearOption(JspWriter out) {
 		for (String year: years) {
 			try {
-				out.write("<option value="+year+">"+year+"</option>");
+				out.write("<option  value="+year+">"+year +"</option>");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
