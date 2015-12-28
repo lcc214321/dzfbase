@@ -14,6 +14,10 @@ public class DzfUtil {
 	//人民币
 	public static String PK_CNY="00000100AA10000000000BKT";
 	
+	//极光推送KEY
+	public static String MASTERSECRET="7b358c5272bd6b10efbd9c90";
+	public static String JPUSHAPPKEY="2e0353fb2e531954a5f2406c";
+	
 	public static Set<String> month = new LinkedHashSet<String>();
 	static{
 		 month.add("01");
