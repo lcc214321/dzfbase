@@ -42,7 +42,9 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 		write(nos,svo.getUnitname());
 		write(nos,svo.getBusibegindate());
 		write(nos,svo.getBusienddate());
-	
+		write(nos,svo.getPhone1());
+		write(nos,svo.getPhone2());
+		write(nos,svo.getPhone3());
 	
 	}
 
@@ -77,6 +79,10 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 		cvo.setUnitname(readerString(nos, -1));
 		cvo.setBusibegindate(reader(nos));
 		cvo.setBusienddate(reader(nos));
+		cvo.setPhone1(readerString(nos, -1));
+		cvo.setPhone2(readerString(nos, -1));
+		cvo.setPhone3(readerString(nos, -1));
+		
 		return cvo;
 	}
 	
