@@ -62,6 +62,9 @@ public abstract class AbstractSerializable<T> implements IDzfSerializable<T> {
 }
 	protected DZFDate reader(NetObjectInputStream nos) throws IOException{
 		long l=nos.readLong();
+		if(l == 0){
+			return null;
+		}
 	return new DZFDate(l);
 	
 }
