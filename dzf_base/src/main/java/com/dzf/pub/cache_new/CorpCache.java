@@ -38,6 +38,9 @@ public CorpVO get(String userid,final String corp){
 		
 		@Override
 		public Object exec(Jedis jedis) {
+			if(corp == null){
+				return null;
+			}
 		byte[] bs=	jedis.get(corp.getBytes());
 		Object obj=null;
 			try {
