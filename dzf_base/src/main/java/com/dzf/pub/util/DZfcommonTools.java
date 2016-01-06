@@ -1,6 +1,7 @@
 package com.dzf.pub.util;
 
 import java.lang.reflect.Array;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.StringTokenizer;
 import com.dzf.pub.BeanHelper;
 import com.dzf.pub.BusinessException;
 import com.dzf.pub.SuperVO;
+import com.dzf.pub.lang.DZFDouble;
 
 /**
  * 常用的工具类
@@ -184,6 +186,14 @@ public class DZfcommonTools {
 			codes = null;
 		}
 		return codes;
+	}
+	//保留两位有效数字
+	public static String formatDouble(DZFDouble dv){
+		if(dv == null || dv.doubleValue() == 0)
+			return "";
+		DecimalFormat df = new DecimalFormat("###,###,###,###,###,###,##0.00");
+		String result = df.format(Double.valueOf(dv.toString()));
+		return result;
 	}
 	
 }
