@@ -39,7 +39,7 @@ public class DzfUtil {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 		Calendar ca = Calendar.getInstance();//得到一个Calendar的实例 
 		ca.setTime(new Date()); //设置时间为当前时间 
-		ca.add(Calendar.YEAR, +1); //年份减1 
+//		ca.add(Calendar.YEAR, +1); //年份增1 
 		Date year = ca.getTime();
 		years.add(sdf.format(year));
 		for(int i = 0;i<10;i++){
