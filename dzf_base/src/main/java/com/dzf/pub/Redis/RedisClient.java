@@ -1,5 +1,8 @@
 package com.dzf.pub.Redis;
 
+import java.io.InputStream;
+import java.util.Properties;
+
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -43,15 +46,33 @@ public class RedisClient {
 	}
 	public Object exec(IRedisCallback ircb){
 	//	RedisClient rc=this;
-	Jedis jedis=getJedisPool().getResource();
-	Object obj;
+//		Jedis jedis=getJedisPool().getResource();
+		Jedis jedis=null;
+		Object obj = null;
 	try{
-	obj=ircb.exec(jedis);
+		jedis=getJedisPool().getResource();
+		obj=ircb.exec(jedis);
+	}catch(Exception e){
+		if(jedis == null){
+			return null;
+		}
 	}finally{
 		if(jedis!=null)
 			jedis.close();
 	}
 	return obj;
+	}
+	public void clear(){
+	//	RedisClient rc=this;
+	Jedis jedis=getJedisPool().getResource();
+	
+	try{
+	jedis.flushDB();
+	}finally{
+		if(jedis!=null)
+			jedis.close();
+	}
+	
 	}
 	private JedisPool getJedisPool() {
 		if(jedisPool==null||jedisPool.isClosed()){
@@ -62,9 +83,27 @@ public class RedisClient {
         config.setMaxIdle(5); 
         config.setMaxWaitMillis(100000l); 
         config.setTestOnBorrow(false); 
+        Properties prop = new Properties();     
+        try{
+            //读取属性文件jedis_config.properties
+        	InputStream in =  this.getClass().getResourceAsStream("/jedis_config.properties");
+            prop.load(in);     ///加载属性列表
+            String jedis_ip = prop.getProperty("jedis_ip");
+            String jedis_port = prop.getProperty("jedis_port");
+            String jedis_pwd = prop.getProperty("jedis_pwd");
+//            Iterator<String> it=prop.stringPropertyNames().iterator();
+//            while(it.hasNext()){
+//                String key=it.next();
+//            }
+            in.close();
+            jedisPool = new JedisPool(config,jedis_ip,Integer.valueOf(jedis_port),Protocol.DEFAULT_TIMEOUT,jedis_pwd);
+        }
+        catch(Exception e){
+        	e.printStackTrace();
+        }
 //        (final GenericObjectPoolConfig poolConfig, final String host, int port,
 //        	      int timeout, final String password)
-        jedisPool = new JedisPool(config,"172.16.2.142",6379,Protocol.DEFAULT_TIMEOUT,"123456");
+//        jedisPool = new JedisPool(config,"172.16.2.142",6379,Protocol.DEFAULT_TIMEOUT,"123456");
 		}
 		}
 		return jedisPool;
@@ -456,5 +495,6 @@ public class RedisClient {
       public static void main(String[] args) {
           // TODO Auto-generated method stub
          // new RedisClient().show(); 
+    		RedisClient.getInstance().clear();
       }
 }
