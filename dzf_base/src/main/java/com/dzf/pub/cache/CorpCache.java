@@ -32,14 +32,14 @@ public void add(final String key,final CorpVO m){
 	});
 }
 public CorpVO get(String userid,final String corp){
-	
+	if(corp == null){
+		return null;
+	}
 	 CorpVO cvo=(CorpVO) RedisClient.getInstance().exec(new IRedisCallback() {
 		
 		@Override
 		public Object exec(Jedis jedis) {
-			if(corp == null){
-				return null;
-			}
+		
 			Object obj=null;
 			try {
 		byte[] bs=	jedis.get(corp.getBytes());
