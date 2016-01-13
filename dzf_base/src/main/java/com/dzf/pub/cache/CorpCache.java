@@ -40,9 +40,11 @@ public CorpVO get(String userid,final String corp){
 			if(corp == null){
 				return null;
 			}
-		byte[] bs=	jedis.get(corp.getBytes());
-		Object obj=null;
+			Object obj=null;
 			try {
+		byte[] bs=	jedis.get(corp.getBytes());
+		
+		
 				if(bs == null){
 					return obj;
 				}
