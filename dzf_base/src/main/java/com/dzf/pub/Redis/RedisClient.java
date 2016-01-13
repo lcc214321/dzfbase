@@ -7,6 +7,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.Protocol;
+import redis.clients.jedis.Transaction;
 
 
 
@@ -44,6 +45,35 @@ public class RedisClient {
 		}
 		return rclient;
 	}
+	public Object TransactionExec(ITransactionCallback ircb){
+	
+	    
+	    Jedis jedis=null;
+		Object obj = null;
+	try{
+		jedis=getJedisPool().getResource();
+		Transaction tx = jedis.multi();
+
+		obj=ircb.exec(tx);
+	}catch(Exception e){
+		if(jedis == null){
+			return null;
+		}
+	}finally{
+		if(jedis!=null){
+			//jedis.disconnect();
+			jedis.close();
+		}
+	}
+	return obj;
+//	    for (int i = 0; i < 100000; i++) {
+//	        tx.set("t" + i, "t" + i);
+//	    }
+//	    List<Object> results = tx.exec();
+//	  //  long end = System.currentTimeMillis();
+//	 //  System.out.println("Transaction SET: " + ((end - start)/1000.0) + " seconds");
+//	    jedis.disconnect();
+	}
 	public Object exec(IRedisCallback ircb){
 	//	RedisClient rc=this;
 //		Jedis jedis=getJedisPool().getResource();
@@ -57,8 +87,10 @@ public class RedisClient {
 			return null;
 		}
 	}finally{
-		if(jedis!=null)
+		if(jedis!=null){
+			//jedis.disconnect();
 			jedis.close();
+		}
 	}
 	return obj;
 	}
