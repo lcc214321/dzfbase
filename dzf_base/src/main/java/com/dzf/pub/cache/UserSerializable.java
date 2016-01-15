@@ -2,8 +2,6 @@ package com.dzf.pub.cache;
 
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
-
 import com.dzf.framework.comn.NetObjectInputStream;
 import com.dzf.framework.comn.NetObjectOutputStream;
 import com.dzf.model.sys.sys_power.UserVO;
@@ -12,7 +10,6 @@ import com.dzf.pub.lang.DZFDate;
 
 public class UserSerializable extends AbstractSerializable<UserVO> {
 
-	private Logger log = Logger.getLogger(this.getClass());
 	public UserSerializable() {
 		// TODO Auto-generated constructor stub
 	}
@@ -62,7 +59,6 @@ write(nos,svo.getCrtcorp());
 	
 	svo.setPk_corp(readerString(nos,6));
 	svo.setPwdparam(readerString(nos, -1));
-	//log.info("用户字节数："+nos.readByte());
 	svo.setUser_name(readerString(nos, -1));
 	svo.setIstate((int) nos.readByte());
 	
