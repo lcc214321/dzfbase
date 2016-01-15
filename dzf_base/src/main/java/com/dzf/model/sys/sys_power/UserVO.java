@@ -13,7 +13,7 @@ import com.dzf.pub.lang.DZFDateTime;
  */
 public class UserVO extends SuperVO {
 	
-	
+	 
 	@FieldAlias("rname")
 	private String realName;
 	@FieldAlias("phonenum")
