@@ -269,6 +269,8 @@ public class CorpVO extends SuperVO  {
 	@FieldAlias("ctypename")
 	public String ctypename;//行业科目名称
 
+	@FieldAlias("croparea")
+	public String cropArea;//行业科目名称
 	
 /**
  * 使用主键字段进行初始化的构造子。
@@ -2194,5 +2196,22 @@ public void setUnitdistinction(String newUnitdistinction) {
 	public void setCtypename(String ctypename) {
 		this.ctypename = ctypename;
 	}
+
+	public boolean isM_isbackup() {
+		return m_isbackup;
+	}
+
+	public void setM_isbackup(boolean m_isbackup) {
+		this.m_isbackup = m_isbackup;
+	}
+
+	public String getCropArea() {
+		return cropArea;
+	}
+
+	public void setCropArea(String cropArea) {
+		this.cropArea = cropArea;
+	}
+	
 
 }

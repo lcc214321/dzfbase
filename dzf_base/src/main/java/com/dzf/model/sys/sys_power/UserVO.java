@@ -12,6 +12,12 @@ import com.dzf.pub.lang.DZFDateTime;
  * 
  */
 public class UserVO extends SuperVO {
+	
+	
+	@FieldAlias("rname")
+	private String realName;
+	@FieldAlias("phonenum")
+	private String phone;
 	@FieldAlias("ck_code")
 	@FieldValidate("验证码不能为空:checkcode is not null;")
 	private String checkcode;
@@ -245,6 +251,19 @@ public class UserVO extends SuperVO {
 	}
 	public void setPwdtype(int pwdtype) {
 		this.pwdtype = pwdtype;
+	}
+	
+	public String getRealName() {
+		return realName;
+	}
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 	@Override
 	public String getPKFieldName() {
