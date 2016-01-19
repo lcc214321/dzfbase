@@ -69,4 +69,7 @@ public interface IGlobalConstants extends IDefaultValue{
     public static String POWER_MAP="powerMap";
     
     public static String FONTPATH="/data1/webApp/font/SIMKAI.TTF";//打印字体  本地C:/windows/fonts/simkai.ttf
+    
+    
+    public static String zxkfroleid="00e9iq00ANYADMINISZHZXKF";//在线客服角色主键
 }
