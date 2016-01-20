@@ -86,6 +86,12 @@ public class DZFRequestFilter implements Filter {
 				filterChain.doFilter(request, response);
 	        	return;
 			}
+			//小巨人同步
+			if(url.endsWith("/sys/xjr_sync!sync.action")){
+				filterChain.doFilter(request, response);
+	        	return;
+			}
+			
 		    if(session!=null){
 		    	String userid = (String)session.getAttribute(IGlobalConstants.login_user);
 		    	String corp=(String) session.getAttribute(IGlobalConstants.login_corp);
