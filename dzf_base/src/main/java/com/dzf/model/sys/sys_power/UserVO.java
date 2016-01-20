@@ -76,8 +76,27 @@ public class UserVO extends SuperVO {
 	private String corpnm;
 	private String crtcorp;
 	
+	@FieldAlias("QQ")
+	private String user_qq;
+	@FieldAlias("mail")
+	private String user_mail;
 	
 	
+	
+	
+	
+	public String getUser_qq() {
+		return user_qq;
+	}
+	public void setUser_qq(String user_qq) {
+		this.user_qq = user_qq;
+	}
+	public String getUser_mail() {
+		return user_mail;
+	}
+	public void setUser_mail(String user_mail) {
+		this.user_mail = user_mail;
+	}
 	public String getCorpnm() {
 		return corpnm;
 	}
