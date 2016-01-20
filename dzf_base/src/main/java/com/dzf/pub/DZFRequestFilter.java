@@ -81,7 +81,7 @@ public class DZFRequestFilter implements Filter {
 	        	return;
 	        }
 			//会计公司注册.....zpm增加
-			if(url.endsWith("/au/image.jsp") || url.endsWith("/do/dz_registered.jsp") || url.endsWith("/do/forgot_password.jsp") || url.endsWith("/do/results.jsp")
+			if(url.endsWith("/404.html") || url.endsWith("/500.html") || url.endsWith("/au/image.jsp") || url.endsWith("/do/dz_registered.jsp") || url.endsWith("/do/forgot_password.jsp") || url.endsWith("/do/results.jsp")
 					|| url.endsWith("register_act!sendMessage.action") || url.endsWith("register_act!saveRegistered.action") ){
 				filterChain.doFilter(request, response);
 	        	return;
