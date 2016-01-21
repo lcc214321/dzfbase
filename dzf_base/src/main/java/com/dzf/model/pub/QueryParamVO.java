@@ -50,6 +50,8 @@ public class QueryParamVO extends SuperVO {
 	private String kms; // 科目
 
 	private String kmsx;// 科目属性
+	
+	private String xjlsx;//现金流属性
 
 	@FieldAlias("begindate")
 	private DZFDate begindate1;// 开始日期
@@ -529,8 +531,12 @@ public class QueryParamVO extends SuperVO {
 		this.zccode = zccode;
 	}
 
+	public String getXjlsx() {
+		return xjlsx;
+	}
 
-	
-	
+	public void setXjlsx(String xjlsx) {
+		this.xjlsx = xjlsx;
+	}
 	
 }
