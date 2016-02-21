@@ -90,12 +90,16 @@ public class SQLHelper {
 	}
 
 	public static String getDeleteByPKSQL(String tableName, String pkName) {
-		return "DELETE FROM " + tableName + " WHERE " + pkName + "=?";
+//		return "DELETE FROM " + tableName + " WHERE " + pkName + "=?";
+		return " update " + tableName + " set dr = 1 WHERE " + pkName + "=?";
 	}
 
 	public static String getDeleteSQL(String tableName, String[] names) {
-		StringBuffer sql = new StringBuffer("DELETE FROM " + tableName
-				+ " WHERE ");
+//		StringBuffer sql = new StringBuffer("DELETE FROM " + tableName
+//				+ " WHERE ");
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append(" update "+tableName+" set dr = 1 where ");
 		for (int i = 0; i < names.length; i++) {
 			sql.append(names[i] + "=? AND ");
 		}

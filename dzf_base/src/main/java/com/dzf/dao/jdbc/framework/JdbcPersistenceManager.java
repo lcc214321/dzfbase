@@ -681,7 +681,10 @@ public class JdbcPersistenceManager extends PersistenceManager {
 	 */
 	public int deleteByPKs(Class className, String[] pks) throws DbException {
 		SuperVO supervo = initSuperVOClass(className);
-		String sql = "DELETE FROM " + supervo.getTableName() + " WHERE "
+//		String sql = "DELETE FROM " + supervo.getTableName() + " WHERE "
+//				+ supervo.getPKFieldName() + "=?";
+		
+		String sql = " update " + supervo.getTableName() + " set dr =1 WHERE "
 				+ supervo.getPKFieldName() + "=?";
 		List<SQLParameter> list=new ArrayList<SQLParameter>();
 		for (int i = 0; i < pks.length; i++) {
@@ -720,8 +723,10 @@ public class JdbcPersistenceManager extends PersistenceManager {
 	public int deleteByClause(Class className, String wherestr,
 			SQLParameter params) throws DbException {
 		SuperVO supervo = initSuperVOClass(className);
-		String sql = new StringBuffer().append("DELETE FROM ")
-				.append(supervo.getTableName()).toString();
+//		String sql = new StringBuffer().append("DELETE FROM ")
+//				.append(supervo.getTableName()).toString();
+		
+		String sql = " update "+supervo.getTableName()+" set dr = 1  ";
 		if (wherestr != null) {
 			wherestr = wherestr.trim();
 			if (wherestr.length() > 0) {
