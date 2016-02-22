@@ -5,8 +5,7 @@ package com.dzf.dao.bs;
 
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +13,6 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 
 import com.dzf.dao.jdbc.framework.SQLParameter;
@@ -304,92 +301,173 @@ public boolean lock(SuperVO svo) throws DAOException{
 	}
 	return b;
 }
+
+private SuperVO insertVO(String corp, SuperVO svo){
+	int len = 0;
+	try {
+		String pkid=IDGenerate.getInstance().getNextID(corp);
+		svo.setPrimaryKey(pkid);
+		BaseDAO dao = new BaseDAO(dataSource);
+		
+		pkid = dao.insertVOWithPK(corp, svo);
+		SuperVO[] svos = svo.getChildren();
+		len = svos == null ? 0 : svos.length;
+		String[] pks = IDGenerate.getInstance().getNextIDS(corp, len);
+		String rField = null;
+		if (len > 0)
+			rField = svos[0].getParentPKFieldName();
+		for (int i = 0; i < len; i++) {
+			svos[i].setPrimaryKey(pks[i]);
+			svos[i].setAttributeValue(rField, pkid);
+		}
+		if (len > 0)
+			dao.insertVOArray(corp, svos);
+		return svo;
+	} catch (Exception e) {
+		throw new DAOException(e);
+	} finally {
+
+	}
+	
+}
+
+private SuperVO updatevo(String corp, SuperVO svo){
+	int len = 0;
+	try {
+		BaseDAO dao = new BaseDAO(dataSource);
+		dao.updateVO(svo);
+		String pkid = svo.getPrimaryKey();
+		SuperVO[] svos = svo.getChildren();
+		len = svos == null ? 0 : svos.length;
+		String rField = null;
+		if (len > 0){
+			List<SuperVO> invo = new ArrayList<SuperVO>();
+			List<SuperVO> upvo = new ArrayList<SuperVO>();
+			rField = svos[0].getParentPKFieldName();
+			for (int i = 0; i < len; i++) {
+				String bodypk = svos[i].getPrimaryKey();
+				if(StringUtil.isEmpty(bodypk)==false){
+					svos[i].setAttributeValue(rField, pkid);
+					upvo.add(svos[i]);
+				}else{
+					String bodyid = IDGenerate.getInstance().getNextID(corp);
+					svos[i].setPrimaryKey(bodyid);
+					svos[i].setAttributeValue(rField, pkid);
+					invo.add(svos[i]);
+				}
+			}
+			if(invo.size() > 0)
+				dao.insertVOList(corp, invo);
+			if(upvo.size() > 0)
+				dao.updateVOList(upvo);
+		}
+		return svo;
+	} catch (Exception e) {
+		throw new DAOException(e);
+	} finally {
+
+	}
+	
+}
 	/**
 	 * 
 	 */
 	public SuperVO saveObject(String corp, SuperVO svo)
 			throws BusinessException {
 
-		int len = 0;
-
-		try {
+		try{
 			String pkid =svo.getPrimaryKey();
 			if(StringUtil.isEmpty(pkid)==false){
-				deleteObject(svo);
+				return updatevo(corp,svo);
 			}else{
-					pkid=IDGenerate.getInstance().getNextID(corp);
-					svo.setPrimaryKey(pkid);
+				return insertVO(corp,svo);
 			}
-					BaseDAO dao = new BaseDAO(dataSource);
-			
-			pkid = dao.insertVOWithPK(corp, svo);
-			SuperVO[] svos = svo.getChildren();
-			len = svos == null ? 0 : svos.length;
-			String[] pks = IDGenerate.getInstance().getNextIDS(corp, len);
-			String rField = null;
-			if (len > 0)
-				rField = svos[0].getParentPKFieldName();
-			for (int i = 0; i < len; i++) {
-				svos[i].setPrimaryKey(pks[i]);
-				svos[i].setAttributeValue(rField, pkid);
-			}
-			if (len > 0)
-				dao.insertVOArray(corp, svos);
-			return svo;
-		} catch (Exception e) {
+		}catch(Exception e){
 			throw new DAOException(e);
-		} finally {
-
-		}
-	}
-	public SuperVO saveObject1(final String corp, final SuperVO svo)
-			throws BusinessException {
-
-		try {
-			String pkid =svo.getPrimaryKey();
-			if(StringUtil.isEmpty(pkid)==false){
-				deleteObject(svo);
-			}else{
-					pkid=IDGenerate.getInstance().getNextID(corp);
-					svo.setPrimaryKey(pkid);
-			}
-			final BaseDAO dao = new BaseDAO(dataSource);
-			ConnectionCallback<SuperVO> ccb=new ConnectionCallback<SuperVO>() {
-				@Override
-				public SuperVO doInConnection(Connection con) throws SQLException,
-						DataAccessException {
-					try{
-				
-				String[] pks =dao.insertVOArray(corp, new SuperVO[]{svo});
-				String pkid = pks!=null&&pks.length>0?pks[0]:null;
-				SuperVO[] svos = svo.getChildren();
-				int len = svos == null ? 0 : svos.length;
-				pks = IDGenerate.getInstance().getNextIDS(corp, len);
-				String rField = null;
-				if (len > 0)
-					rField = svos[0].getParentPKFieldName();
-				for (int i = 0; i < len; i++) {
-					svos[i].setPrimaryKey(pks[i]);
-					svos[i].setAttributeValue(rField, pkid);
-				}
-				if (len > 0)
-					dao.insertVOArray(corp, svos);
-					}catch(Exception e){
-						throw new SQLException(e);
-					}
-		
-				return svo;
-				}};
+		}finally{
 			
-				SuperVO	svo1=dao.execute(ccb);
-					
-			return svo1;
-		} catch (Exception e) {
-			throw new DAOException(e);
-		} finally {
-
 		}
+
+//		int len = 0;
+//
+//		try {
+//			String pkid =svo.getPrimaryKey();
+//			if(StringUtil.isEmpty(pkid)==false){
+//				deleteObject(svo);
+//			}else{
+//					pkid=IDGenerate.getInstance().getNextID(corp);
+//					svo.setPrimaryKey(pkid);
+//			}
+//					BaseDAO dao = new BaseDAO(dataSource);
+//			
+//			pkid = dao.insertVOWithPK(corp, svo);
+//			SuperVO[] svos = svo.getChildren();
+//			len = svos == null ? 0 : svos.length;
+//			String[] pks = IDGenerate.getInstance().getNextIDS(corp, len);
+//			String rField = null;
+//			if (len > 0)
+//				rField = svos[0].getParentPKFieldName();
+//			for (int i = 0; i < len; i++) {
+//				svos[i].setPrimaryKey(pks[i]);
+//				svos[i].setAttributeValue(rField, pkid);
+//			}
+//			if (len > 0)
+//				dao.insertVOArray(corp, svos);
+//			return svo;
+//		} catch (Exception e) {
+//			throw new DAOException(e);
+//		} finally {
+//
+//		}
 	}
+//	public SuperVO saveObject1(final String corp, final SuperVO svo)
+//			throws BusinessException {
+//
+//		try {
+//			String pkid =svo.getPrimaryKey();
+//			if(StringUtil.isEmpty(pkid)==false){
+//				deleteObject(svo);
+//			}else{
+//					pkid=IDGenerate.getInstance().getNextID(corp);
+//					svo.setPrimaryKey(pkid);
+//			}
+//			final BaseDAO dao = new BaseDAO(dataSource);
+//			ConnectionCallback<SuperVO> ccb=new ConnectionCallback<SuperVO>() {
+//				@Override
+//				public SuperVO doInConnection(Connection con) throws SQLException,
+//						DataAccessException {
+//					try{
+//				
+//				String[] pks =dao.insertVOArray(corp, new SuperVO[]{svo});
+//				String pkid = pks!=null&&pks.length>0?pks[0]:null;
+//				SuperVO[] svos = svo.getChildren();
+//				int len = svos == null ? 0 : svos.length;
+//				pks = IDGenerate.getInstance().getNextIDS(corp, len);
+//				String rField = null;
+//				if (len > 0)
+//					rField = svos[0].getParentPKFieldName();
+//				for (int i = 0; i < len; i++) {
+//					svos[i].setPrimaryKey(pks[i]);
+//					svos[i].setAttributeValue(rField, pkid);
+//				}
+//				if (len > 0)
+//					dao.insertVOArray(corp, svos);
+//					}catch(Exception e){
+//						throw new SQLException(e);
+//					}
+//		
+//				return svo;
+//				}};
+//			
+//				SuperVO	svo1=dao.execute(ccb);
+//					
+//			return svo1;
+//		} catch (Exception e) {
+//			throw new DAOException(e);
+//		} finally {
+//
+//		}
+//	}
 	/** 分页查询
 	 * @param className
 	 * @param tableName
