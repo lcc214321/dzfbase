@@ -76,7 +76,7 @@ public class DZFRequestFilter implements Filter {
 				session = req.getSession();
 			}
 			String url = req.getRequestURI();
-			if( req!=null && (url.endsWith(".css") || url.endsWith(".js")  || url.endsWith(".jpg") || url.endsWith(".png") || url.endsWith(".gif"))){
+			if( req!=null && (url.endsWith("fileupload.jar") || url.endsWith(".css") || url.endsWith(".js")  || url.endsWith(".jpg") || url.endsWith(".png") || url.endsWith(".gif"))){
 				filterChain.doFilter(request, response);
 	        	return;
 	        }
