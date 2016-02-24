@@ -61,7 +61,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 			StringBuffer sb = new StringBuffer();
 			sb.append(" select * from " + svo.getTableName());
 			if (corpVo != null) {
-				sb.append(" where pk_corp=?");
+				sb.append(" where pk_corp=? and nvl(dr,0)=0");
 				sp.addParam(corpVo.getPk_corp());
 			}
 			if (sort != null) {
