@@ -67,7 +67,9 @@ public class QueryParamVO extends SuperVO {
 
 	private DZFBoolean ishassh;// 是否审核
 
-	private DZFBoolean ismj;            
+	private DZFBoolean ismj;  
+	
+	private DZFBoolean isleaf;
 
 	private String pk_currency;// 币种
 
@@ -537,6 +539,14 @@ public class QueryParamVO extends SuperVO {
 
 	public void setXjlsx(String xjlsx) {
 		this.xjlsx = xjlsx;
+	}
+
+	public DZFBoolean getIsleaf() {
+		return isleaf;
+	}
+
+	public void setIsleaf(DZFBoolean isleaf) {
+		this.isleaf = isleaf;
 	}
 	
 }
