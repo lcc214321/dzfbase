@@ -5,13 +5,7 @@ import java.io.IOException;
 import com.dzf.framework.comn.NetObjectInputStream;
 import com.dzf.framework.comn.NetObjectOutputStream;
 import com.dzf.model.sys.sys_power.CorpVO;
-import com.dzf.pub.StringUtil;
-import com.dzf.pub.SuperVO;
-import com.dzf.pub.Field.FieldAlias;
 import com.dzf.pub.lang.DZFBoolean;
-import com.dzf.pub.lang.DZFDate;
-import com.dzf.pub.lang.DZFDateTime;
-import com.dzf.pub.lang.DZFDouble;
 
 public class CorpSerializable extends AbstractSerializable<CorpVO> {
 
@@ -46,6 +40,7 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 		write(nos,svo.getPhone2());
 		write(nos,svo.getPhone3());
 		write(nos,svo.getCorptype());
+		write(nos,svo.getChargedeptname());
 	}
 
 	@Override
@@ -83,6 +78,7 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 		cvo.setPhone2(readerString(nos, -1));
 		cvo.setPhone3(readerString(nos, -1));
 		cvo.setCorptype(readerString(nos, -1));
+		cvo.setChargedeptname(readerString(nos, -1));
 		return cvo;
 	}
 	
