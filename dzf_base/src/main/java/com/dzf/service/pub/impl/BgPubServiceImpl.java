@@ -157,7 +157,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 	public List<SuperVO> quyerByPkcorp(Class className,String pk_corp) throws BusinessException{
 			SQLParameter sp=new SQLParameter();
 			sp.addParam(pk_corp);
-			List<SuperVO> listVo = (List<SuperVO>) singleObjectBO.retrieveByClause(className, "pk_corp=?", sp);
+			List<SuperVO> listVo = (List<SuperVO>) singleObjectBO.retrieveByClause(className, "pk_corp=? and nvl(dr,0) = 0 ", sp);
 			return completinfo(listVo,pk_corp);
 	}
 	
@@ -224,7 +224,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 		sp.addParam(pk_corp);
 		
 		
-		List<T> listVo = (List<T>) getSingleObjectBO().retrieveByClause(className, "pk_corp=?", sp);
+		List<T> listVo = (List<T>) getSingleObjectBO().retrieveByClause(className, "pk_corp=? and nvl(dr,0) = 0 ", sp);
 
 		if(listVo != null && listVo.size() > 0){
 			for(T pvo : listVo){
