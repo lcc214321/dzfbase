@@ -82,7 +82,7 @@ public interface IBillTypeCode {
 	public final static String HP44 = "HP44" ;//固定资产结账
 	
 	public final static String HP45 = "HP45" ;//期末结账
-	
+	public final static String HP50 = "HP50" ;//报销单
 	/**
 	 * 资产卡片
 	 */
