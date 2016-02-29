@@ -33,7 +33,7 @@ public class AmountUtil {
 	      decimalStr = str.substring(1);
 	    } else {
 	      integerStr = str;
-	      decimalStr = "";
+	      decimalStr = "00";
 	    }
 	    // integerStr去掉首0，不必去掉decimalStr的尾0(超出部分舍去)
 	    if (!integerStr.equals("")) {
