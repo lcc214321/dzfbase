@@ -41,6 +41,7 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 		write(nos,svo.getPhone3());
 		write(nos,svo.getCorptype());
 		write(nos,svo.getChargedeptname());
+		write(nos,svo.getDef10());
 	}
 
 	@Override
@@ -79,6 +80,7 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 		cvo.setPhone3(readerString(nos, -1));
 		cvo.setCorptype(readerString(nos, -1));
 		cvo.setChargedeptname(readerString(nos, -1));
+		cvo.setDef10(readerString(nos, -1));
 		return cvo;
 	}
 	

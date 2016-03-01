@@ -39,7 +39,7 @@ public class CorpVO extends SuperVO  {
 	
 	@FieldAlias("d1")
 	public String def1;
-	
+	//AppSecret
 	@FieldAlias("d10")
 	public String def10;
 	
