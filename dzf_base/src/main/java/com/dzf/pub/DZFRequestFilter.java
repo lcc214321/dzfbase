@@ -1,6 +1,7 @@
 package com.dzf.pub;
 
 import java.io.IOException;
+import java.security.interfaces.RSAPublicKey;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.codec.binary.Hex;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -24,6 +26,7 @@ import com.dzf.model.sys.sys_power.CorpVO;
 import com.dzf.pub.cache.CorpCache;
 import com.dzf.pub.cache.ServletRequestCache;
 import com.dzf.pub.framework.rsa.RSACoderUtils;
+import com.dzf.pub.util.RSAUtils;
 /**
  * @author   
  * 
@@ -74,6 +77,13 @@ public class DZFRequestFilter implements Filter {
 			
 			if(session == null){
 				session = req.getSession();
+				
+				RSAPublicKey publicKey = RSAUtils.getDefaultPublicKey();
+				
+				String modulus=new String(Hex.encodeHex(publicKey.getModulus().toByteArray()));
+				String exponent=new String(Hex.encodeHex(publicKey.getPublicExponent().toByteArray()));
+				session.setAttribute("MODULUS",modulus);
+				session.setAttribute("EXPONENT",exponent);
 			}
 			String url = req.getRequestURI();
 			if( req!=null && (url.endsWith("fileupload.jar") || url.endsWith(".css") || url.endsWith(".js")  || url.endsWith(".jpg") || url.endsWith(".png") || url.endsWith(".gif"))){
