@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
  * @author fuchun
  * @version 1.0.0, 2010-05-05
  */
-public abstract class RSAUtils {
+public class RSAUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RSAUtils.class);
 
