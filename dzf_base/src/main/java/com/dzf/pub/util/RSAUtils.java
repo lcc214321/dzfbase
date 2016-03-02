@@ -1,4 +1,4 @@
-﻿package com.dzf.pub.util;
+package com.dzf.pub.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,8 +37,6 @@ import org.slf4j.LoggerFactory;
 /**
  * RSA算法加密/解密工具类。
  * 
- * @author fuchun
- * @version 1.0.0, 2010-05-05
  */
 public class RSAUtils {
 
