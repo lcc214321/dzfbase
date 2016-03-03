@@ -12,6 +12,7 @@ import com.dzf.framework.comn.IOUtils;
 import com.dzf.model.sys.sys_power.CorpVO;
 import com.dzf.pub.Redis.IRedisCallback;
 import com.dzf.pub.Redis.RedisClient;
+import com.dzf.pub.jm.CodeUtils1;
 
 public class CorpCache {
 private static CorpCache fc=new CorpCache();
@@ -64,6 +65,15 @@ public CorpVO get(String userid,final String corp){
 	DataSource ds=DataSourceFactory.getDataSource(userid, corp);
 	SingleObjectBO sob=new SingleObjectBO(ds);
 	cvo=	(CorpVO) sob.queryVOByID(corp, CorpVO.class);
+	if (cvo != null) {
+		try {
+			cvo.setUnitname(CodeUtils1.deCode(cvo.getUnitname()));
+			cvo.setPhone1(CodeUtils1.deCode(cvo.getPhone1()));
+			cvo.setPhone2(CodeUtils1.deCode(cvo.getPhone2()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	final CorpVO cvo1=cvo;
 	RedisClient.getInstance().exec(new IRedisCallback() {
 		

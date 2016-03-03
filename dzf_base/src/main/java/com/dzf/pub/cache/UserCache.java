@@ -14,6 +14,7 @@ import com.dzf.model.sys.sys_power.UserVO;
 import com.dzf.pub.Redis.IRedisCallback;
 import com.dzf.pub.Redis.RedisClient;
 import com.dzf.pub.framework.rsa.Base64Util;
+import com.dzf.pub.jm.CodeUtils1;
 
 public class UserCache {
 
@@ -71,6 +72,13 @@ public class UserCache {
 		DataSource ds=DataSourceFactory.getDataSource(userid, corp);
 		SingleObjectBO sob=new SingleObjectBO(ds);
 		cvo=	(UserVO) sob.queryVOByID(userid, UserVO.class);
+		if (cvo != null) {
+			try {
+				cvo.setUser_name(CodeUtils1.deCode(cvo.getUser_name()));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		final UserVO cvo1=cvo;
 		RedisClient.getInstance().exec(new IRedisCallback() {
 			
