@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
 import org.apache.log4j.Logger;
+import org.springframework.core.io.ClassPathResource;
 
 
 
@@ -13,7 +14,9 @@ import org.apache.log4j.Logger;
  */
 public class CodeUtils1 {
 	
-	private  static Logger LOG = Logger.getLogger(CodeUtils1.class);
+	private static ClassPathResource resource = new ClassPathResource("param.txt"); 
+	
+	private static Logger LOG = Logger.getLogger(CodeUtils1.class);
 	
 	private static String pubkey;
 	
@@ -25,7 +28,8 @@ public class CodeUtils1 {
 		FileInputStream fis = null;
 		ObjectInputStream ois = null;
 		try {
-			File f = new File("param.txt");
+			String path = resource.getURL().getPath(); 
+			File f = new File(path);
 			if (f.isFile()){
 				fis = new FileInputStream(f);
 				ois = new ObjectInputStream(fis);
