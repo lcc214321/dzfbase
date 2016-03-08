@@ -68,6 +68,7 @@ public CorpVO get(String userid,final String corp){
 	if (cvo != null) {
 		try {
 			cvo.setUnitname(CodeUtils1.deCode(cvo.getUnitname()));
+			cvo.setUnitshortname(CodeUtils1.deCode(cvo.getUnitshortname()));
 			cvo.setPhone1(CodeUtils1.deCode(cvo.getPhone1()));
 			cvo.setPhone2(CodeUtils1.deCode(cvo.getPhone2()));
 		} catch (Exception e) {
