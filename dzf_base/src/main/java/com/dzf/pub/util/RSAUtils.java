@@ -45,7 +45,7 @@ public class RSAUtils {
     /** 算法名称 */
     private static final String ALGORITHOM = "RSA";
     /**保存生成的密钥对的文件名称。 */
-    private static final String RSA_PAIR_FILENAME = "/__RSA_PAIR.txt";
+    private static final String RSA_PAIR_FILENAME = "/classes/__RSA_PAIR.txt";
     /** 密钥大小 */
     private static final int KEY_SIZE = 1024;
     /** 默认的安全服务提供者 */
