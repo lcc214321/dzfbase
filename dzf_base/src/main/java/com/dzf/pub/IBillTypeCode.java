@@ -124,4 +124,8 @@ public interface IBillTypeCode {
 	 * 退回消息查询
 	 */
 	public final static String HP27 = "HP27" ;
+	/**
+	 * 利润结转
+	 */
+	public final static String HP28 = "HP28" ;
 }
