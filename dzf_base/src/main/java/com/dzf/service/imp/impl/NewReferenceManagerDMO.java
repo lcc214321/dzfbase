@@ -24,18 +24,6 @@ import com.dzf.model.pub.IInSqlBatchCallBack;
 import com.dzf.model.pub.InSqlBatchCaller;
 import com.dzf.pub.BusinessException;
 
-//import nc.bs.dao.BaseDAO;
-//import nc.bs.dao.DAOException;
-//import nc.bs.logging.Logger;
-//import nc.jdbc.framework.DataBaseDescriptor;
-//import nc.jdbc.framework.SQLParameter;
-//import nc.jdbc.framework.processor.ArrayListProcessor;
-//import nc.jdbc.framework.processor.ColumnListProcessor;
-//import nc.jdbc.framework.processor.ResultSetProcessor;
-//import nc.vo.bd.tableref.RefRelationVO;
-//import nc.vo.pub.BusinessException;
-//import nc.vo.trade.sqlutil.IInSqlBatchCallBack;
-//import nc.vo.trade.sqlutil.InSqlBatchCaller;
 
 /**
  * 基础数据引用表。 创建日期：(2001-7-17 15:44:24)
@@ -388,7 +376,7 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 			sql.append(" in ");
 			//TODO
 			try {
-				// 先不检查dr=0,查询被引用的主键(因为isnull无法使用索引,因此先不加dr=0的条件)
+				// 先不检查dr=0,查询被引用的主键(因为nvl无法使用索引,因此先不加dr=0的条件)
 				final String selectSql = sql.toString();
 				InSqlBatchCaller caller = new InSqlBatchCaller(
 						unReferencedPkSet.toArray(new String[0]));
@@ -421,7 +409,7 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 										throws BusinessException, SQLException {
 									String checkSql = new StringBuilder(
 											selectSql).append(inSql).append(
-											" and isnull(dr,0) = 0 ")
+											" and nvl(dr,0) = 0 ")
 											.toString();
 									List<String> tempList = (List<String>)getSingleObjectBO().executeQuery(checkSql,null,
 													new ColumnListProcessor());
@@ -572,7 +560,7 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 			buf.append(relation.corpfieldName);
 			buf.append(" = ? ");
 		}
-		buf.append(" and isnull(dr,0)=0");
+		buf.append(" and nvl(dr,0)=0");
 		buf.append(")");
 		String sql = buf.toString();
 		return sql;
