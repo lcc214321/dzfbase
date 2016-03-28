@@ -101,7 +101,11 @@ public class DZFRequestFilter implements Filter {
 				filterChain.doFilter(request, response);
 	        	return;
 			}
-			
+			//会计工厂登录
+			if(url.endsWith("/loginMac.jsp")){
+				filterChain.doFilter(request, response);
+	        	return;
+			}
 		    if(session!=null){
 		    	String userid = (String)session.getAttribute(IGlobalConstants.login_user);
 		    	String corp=(String) session.getAttribute(IGlobalConstants.login_corp);
