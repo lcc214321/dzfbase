@@ -272,6 +272,12 @@ public class CorpVO extends SuperVO  {
 	@FieldAlias("croparea")
 	public String cropArea;//行业科目名称
 	
+	@FieldAlias("issmall")
+	private  DZFBoolean issmall;//是否小型微利企业[做纳税申报使用]
+	
+	@FieldAlias("establishtime")
+	private String establishtime;//成立时间
+	
 /**
  * 使用主键字段进行初始化的构造子。
  *
@@ -2213,5 +2219,19 @@ public void setUnitdistinction(String newUnitdistinction) {
 		this.cropArea = cropArea;
 	}
 	
+    public DZFBoolean isIssmall() {
+		return issmall;
+	}
 
+	public void setIssmall(DZFBoolean issmall) {
+		this.issmall = issmall;
+	}
+
+	public String getEstablishtime() {
+		return establishtime;
+	}
+
+	public void setEstablishtime(String establishtime) {
+		this.establishtime = establishtime;
+	}
 }
