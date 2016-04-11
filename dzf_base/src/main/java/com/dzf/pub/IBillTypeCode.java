@@ -101,6 +101,13 @@ public interface IBillTypeCode {
 	public final static String HP66 = "HP66" ;	
 	
 	/**
+	 * 资产折旧   2016/4/11 17:19:35  
+
+	 */
+	public final static String HP67 = "HP67";
+
+	
+	/**
 	 * 图片浏览
 	 */
 	public final static String H501 = "H501" ;	
