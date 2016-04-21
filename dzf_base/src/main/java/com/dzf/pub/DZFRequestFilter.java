@@ -106,6 +106,11 @@ public class DZFRequestFilter implements Filter {
 				filterChain.doFilter(request, response);
 	        	return;
 			}
+			//增加中服直接登录
+			if(url.endsWith("/sys/auto_user!autologin.action") || url.endsWith("/zonefulogin.jsp") || url.endsWith("/bindzflogin.jsp")){
+				filterChain.doFilter(request, response);
+	        	return;
+			}
 		    if(session!=null){
 		    	String userid = (String)session.getAttribute(IGlobalConstants.login_user);
 		    	String corp=(String) session.getAttribute(IGlobalConstants.login_corp);
