@@ -2962,7 +2962,7 @@ public class CorpVO extends SuperVO {
 		this.wqcountname = wqcountname;
 	}
 
-	public DZFBoolean getIssmall() {
+    public DZFBoolean isIssmall() {
 		return issmall;
 	}
 
