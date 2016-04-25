@@ -271,6 +271,12 @@ public class CorpVO extends SuperVO {
 
 	@FieldAlias("croparea")
 	public String cropArea;// 行业科目名称
+	
+	@FieldAlias("issmall")
+	private  DZFBoolean issmall;//是否小型微利企业[做纳税申报使用]
+	
+	@FieldAlias("establishtime")
+	private String establishtime;//成立时间
 
 	/**
 	 * 新版管理平台新增字段
@@ -2955,5 +2961,24 @@ public class CorpVO extends SuperVO {
 	public void setWqcountname(String wqcountname) {
 		this.wqcountname = wqcountname;
 	}
+
+	public DZFBoolean getIssmall() {
+		return issmall;
+	}
+
+	public void setIssmall(DZFBoolean issmall) {
+		this.issmall = issmall;
+	}
+
+	public String getEstablishtime() {
+		return establishtime;
+	}
+
+	public void setEstablishtime(String establishtime) {
+		this.establishtime = establishtime;
+	}
+	
+	
+	
 		
 }
