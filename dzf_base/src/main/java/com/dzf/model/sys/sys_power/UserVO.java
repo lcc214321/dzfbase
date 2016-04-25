@@ -81,9 +81,24 @@ public class UserVO extends SuperVO {
 	@FieldAlias("mail")
 	private String user_mail;
 	
+	//关联中服网账号
+	private String zfuser_code;
+	//中服OAuth服务针对大账房应用分给指定中服账号的refreshtoken，可用它来直接重复申请access_token，而不必重新申请授权码
+	private String zf_refreshtoken;
 	
-	
-	
+
+	public String getZfuser_code() {
+		return zfuser_code;
+	}
+	public void setZfuser_code(String zfuser_code) {
+		this.zfuser_code = zfuser_code;
+	}
+	public String getZf_refreshtoken() {
+		return zf_refreshtoken;
+	}
+	public void setZf_refreshtoken(String zf_refreshtoken) {
+		this.zf_refreshtoken = zf_refreshtoken;
+	}
 	
 	public String getUser_qq() {
 		return user_qq;
