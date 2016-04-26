@@ -361,7 +361,7 @@ public class CorpVO extends SuperVO {
 	@FieldAlias("rporatetax")
 	public Integer vcorporatetax;// 企业所得税
 	@FieldAlias("xtype")
-	public String vtaxtype;// 税控类型
+	public DZFBoolean vtaxtype;// 税控类型
 	@FieldAlias("xcode")
 	public String vtaxcode;// 税务登记证号
 
@@ -2850,11 +2850,11 @@ public class CorpVO extends SuperVO {
 		this.vcorporatetax = vcorporatetax;
 	}
 
-	public String getVtaxtype() {
+	public DZFBoolean getVtaxtype() {
 		return vtaxtype;
 	}
 
-	public void setVtaxtype(String vtaxtype) {
+	public void setVtaxtype(DZFBoolean vtaxtype) {
 		this.vtaxtype = vtaxtype;
 	}
 
