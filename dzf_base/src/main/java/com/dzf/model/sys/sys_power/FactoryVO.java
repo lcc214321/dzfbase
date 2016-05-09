@@ -6,48 +6,52 @@ import com.dzf.pub.lang.DZFBoolean;
 import com.dzf.pub.lang.DZFDate;
 import com.dzf.pub.lang.DZFDateTime;
 import com.dzf.pub.lang.DZFDouble;
-
-public class CorpVO extends SuperVO {
+/**
+ * 会计工厂VO
+ * @author 刘兴
+ *
+ */
+public class FactoryVO extends SuperVO {
 	private static final long serialVersionUID = -7255675917825048433L;
 
 	@FieldAlias("bdate")
-	public DZFDate begindate;// (建账日期)
+	public DZFDate begindate;
 
 	@FieldAlias("bintro")
-	public String briefintro;//客户简介
+	public String briefintro;
 
 	@FieldAlias("chcode")
 	public String chargedeptcode;
 
 	@FieldAlias("chname")
-	public String chargedeptname;//公司性质
+	public String chargedeptname;
 
 	@FieldAlias("ccounty")
 	public String citycounty;
 
 	@FieldAlias("ctype")
-	public String corptype;//科目方案
+	public String corptype;
 
 	@FieldAlias("carea")
 	public String countryarea;
 
-	@FieldAlias("icbegindate")
-	public DZFDate icbegindate;// 库存启用日期
-
 	@FieldAlias("cdate")
-	public DZFDate createdate;//录入日期
+	public DZFDate createdate;
 
 	@FieldAlias("d1")
-	public String def1;//服务机构
-	// AppSecret
-	@FieldAlias("d10")
-	public String def10;
+	public String def1;
 
-	@FieldAlias("d11")
-	public String def11;
+	@FieldAlias("longitude")
+	public String def10;// 经度
+
+	@FieldAlias("latitude")
+	public String def11;// 纬度
 
 	@FieldAlias("d12")
 	public String def12;
+
+	@FieldAlias("icbegindate")
+	private DZFDate icbegindate;// 库存启用日期
 
 	@FieldAlias("d13")
 	public String def13;
@@ -71,13 +75,13 @@ public class CorpVO extends SuperVO {
 	public String def19;
 
 	@FieldAlias("d2")
-	public String def2;//服务热线
+	public String def2;
 
 	@FieldAlias("d20")
 	public String def20;
 
 	@FieldAlias("d3")
-	public String def3;//联系方式
+	public String def3;
 
 	@FieldAlias("d4")
 	public String def4;
@@ -102,7 +106,7 @@ public class CorpVO extends SuperVO {
 	public String ecotype;
 
 	@FieldAlias("e1")
-	public String email1;//电子邮件
+	public String email1;
 
 	@FieldAlias("e2")
 	public String email2;
@@ -123,40 +127,40 @@ public class CorpVO extends SuperVO {
 	public String fax2;
 
 	@FieldAlias("fname")
-	public String foreignname;//客户经理
+	public String foreignname;
 
 	@FieldAlias("hflag")
-	public DZFBoolean holdflag;//是否启用资产
+	public DZFBoolean holdflag;
 
 	@FieldAlias("idnum")
 	public String idnumber;
 
 	@FieldAlias("indus")
-	public String industry;//行业
+	public String industry;
 
 	@FieldAlias("incode")
 	public String innercode;
 
 	@FieldAlias("hasaccount")
-	public DZFBoolean ishasaccount;//是否已建帐
+	public DZFBoolean ishasaccount;
 
 	@FieldAlias("seal")
-	public DZFBoolean isseal;//是否已停用
+	public DZFBoolean isseal;
 
 	@FieldAlias("workingunit")
 	public DZFBoolean isworkingunit;
 
 	@FieldAlias("bodycode")
-	public String legalbodycode;//法人代表
+	public String legalbodycode;
 
 	@FieldAlias("l1")
-	public String linkman1;//财务负责人
+	public String linkman1;
 
 	@FieldAlias("l2")
-	public String linkman2;//客户联系人
+	public String linkman2;
 
 	@FieldAlias("l3")
-	public String linkman3;//微信号
+	public String linkman3;
 
 	@FieldAlias("backup")
 	public boolean m_isbackup;
@@ -171,10 +175,10 @@ public class CorpVO extends SuperVO {
 	public DZFDouble ownersharerate;
 
 	@FieldAlias("p1")
-	public String phone1;//联系人电话
+	public String phone1;
 
 	@FieldAlias("p2")
-	public String phone2;//验证码电话
+	public String phone2;
 
 	@FieldAlias("p3")
 	public String phone3;
@@ -189,7 +193,7 @@ public class CorpVO extends SuperVO {
 	public String pk_currency;
 
 	@FieldAlias("postadd")
-	public String postaddr;//单位地址
+	public String postaddr;
 
 	@FieldAlias("province")
 	public String province;
@@ -204,7 +208,7 @@ public class CorpVO extends SuperVO {
 	public String saleaddr;
 
 	@FieldAlias("sealeddate")
-	public DZFDate sealeddate;//停止服务日期
+	public DZFDate sealeddate;
 
 	@FieldAlias("payertype")
 	private Integer taxpayertype; // 纳税人类别
@@ -213,13 +217,13 @@ public class CorpVO extends SuperVO {
 	private DZFDateTime ts;
 
 	@FieldAlias("ucode")
-	public String unitcode;//公司编码
+	public String unitcode;
 
 	@FieldAlias("uinction")
 	private String unitdistinction;
 
 	@FieldAlias("uname")
-	public String unitname;//公司名称
+	public String unitname;
 
 	@FieldAlias("ushortname")
 	public String unitshortname;
@@ -237,13 +241,13 @@ public class CorpVO extends SuperVO {
 	public DZFBoolean issettlecenter;
 
 	@FieldAlias("bb_date")
-	private DZFDate busibegindate; //固定资产启用日期
+	private DZFDate busibegindate; // hr业务开始日期
 
 	@FieldAlias("bd_date")
 	private DZFDate busienddate; // HR业务结束日期
 
 	@FieldAlias("tax_code")
-	public String taxcode;; // --公司类别(普通,结算中心)--  税务代码
+	public String taxcode;; // 公司类别(普通,结算中心)
 
 	@FieldAlias("accountcorp")
 	private DZFBoolean isaccountcorp;// 是否会计公司
@@ -255,181 +259,38 @@ public class CorpVO extends SuperVO {
 	private DZFBoolean iscurr;// 是否多币种
 
 	@FieldAlias("costforwardstyle")
-	private Integer icostforwardstyle;//成本结转类型
+	private Integer icostforwardstyle;// 成本结转类型
 
 	@FieldAlias("buildic")
-	private DZFBoolean bbuildic;// --启用ic模块--  是否库存管理
+	private DZFBoolean bbuildic;// 启用ic模块
 
 	@FieldAlias("useretail")
 	public DZFBoolean isuseretail; // 是否用于零售
-
-	@FieldAlias("indusname")
-	public String indusname;//行业名称
-
-	@FieldAlias("ctypename")
-	public String ctypename;// 行业科目方案
-
-	@FieldAlias("croparea")
-	public String cropArea;// 行业科目名称
-	
-	@FieldAlias("issmall")
-	private  DZFBoolean issmall;//是否小型微利企业[做纳税申报使用]
-	
-	@FieldAlias("establishtime")
-	private String establishtime;//成立时间
-
 	/** 公司属性 : (add by liuxing) */
 	@FieldAlias("companyproperty")
 	public Integer companyproperty;
+
 	/** 会计公司ID */
 	@FieldAlias("accountfactoryid")
 	public String accountfactoryid;
-	/**
-	 * 新版管理平台新增字段
-	 */
-	@FieldAlias("rporationid")
-	public String vcorporationid;// 法人身份证号
-	@FieldAlias("rsonal")
-	public DZFBoolean ispersonal;// 个人用户
-	@FieldAlias("gcode")
-	public String vorgcode;// 组织机构代码
-	@FieldAlias("silicode")
-	public String vbusilicode;// 营业执照号
-	@FieldAlias("cexpdate")
-	public DZFDate dlicexpdate;// 执照到期日
-	@FieldAlias("countopen")
-	public String vaccountopen;// 开户许可证
-	@FieldAlias("mpcode")
-	public String vcompcode;// 计算机代码
-	@FieldAlias("mpdate")
-	public DZFDate dcompdate;// 代码到期日
-	@FieldAlias("ccrecode")
-	public String vsoccrecode;// 社会信用代码
-	@FieldAlias("dsdate")
-	private DZFDate dscodedate;//信用代码到期日
-	@FieldAlias("nkname")
-	public String vbankname;// 开户银行
-	@FieldAlias("nkcode")
-	public String vbankcode;// 账号
-	@FieldAlias("nkaddr")
-	public String vbankaddr;// 银行地址
-	@FieldAlias("nkpos")
-	public String vbankpos;// 银行位置
-	@FieldAlias("sitype")
-	public String vbusitype;// 业务类型
-	@FieldAlias("lecode")
-	public String vfilecode;// 档案号
-	@FieldAlias("ovince")
-	public Integer vprovince;// 省
-	@FieldAlias("city")
-	public Integer vcity;// 市
-	@FieldAlias("area")
-	public Integer varea;// 区
-	@FieldAlias("stsource")
-	public String vcustsource;// 客户来源
-	@FieldAlias("urcenote")
-	public String vsourcenote;// 客户来源说明
-	@FieldAlias("stmainbusi")
-	public String vcustmainbusi;// 客户主营业务
-	@FieldAlias("spaccount")
-	public String vrespaccount;// 负责会计
-	@FieldAlias("sptel")
-	public String vresptel;// 负责会计电话
-	@FieldAlias("stothertel")
-	public String vcustothertel;// 客户其他联系方式
-	@FieldAlias("atetaxplace")
-	public String vstatetaxplace;// 国税主管所
-	@FieldAlias("atetaxaddr")
-	public String vstatetaxaddr;// 国税位置
-	@FieldAlias("atetaxper")
-	public String vstatetaxper;// 国税专管员
-	@FieldAlias("atetaxpertel")
-	public String vstatetaxpertel;// 国税专管员电话
-	@FieldAlias("atetaxpwd")
-	public String vstatetaxpwd;// 国税密码
-	@FieldAlias("atetaxdate")
-	public DZFDate dstatetaxdate;// 有效期至
-	@FieldAlias("caltaxcode")
-	public String vlocaltaxcode;// 地税登记号
-	@FieldAlias("caltaxplace")
-	public String vlocaltaxplace;// 地税主管所
-	@FieldAlias("caltaxper")
-	public String vlocaltaxper;// 地税专管员
-	@FieldAlias("caltaxpertel")
-	public String vlocaltaxpertel;// 地税专管员电话
-	@FieldAlias("caltaxaddr")
-	public String vlocaltaxaddr;// 地税位置
-	@FieldAlias("caltaxpwd")
-	public String vlocaltaxpwd;// 地税密码
-	@FieldAlias("vperpwd")
-	public String vpersonalpwd;//个税密码
 
-	@FieldAlias("rporatetax")
-	public Integer vcorporatetax;// 企业所得税
-	@FieldAlias("xtype")
-	public DZFBoolean vtaxtype;// 税控类型
-	@FieldAlias("xcode")
-	public String vtaxcode;// 税务登记证号
-
-	@FieldAlias("nvohtype")
-	public String vgenvohtype;// 图片生成凭证方式
-	@FieldAlias("pcount")
-	public String pcountname;// 主管会计名称
-	@FieldAlias("pcountid")
-	public String vsuperaccount;// 主管会计主键
-	@FieldAlias("wqcount")
-	public String wqcountname;// 外勤会计名称
-	@FieldAlias("wqcountid")
-	public String vwqaccount;// 外勤会计主键
-	@FieldAlias("dcldate")
-	public DZFDate destablishdate;//成立日期
-	@FieldAlias("ukey")
-	public DZFBoolean isukey;//地税有无UKEY
-	@FieldAlias("dudate")
-	private DZFDate dukeydate;//UKEY到期日
-	@FieldAlias("sourceid")
-	private String pk_source;//来源主键
-	
-	private String text;
-
-	
 	/**
 	 * 使用主键字段进行初始化的构造子。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 */
-	public CorpVO() {
+	public FactoryVO() {
 	}
-
-	
-	public Integer getCompanyproperty() {
-		return companyproperty;
-	}
-
-
-	public void setCompanyproperty(Integer companyproperty) {
-		this.companyproperty = companyproperty;
-	}
-
-
-	public String getAccountfactoryid() {
-		return accountfactoryid;
-	}
-
-
-	public void setAccountfactoryid(String accountfactoryid) {
-		this.accountfactoryid = accountfactoryid;
-	}
-
 
 	/**
 	 * 使用主键进行初始化的构造子。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
-	 * @param ??fieldNameForMethod?? 主键值
+	 * @param ??fieldNameForMethod??
+	 *            主键值
 	 */
-	public CorpVO(String newPk_corp) {
+	public FactoryVO(String newPk_corp) {
 
 		// 为主键字段赋值:
 		pk_corp = newPk_corp;
@@ -558,7 +419,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def1的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -569,7 +430,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def10的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -580,7 +441,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def11的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -591,7 +452,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def12的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -602,7 +463,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def13的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -613,7 +474,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def14的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -624,7 +485,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def15的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -635,7 +496,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def16的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -646,7 +507,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def17的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -657,7 +518,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def18的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -668,7 +529,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def19的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -679,7 +540,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def2的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -690,7 +551,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def20的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -701,7 +562,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def3的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -712,7 +573,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def4的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -723,7 +584,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def5的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -734,7 +595,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def6的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -745,7 +606,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def7的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -756,7 +617,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def8的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -767,7 +628,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def9的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -835,7 +696,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性ecotype的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return Integer
@@ -846,7 +707,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性email1的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -857,7 +718,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性email2的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -868,7 +729,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性email3的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -901,7 +762,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 返回数值对象的显示名称。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String 返回数值对象的显示名称。
@@ -913,7 +774,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性fathercorp的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -924,7 +785,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性fax1的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -935,7 +796,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性fax2的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -946,7 +807,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性foreignname的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -957,7 +818,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性holdflag的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return DZFBoolean
@@ -990,7 +851,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性industry的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -1010,7 +871,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性ishasaccount 的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-8-23)
 	 * 
 	 * @return DZFBoolean
@@ -1021,7 +882,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性isseal的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-8-23)
 	 * 
 	 * @return DZFBoolean
@@ -1032,7 +893,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性isworkingunit的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-8-23)
 	 * 
 	 * @return DZFBoolean
@@ -1043,7 +904,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性legalbodycode的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -1054,7 +915,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性linkman1的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -1065,7 +926,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性linkman2的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -1076,7 +937,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性linkman3的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -1096,7 +957,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性memo的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -1107,7 +968,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性ownersharerate的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return DZFDouble
@@ -1129,7 +990,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性phone1的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -1140,7 +1001,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性phone2的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -1151,7 +1012,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性phone3的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -1162,7 +1023,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性pk_corp的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -1203,6 +1064,18 @@ public class CorpVO extends SuperVO {
 	}
 
 	/**
+	 * 此处插入方法说明。 创建日期：(04-3-1 16:51:19)
+	 * 
+	 * @return String Chenwei
+	 */
+	public String getpkCorpkind() {
+		// if(pk_corpkind == null || pk_corpkind.length() == 0) {
+		// pk_corpkind = nc.bs.bd.CorpDMO.CORPKIND_COMMON;
+		// }
+		return pk_corpkind;
+	}
+
+	/**
 	 * 此处插入方法说明。 创建日期：(2004-4-26 13:53:19)
 	 * 
 	 * @return String
@@ -1213,7 +1086,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性postaddr的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -1224,7 +1097,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 返回对象标识，用来唯一定位对象。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -1263,7 +1136,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性saleaddr的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -1287,7 +1160,7 @@ public class CorpVO extends SuperVO {
 	 * @return String
 	 */
 	public String getTableName() {
-		return "bd_corp";
+		return "bd_factory";
 	}
 
 	public Integer getTaxpayertype() {
@@ -1300,7 +1173,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性unitcode的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -1320,7 +1193,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性unitname的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -1331,7 +1204,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性unitshortname的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -1342,7 +1215,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性url的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -1353,7 +1226,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性zipcode的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @return String
@@ -1364,7 +1237,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性showorder的Getter方法。
-	 * 
+	 *
 	 * 创建日期：(2008-7-29)
 	 * 
 	 * @return int
@@ -1534,7 +1407,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def1的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newDef1
@@ -1547,7 +1420,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def10的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newDef10
@@ -1560,7 +1433,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def11的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newDef11
@@ -1573,7 +1446,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def12的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newDef12
@@ -1586,7 +1459,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def13的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newDef13
@@ -1599,7 +1472,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def14的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newDef14
@@ -1612,7 +1485,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def15的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newDef15
@@ -1625,7 +1498,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def16的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newDef16
@@ -1638,7 +1511,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def17的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newDef17
@@ -1651,7 +1524,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def18的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newDef18
@@ -1664,7 +1537,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def19的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newDef19
@@ -1677,7 +1550,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def2的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newDef2
@@ -1690,7 +1563,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def20的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newDef20
@@ -1703,7 +1576,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def3的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newDef3
@@ -1716,7 +1589,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def4的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newDef4
@@ -1729,7 +1602,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def5的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newDef5
@@ -1742,7 +1615,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def6的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newDef6
@@ -1755,7 +1628,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def7的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newDef7
@@ -1768,7 +1641,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def8的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newDef8
@@ -1781,7 +1654,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性def9的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newDef9
@@ -1871,7 +1744,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性ecotype的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newEcotype
@@ -1884,7 +1757,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性email1的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newEmail1
@@ -1897,7 +1770,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性email2的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newEmail2
@@ -1910,7 +1783,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性email3的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newEmail3
@@ -1946,7 +1819,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性fathercorp的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newFathercorp
@@ -1959,7 +1832,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性fax1的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newFax1
@@ -1972,7 +1845,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性fax2的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newFax2
@@ -1985,7 +1858,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性foreignname的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newForeignname
@@ -1998,7 +1871,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性holdflag的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newHoldflag
@@ -2034,7 +1907,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性industry的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newIndustry
@@ -2057,7 +1930,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性ishasaccount 的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-8-23)
 	 * 
 	 * @param newishasaccount
@@ -2070,7 +1943,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性isseal的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-8-23)
 	 * 
 	 * @param newisseal
@@ -2083,7 +1956,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性isworkingunit的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-8-23)
 	 * 
 	 * @param newisworkingunit
@@ -2105,7 +1978,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性legalbodycode的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newLegalbodycode
@@ -2118,7 +1991,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性linkman1的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newLinkman1
@@ -2131,7 +2004,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性linkman2的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newLinkman2
@@ -2144,7 +2017,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性linkman3的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newLinkman3
@@ -2167,7 +2040,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性memo的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newMemo
@@ -2180,7 +2053,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性ownersharerate的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newOwnersharerate
@@ -2193,7 +2066,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性phone1的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newPhone1
@@ -2206,7 +2079,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性phone2的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newPhone2
@@ -2219,7 +2092,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性phone3的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newPhone3
@@ -2232,7 +2105,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性pk_corp的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newPk_corp
@@ -2277,8 +2150,18 @@ public class CorpVO extends SuperVO {
 	}
 
 	/**
-	 * 属性postaddr的setter方法。
+	 * 此处插入方法说明。 创建日期：(04-3-1 16:51:19)
 	 * 
+	 * @param newPkCorpkind
+	 *            String Chenwei
+	 */
+	public void setpkCorpkind(String newPkCorpkind) {
+		pk_corpkind = newPkCorpkind;
+	}
+
+	/**
+	 * 属性postaddr的setter方法。
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newPostaddr
@@ -2291,7 +2174,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 设置对象标识，用来唯一定位对象。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param pk_corp
@@ -2335,7 +2218,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性saleaddr的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newSaleaddr
@@ -2366,7 +2249,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性unitcode的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newUnitcode
@@ -2389,7 +2272,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性unitname的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newUnitname
@@ -2402,7 +2285,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性unitshortname的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newUnitshortname
@@ -2415,7 +2298,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性url的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newUrl
@@ -2428,7 +2311,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性zipcode的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2001-5-16)
 	 * 
 	 * @param newZipcode
@@ -2441,7 +2324,7 @@ public class CorpVO extends SuperVO {
 
 	/**
 	 * 属性showorder_id的setter方法。
-	 * 
+	 *
 	 * 创建日期：(2008-7-29)
 	 * 
 	 * @param showorder
@@ -2550,463 +2433,21 @@ public class CorpVO extends SuperVO {
 		this.icbegindate = icbegindate;
 	}
 
-	public String getIndusname() {
-		return indusname;
-	}
-
-	public void setIndusname(String indusname) {
-		this.indusname = indusname;
-	}
-
-	public String getCtypename() {
-		return ctypename;
-	}
-
-	public void setCtypename(String ctypename) {
-		this.ctypename = ctypename;
-	}
-
-	public boolean isM_isbackup() {
-		return m_isbackup;
-	}
-
-	public void setM_isbackup(boolean m_isbackup) {
-		this.m_isbackup = m_isbackup;
-	}
-
-	public String getCropArea() {
-		return cropArea;
-	}
-
-	public void setCropArea(String cropArea) {
-		this.cropArea = cropArea;
-	}
-
-	public String getVcorporationid() {
-		return vcorporationid;
-	}
-
-	public void setVcorporationid(String vcorporationid) {
-		this.vcorporationid = vcorporationid;
-	}
-	
-	public DZFBoolean getIspersonal() {
-		return ispersonal;
-	}
-
-	public void setIspersonal(DZFBoolean ispersonal) {
-		this.ispersonal = ispersonal;
-	}
-
-	public String getVorgcode() {
-		return vorgcode;
-	}
-
-	public void setVorgcode(String vorgcode) {
-		this.vorgcode = vorgcode;
-	}
-
-	public String getVbusilicode() {
-		return vbusilicode;
-	}
-
-	public void setVbusilicode(String vbusilicode) {
-		this.vbusilicode = vbusilicode;
-	}
-
-	public DZFDate getDlicexpdate() {
-		return dlicexpdate;
-	}
-
-	public void setDlicexpdate(DZFDate dlicexpdate) {
-		this.dlicexpdate = dlicexpdate;
-	}
-
-	public String getVaccountopen() {
-		return vaccountopen;
-	}
-
-	public void setVaccountopen(String vaccountopen) {
-		this.vaccountopen = vaccountopen;
-	}
-
-	public String getVcompcode() {
-		return vcompcode;
-	}
-
-	public void setVcompcode(String vcompcode) {
-		this.vcompcode = vcompcode;
-	}
-
-	public DZFDate getDcompdate() {
-		return dcompdate;
-	}
-
-	public void setDcompdate(DZFDate dcompdate) {
-		this.dcompdate = dcompdate;
-	}
-
-	public String getVsoccrecode() {
-		return vsoccrecode;
-	}
-
-	public void setVsoccrecode(String vsoccrecode) {
-		this.vsoccrecode = vsoccrecode;
-	}
-
-	public String getVbankname() {
-		return vbankname;
-	}
-
-	public void setVbankname(String vbankname) {
-		this.vbankname = vbankname;
-	}
-
-	public String getVbankcode() {
-		return vbankcode;
-	}
-
-	public void setVbankcode(String vbankcode) {
-		this.vbankcode = vbankcode;
-	}
-
-	public String getVbankaddr() {
-		return vbankaddr;
-	}
-
-	public void setVbankaddr(String vbankaddr) {
-		this.vbankaddr = vbankaddr;
-	}
-
-	public String getVbankpos() {
-		return vbankpos;
-	}
-
-	public void setVbankpos(String vbankpos) {
-		this.vbankpos = vbankpos;
-	}
-
-	public String getVbusitype() {
-		return vbusitype;
-	}
-
-	public void setVbusitype(String vbusitype) {
-		this.vbusitype = vbusitype;
-	}
-
-	public String getVfilecode() {
-		return vfilecode;
-	}
-
-	public void setVfilecode(String vfilecode) {
-		this.vfilecode = vfilecode;
-	}
-
-	public Integer getVprovince() {
-		return vprovince;
-	}
-
-	public void setVprovince(Integer vprovince) {
-		this.vprovince = vprovince;
-	}
-
-	public Integer getVcity() {
-		return vcity;
-	}
-
-	public void setVcity(Integer vcity) {
-		this.vcity = vcity;
-	}
-
-	public Integer getVarea() {
-		return varea;
-	}
-
-	public void setVarea(Integer varea) {
-		this.varea = varea;
-	}
-
-	public String getVcustsource() {
-		return vcustsource;
-	}
-
-	public void setVcustsource(String vcustsource) {
-		this.vcustsource = vcustsource;
-	}
-
-	public String getVsourcenote() {
-		return vsourcenote;
-	}
-
-	public void setVsourcenote(String vsourcenote) {
-		this.vsourcenote = vsourcenote;
-	}
-
-	public String getVcustmainbusi() {
-		return vcustmainbusi;
-	}
-
-	public void setVcustmainbusi(String vcustmainbusi) {
-		this.vcustmainbusi = vcustmainbusi;
-	}
-
-	public String getVrespaccount() {
-		return vrespaccount;
-	}
-
-	public void setVrespaccount(String vrespaccount) {
-		this.vrespaccount = vrespaccount;
-	}
-
-	public String getVresptel() {
-		return vresptel;
-	}
-
-	public void setVresptel(String vresptel) {
-		this.vresptel = vresptel;
-	}
-
-	public String getVcustothertel() {
-		return vcustothertel;
-	}
 
-	public void setVcustothertel(String vcustothertel) {
-		this.vcustothertel = vcustothertel;
+	public String getAccountfactoryid() {
+		return accountfactoryid;
 	}
 
-	public String getVstatetaxplace() {
-		return vstatetaxplace;
+	public void setAccountfactoryid(String accountfactoryid) {
+		this.accountfactoryid = accountfactoryid;
 	}
 
-	public void setVstatetaxplace(String vstatetaxplace) {
-		this.vstatetaxplace = vstatetaxplace;
+	public Integer getCompanyproperty() {
+		return companyproperty;
 	}
 
-	public String getVstatetaxaddr() {
-		return vstatetaxaddr;
+	public void setCompanyproperty(Integer companyproperty) {
+		this.companyproperty = companyproperty;
 	}
 
-	public void setVstatetaxaddr(String vstatetaxaddr) {
-		this.vstatetaxaddr = vstatetaxaddr;
-	}
-
-	public String getVstatetaxper() {
-		return vstatetaxper;
-	}
-
-	public void setVstatetaxper(String vstatetaxper) {
-		this.vstatetaxper = vstatetaxper;
-	}
-
-	public String getVstatetaxpertel() {
-		return vstatetaxpertel;
-	}
-
-	public void setVstatetaxpertel(String vstatetaxpertel) {
-		this.vstatetaxpertel = vstatetaxpertel;
-	}
-
-	public String getVstatetaxpwd() {
-		return vstatetaxpwd;
-	}
-
-	public void setVstatetaxpwd(String vstatetaxpwd) {
-		this.vstatetaxpwd = vstatetaxpwd;
-	}
-
-	public DZFDate getDstatetaxdate() {
-		return dstatetaxdate;
-	}
-
-	public void setDstatetaxdate(DZFDate dstatetaxdate) {
-		this.dstatetaxdate = dstatetaxdate;
-	}
-
-	public String getVlocaltaxcode() {
-		return vlocaltaxcode;
-	}
-
-	public void setVlocaltaxcode(String vlocaltaxcode) {
-		this.vlocaltaxcode = vlocaltaxcode;
-	}
-
-	public String getVlocaltaxplace() {
-		return vlocaltaxplace;
-	}
-
-	public void setVlocaltaxplace(String vlocaltaxplace) {
-		this.vlocaltaxplace = vlocaltaxplace;
-	}
-
-	public String getVlocaltaxper() {
-		return vlocaltaxper;
-	}
-
-	public void setVlocaltaxper(String vlocaltaxper) {
-		this.vlocaltaxper = vlocaltaxper;
-	}
-
-	public String getVlocaltaxpertel() {
-		return vlocaltaxpertel;
-	}
-
-	public void setVlocaltaxpertel(String vlocaltaxpertel) {
-		this.vlocaltaxpertel = vlocaltaxpertel;
-	}
-
-	public String getVlocaltaxaddr() {
-		return vlocaltaxaddr;
-	}
-
-	public void setVlocaltaxaddr(String vlocaltaxaddr) {
-		this.vlocaltaxaddr = vlocaltaxaddr;
-	}
-
-	public String getVlocaltaxpwd() {
-		return vlocaltaxpwd;
-	}
-
-	public void setVlocaltaxpwd(String vlocaltaxpwd) {
-		this.vlocaltaxpwd = vlocaltaxpwd;
-	}
-
-	public Integer getVcorporatetax() {
-		return vcorporatetax;
-	}
-
-	public void setVcorporatetax(Integer vcorporatetax) {
-		this.vcorporatetax = vcorporatetax;
-	}
-
-	public DZFBoolean getVtaxtype() {
-		return vtaxtype;
-	}
-
-	public void setVtaxtype(DZFBoolean vtaxtype) {
-		this.vtaxtype = vtaxtype;
-	}
-
-	public String getVtaxcode() {
-		return vtaxcode;
-	}
-
-	public void setVtaxcode(String vtaxcode) {
-		this.vtaxcode = vtaxcode;
-	}
-
-	public String getVgenvohtype() {
-		return vgenvohtype;
-	}
-
-	public void setVgenvohtype(String vgenvohtype) {
-		this.vgenvohtype = vgenvohtype;
-	}
-
-	public String getVsuperaccount() {
-		return vsuperaccount;
-	}
-
-	public void setVsuperaccount(String vsuperaccount) {
-		this.vsuperaccount = vsuperaccount;
-	}
-
-	public String getVwqaccount() {
-		return vwqaccount;
-	}
-
-	public void setVwqaccount(String vwqaccount) {
-		this.vwqaccount = vwqaccount;
-	}
-
-	public DZFDate getDestablishdate() {
-		return destablishdate;
-	}
-
-	public void setDestablishdate(DZFDate destablishdate) {
-		this.destablishdate = destablishdate;
-	}
-
-	public DZFBoolean getIsukey() {
-		return isukey;
-	}
-
-	public void setIsukey(DZFBoolean isukey) {
-		this.isukey = isukey;
-	}
-
-	public String getPk_source() {
-		return pk_source;
-	}
-
-	public void setPk_source(String pk_source) {
-		this.pk_source = pk_source;
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
-	public DZFDate getDscodedate() {
-		return dscodedate;
-	}
-
-	public void setDscodedate(DZFDate dscodedate) {
-		this.dscodedate = dscodedate;
-	}
-
-	public DZFDate getDukeydate() {
-		return dukeydate;
-	}
-
-	public void setDukeydate(DZFDate dukeydate) {
-		this.dukeydate = dukeydate;
-	}
-
-	public String getVpersonalpwd() {
-		return vpersonalpwd;
-	}
-
-	public void setVpersonalpwd(String vpersonalpwd) {
-		this.vpersonalpwd = vpersonalpwd;
-	}
-
-	public String getPcountname() {
-		return pcountname;
-	}
-
-	public void setPcountname(String pcountname) {
-		this.pcountname = pcountname;
-	}
-
-	public String getWqcountname() {
-		return wqcountname;
-	}
-
-	public void setWqcountname(String wqcountname) {
-		this.wqcountname = wqcountname;
-	}
-
-    public DZFBoolean isIssmall() {
-		return issmall;
-	}
-
-	public void setIssmall(DZFBoolean issmall) {
-		this.issmall = issmall;
-	}
-
-	public String getEstablishtime() {
-		return establishtime;
-	}
-
-	public void setEstablishtime(String establishtime) {
-		this.establishtime = establishtime;
-	}
-	
-	
-	
-		
 }

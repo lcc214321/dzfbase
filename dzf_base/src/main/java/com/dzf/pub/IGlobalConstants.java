@@ -65,6 +65,7 @@ public interface IGlobalConstants extends IDefaultValue{
     public static String SYS_DZF="sys_dzf";
     public static String SYS_DATA="sys_data";
     public static String ADMIN_KJ="admin_kj";
+    public static String DZF_FACTORY="dzf_factory";//会计工厂
     
     public static String POWER_MAP="powerMap";
     

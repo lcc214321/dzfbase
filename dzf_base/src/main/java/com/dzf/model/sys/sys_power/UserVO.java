@@ -85,7 +85,14 @@ public class UserVO extends SuperVO {
 	private String zfuser_code;
 	//中服OAuth服务针对大账房应用分给指定中服账号的refreshtoken，可用它来直接重复申请access_token，而不必重新申请授权码
 	private String zf_refreshtoken;
+	private DZFBoolean isfactory;
 	
+	public DZFBoolean getIsfactory() {
+		return isfactory;
+	}
+	public void setIsfactory(DZFBoolean isfactory) {
+		this.isfactory = isfactory;
+	}
 
 	public String getZfuser_code() {
 		return zfuser_code;

@@ -42,6 +42,8 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 		write(nos,svo.getCorptype());
 		write(nos,svo.getChargedeptname());
 		write(nos,svo.getDef10());
+		write(nos,svo.getCompanyproperty()+"");
+		write(nos,svo.getAccountfactoryid());
 	}
 
 	@Override
@@ -81,6 +83,8 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 		cvo.setCorptype(readerString(nos, -1));
 		cvo.setChargedeptname(readerString(nos, -1));
 		cvo.setDef10(readerString(nos, -1));
+		cvo.setCompanyproperty(Integer.parseInt(readerString(nos, -1)));
+		cvo.setAccountfactoryid(readerString(nos, -1));
 		return cvo;
 	}
 	
