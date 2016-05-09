@@ -321,6 +321,7 @@
   <build>
     <plugins>
     	
+    	
       <!-- 编译的时候使用JDK7和UTF8编码 -->
 	  <plugin>
 		<artifactId>maven-compiler-plugin</artifactId>
