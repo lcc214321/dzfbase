@@ -67,7 +67,7 @@ public interface IBillTypeCode {
 	
 	public final static String HP38 = "HP38"; // 现金流量期初余额
 	
-	
+	public final static String HP39 = "HP39"; // 期末处理---计提税金
 	/**
 	 * 填制凭证
 	 */
