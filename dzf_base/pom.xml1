@@ -1,0 +1,374 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>dzf_base</groupId>
+  <artifactId>dzf_base</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <name>dzf_base</name>
+  
+  
+  <properties>
+	<!-- 指明使用JDK7 -->
+	<java-version>1.7</java-version>
+	<!-- 指明使用utf-8编码 -->
+	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+	<!-- 指定Maven仓库 -->
+	<repositories>
+		<!-- oschina的maven仓库 -->
+		<repository>
+			<id>oschinaRepository</id>
+			<name>local private nexus</name>
+			<url>http://maven.oschina.net/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+
+		<!-- 官方maven仓库 -->
+		<!-- <repository> <id>maven</id> <name>Maven Repository Switchboard</name> <layout>default</layout> <url>http://repo1.maven.org/maven2</url> <snapshots> <enabled>true</enabled> </snapshots> </repository> -->
+	</repositories>
+
+	<!-- 指定maven plugin仓库 -->
+	<pluginRepositories>
+		<!-- oschina的maven plugin仓库 -->
+		<pluginRepository>
+			<id>oschinaPluginRepository</id>
+			<name>local private nexus</name>
+			<url>http://maven.oschina.net/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>javax</groupId>
+      <artifactId>javaee-api</artifactId>
+      <version>7.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.web</groupId>
+      <artifactId>javax.servlet.jsp.jstl</artifactId>
+      <version>1.2.2</version>
+    </dependency>
+    <dependency>
+	    <groupId>com.fasterxml.jackson.jr</groupId>
+	    <artifactId>jackson-jr-all</artifactId>
+	    <version>2.4.1</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.jdom</groupId>
+		<artifactId>jdom</artifactId>
+		<version>1.1.3</version>
+	</dependency>
+	
+	<!-- mvn install:install-file -DgroupId=com.dzf -DartifactId=jackson-all -Dversion=1.9.9 -Dpackaging=jar -Dfile=D:\data1\lib\jackson-all-1.9.9.jar -->
+	<dependency> 
+    <groupId>com.fasterxml.jackson.core</groupId>
+	    <artifactId>jackson-databind</artifactId>
+	    <version>2.4.1.3</version>
+	</dependency>
+	 <dependency>
+	    <groupId>org.glassfish.jersey.core</groupId>
+	    <artifactId>jersey-server</artifactId>
+	    <version>2.21.1</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.glassfish.jersey.media</groupId>
+	    <artifactId>jersey-media-multipart</artifactId>
+	    <version>2.22</version>
+	</dependency>
+	<dependency>
+	<groupId>com.fasterxml.jackson.jaxrs</groupId>
+	<artifactId>jackson-jaxrs-json-provider</artifactId>
+	<version>2.7.2</version>
+</dependency>
+<dependency>
+	<groupId>org.glassfish.jersey.core</groupId>
+	<artifactId>jersey-client</artifactId>
+	<version>2.22.2</version>
+</dependency>
+	<dependency>
+	    <groupId>org.apache.httpcomponents</groupId>
+	    <artifactId>httpclient</artifactId>
+	    <version>4.3.5</version>
+	</dependency>
+			
+    <!-- mysql数据库驱动 -->
+	<!-- <dependency> <groupId>mysql</groupId> <artifactId>mysql-connector-java</artifactId> <version>5.1.21</version> </dependency> -->
+	<!-- sql server数据库驱动 -->
+	<!-- <dependency> <groupId>net.sourceforge.jtds</groupId> <artifactId>jtds</artifactId> <version>1.2.4</version> </dependency> -->
+	<!-- mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0 -Dpackaging=jar -Dfile=C:\app\Administrator\product\11.2.0\dbhome_1\jdbc\lib\ojdbc6.jar -->
+	<!-- oracle数据库驱动 -->
+	<dependency>
+		<groupId>com.oracle</groupId>
+		<artifactId>ojdbc6</artifactId>
+		<version>11.2.0</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>commons-codec</groupId>
+	    <artifactId>commons-codec</artifactId>
+	    <version>20041127.091804</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>commons-beanutils</groupId>
+	    <artifactId>commons-beanutils-core</artifactId>
+	    <version>1.8.3</version>
+	</dependency>
+	
+	<!-- fastJson -->
+	<dependency>
+		<groupId>com.alibaba</groupId>
+		<artifactId>fastjson</artifactId>
+		<version>1.2.7</version>
+	</dependency>
+    
+	<!-- druid -->
+	<dependency>
+		<groupId>com.alibaba</groupId>
+		<artifactId>druid</artifactId>
+		<version>1.0.15</version>
+	</dependency>
+    <!-- aspectjweaver -->
+	<dependency>
+		<groupId>org.aspectj</groupId>
+		<artifactId>aspectjweaver</artifactId>
+		<version>1.8.6</version>
+	</dependency>
+    <!-- servlet -->
+	<dependency>
+		<groupId>javax.servlet</groupId>
+		<artifactId>servlet-api</artifactId>
+		<version>3.0-alpha-1</version>
+		<scope>provided</scope><!-- 作用域 -->
+	</dependency>
+	
+	<!-- jvalidate -->
+	<!-- mvn install:install-file -DgroupId=com.dzf -DartifactId=jvalidate -Dversion=1.0.0 -Dpackaging=jar -Dfile=C:\jvalidate.jar-->	
+    <dependency>
+		<groupId>com.dzf</groupId>
+		<artifactId>jvalidate</artifactId>
+		<version>1.0.0</version>
+	</dependency>
+    
+    <!-- log4j -->
+	<dependency>
+		<groupId>log4j</groupId>
+		<artifactId>log4j</artifactId>
+		<version>1.2.17</version>
+	</dependency>
+    
+    <!-- junit -->
+	<dependency>
+		<groupId>junit</groupId>
+		<artifactId>junit</artifactId>
+		<version>4.12</version>
+		<scope>test</scope>
+	</dependency>
+	
+	<!-- hibernate5 -->
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-core</artifactId>
+		<version>5.0.1.Final</version>
+	</dependency>
+    
+   	<!-- struts2 -->
+	<dependency>
+		<groupId>org.apache.struts</groupId>
+		<artifactId>struts2-core</artifactId>
+		<version>2.3.4.1</version>
+		<!-- 如果安装hibernate，这个jar包，排除在外 -->
+		<exclusions>
+			<exclusion>
+				<groupId>javassist</groupId>
+				<artifactId>javassist</artifactId>
+			</exclusion>
+		</exclusions>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.struts</groupId>
+		<artifactId>struts2-spring-plugin</artifactId>
+		<version>2.3.4.1</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.struts</groupId>
+		<artifactId>struts2-convention-plugin</artifactId>
+		<version>2.3.4.1</version>
+	</dependency>
+    
+    <!-- spring 4.x -->
+   	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-core</artifactId>
+		<version>4.2.1.RELEASE</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-context</artifactId>
+		<version>4.2.1.RELEASE</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-jdbc</artifactId>
+		<version>4.2.1.RELEASE</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-beans</artifactId>
+		<version>4.2.1.RELEASE</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-web</artifactId>
+		<version>4.2.1.RELEASE</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-expression</artifactId>
+		<version>4.2.1.RELEASE</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-orm</artifactId>
+		<version>4.2.1.RELEASE</version>
+	</dependency>
+<!-- 新增加 -->
+
+<dependency>
+    <groupId>org.ow2.jotm</groupId>
+    <artifactId>jotm-core</artifactId>
+    <version>2.3.1-M1</version>
+</dependency>
+
+<!-- <dependency>
+    <groupId>org.ow2.jotm</groupId>
+    <artifactId>jotm</artifactId>
+    <version>2.3.1-M1</version>
+</dependency> -->
+
+<dependency>
+    <groupId>org.jacorb</groupId>
+    <artifactId>jacorb</artifactId>
+    <version>3.6.1</version>
+</dependency>
+
+ 
+  <dependency>
+	<groupId>com.atomikos</groupId>
+	<artifactId>transactions-jta</artifactId>
+	<version>3.9.3</version>
+</dependency>
+<dependency>
+	<groupId>com.atomikos</groupId>
+	<artifactId>atomikos-util</artifactId>
+	<version>3.9.3</version>
+</dependency>
+<dependency>
+	<groupId>com.atomikos</groupId>
+	<artifactId>transactions-jdbc</artifactId>
+	<version>3.9.3</version>
+</dependency>
+<dependency>
+	<groupId>com.atomikos</groupId>
+	<artifactId>transactions-api</artifactId>
+	<version>3.9.3</version>
+</dependency>
+<dependency>
+	<groupId>com.atomikos</groupId>
+	<artifactId>transactions</artifactId>
+	<version>3.9.3</version>
+</dependency>
+  <dependency>
+   <groupId>org.slf4j</groupId>
+   <artifactId>slf4j-log4j12</artifactId>
+   <version>1.7.2</version>
+  </dependency>
+<!-- 极光推送 -->
+<dependency>
+    <groupId>cn.jpush.api</groupId>
+    <artifactId>jpush-client</artifactId>
+    <version>3.1.3</version>
+</dependency>
+<dependency>
+    <groupId>com.google.guava</groupId>
+    <artifactId>guava</artifactId>
+    <version>17.0</version>
+</dependency>
+
+<!--缓存  -->
+<dependency>
+		<groupId>redis.clients</groupId>
+		<artifactId>jedis</artifactId>
+		<version>2.6.0</version>
+	</dependency>
+	
+	
+<dependency>
+	<groupId>org.bouncycastle</groupId>
+	<artifactId>bcprov-jdk15on</artifactId>
+	<version>1.52</version>
+</dependency>
+
+ </dependencies>
+  <build>
+    <plugins>
+    	
+    	
+      <!-- 编译的时候使用JDK7和UTF8编码 -->
+	  <plugin>
+		<artifactId>maven-compiler-plugin</artifactId>
+		<configuration>
+			<source>1.7</source>
+			<target>1.7</target>
+			<encoding>UTF-8</encoding>
+		</configuration>
+	  </plugin>
+		
+	  <!-- 编译jar包 -->
+	  <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-jar-plugin</artifactId>
+		<configuration>
+			<archive>
+				<addMavenDescriptor>false</addMavenDescriptor>
+				<manifest>
+					<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+					<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+				</manifest>
+			</archive>
+		</configuration>
+	  </plugin>
+	  
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.2</version>
+        <configuration>
+          <version>3.1</version>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
