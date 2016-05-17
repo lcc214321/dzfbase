@@ -392,6 +392,7 @@ public class CorpVO extends SuperVO {
 	
 	private String text;
 
+	private String accountcoderule;
 	
 	/**
 	 * 使用主键字段进行初始化的构造子。
@@ -3004,6 +3005,16 @@ public class CorpVO extends SuperVO {
 
 	public void setEstablishtime(String establishtime) {
 		this.establishtime = establishtime;
+	}
+
+
+	public String getAccountcoderule() {
+		return accountcoderule;
+	}
+
+
+	public void setAccountcoderule(String accountcoderule) {
+		this.accountcoderule = accountcoderule;
 	}
 	
 	
