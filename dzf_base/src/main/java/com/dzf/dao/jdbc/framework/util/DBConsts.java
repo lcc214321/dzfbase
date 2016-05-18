@@ -67,5 +67,6 @@ public interface DBConsts {
 			"substring", "lower", "upper", "ltrim", "rtrim", "sqrt", "abs",
 			"square", "sign", "count", "max", "min", "sum", "avg", "cast" };
 	
-	public final static String NULL_WAVE = "~";
+	//zpm改成空
+	public final static String NULL_WAVE = null;
 }
