@@ -35,9 +35,8 @@ import com.opensymphony.xwork2.ActionSupport;
  * 
  * 基本的CRUD已实现，子类继承BaseAction的时候，提供setService方法即可
  * 
- * 注解@Action后，访问地址就是命名空间+类名(全小写，并且不包括Action后缀)，本action的访问地址就是/base.sy
+ * 注解@Action后，访问地址就是命名空间+类名(全小写，并且不包括Action后缀)
  * 
- * @author 孙宇
  * 
  */
 @ParentPackage("basePackage")
