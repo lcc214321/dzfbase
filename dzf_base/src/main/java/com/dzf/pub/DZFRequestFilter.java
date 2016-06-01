@@ -106,6 +106,11 @@ public class DZFRequestFilter implements Filter {
 				filterChain.doFilter(request, response);
 	        	return;
 			}
+			//小薇无忧app登陆
+			if(url.contains("/xwwy_app/busidata!dealData.action")){
+				filterChain.doFilter(request, response);
+	        	return;
+			}
 			//增加中服直接登录
 			if(url.endsWith("/sys/auto_user!autologin.action") || url.endsWith("/zonefulogin.jsp") || url.endsWith("/bindzflogin.jsp")){
 				filterChain.doFilter(request, response);
