@@ -6,10 +6,10 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 public class ResourceUtils {
-public interface IServletOutputStreamAction{
-	public Object doAction(ServletOutputStream out);
+public interface ICloseAction<T>{
+	public Object doAction(T out);
 }
-public static Object doSOStreamAExec(HttpServletResponse hsr, IServletOutputStreamAction action) throws IOException{
+public static Object doSOStreamAExec(HttpServletResponse hsr, ICloseAction<ServletOutputStream> action) throws IOException{
 	ServletOutputStream out=null;
 	Object obj=null;
 	try{
