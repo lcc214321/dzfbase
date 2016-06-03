@@ -1,15 +1,13 @@
 package com.dzf.pub.util;
 
-import java.io.IOException;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 public class ResourceUtils {
 public interface ICloseAction<T>{
-	public Object doAction(T out);
+	public Object doAction(T out)throws Exception;
 }
-public static Object doSOStreamAExec(HttpServletResponse hsr, ICloseAction<ServletOutputStream> action) throws IOException{
+public static Object doSOStreamAExec(HttpServletResponse hsr, ICloseAction<ServletOutputStream> action) throws Exception{
 	ServletOutputStream out=null;
 	Object obj=null;
 	try{
