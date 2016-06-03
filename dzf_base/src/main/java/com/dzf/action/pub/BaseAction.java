@@ -145,7 +145,7 @@ public class BaseAction<T> extends ActionSupport {
 			getResponse().getWriter().flush();
 			getResponse().getWriter().close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 	}
 	
@@ -187,10 +187,17 @@ public class BaseAction<T> extends ActionSupport {
 			logger.info("转换后的JSON字符串：" + json);
 			getResponse().setContentType("text/html;charset=utf-8");
 			getResponse().getWriter().write(json);
-			getResponse().getWriter().flush();
-			getResponse().getWriter().close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("错误",e);
+		}finally{
+			try{
+				if(getResponse() != null && getResponse().getWriter()!=null){
+					getResponse().getWriter().flush();
+					getResponse().getWriter().close();
+				}
+			}catch(Exception e1){
+				logger.error("错误",e1);
+			}
 		}
 	}
 	
@@ -395,7 +402,6 @@ public class BaseAction<T> extends ActionSupport {
 			
 		} catch (Exception e1) {
 			logger.error(e1);
-			e1.printStackTrace();
 		} 
 		return null;
 	}
