@@ -550,6 +550,12 @@ private SuperVO updatevo(String corp, SuperVO svo){
 		BaseDAO dao = new BaseDAO(dataSource);
 		return dao.executeUpdate(sql, parameter);
 	}
+	
+	public int executeBatchUpdate(String sqls, SQLParameter[] parameters) throws BusinessException{
+		BaseDAO dao = new BaseDAO(dataSource);
+		return dao.executeBatchUpdate(sqls, parameters);
+	}
+	
 	public String[] insertVOArr(String pk_corp,SuperVO[] vos)throws BusinessException{
 		BaseDAO dao = new BaseDAO(dataSource);
 		return dao.insertVOArray(pk_corp,vos);
