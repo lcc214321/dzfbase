@@ -790,7 +790,35 @@ final public class BaseDAO {
 	public int updateVOArray(SuperVO[] vos) throws DAOException {
 		return updateVOArray(vos, null);
 	}
-
+	/**
+	 * 2016-06-06增加
+	 * 批量更新
+	 * @param sqls
+	 *            更新的sql集合
+	 * @param parameter
+	 *            更新参数
+	 * @return
+	 * @throws DAOException
+	 *             更新发生错误抛出DAOException
+	 */
+	public int executeBatchUpdate(String sqls, SQLParameter[] parameters) throws DAOException
+	{
+		PersistenceManager manager = null;
+		int value;
+		try {
+			manager = createPersistenceManager(dataSource);
+			JdbcSession session = manager.getJdbcSession();
+			value = session.executeBatch(sqls, parameters);
+	
+		} catch (DbException e) {
+			Logger.error(this,e.getMessage(), e);
+			throw new DAOException(e.getMessage());
+		} finally {
+			if (manager != null)
+				manager.release();
+		}
+		return value;
+	}
 	/**
 	 * 根据VO对象数组中指定列更新数据库
 	 * 
