@@ -1,15 +1,14 @@
 package com.dzf.dao.bs;
 
-import com.dzf.pub.BusinessException;
+import com.dzf.pub.DZFWarpException;
 
 
 
 /**
- * @author hey
  * 
  * 数据访问对象异常类
  */
-public class DAOException extends BusinessException {
+public class DAOException extends DZFWarpException {
 
 
 	/**
@@ -33,7 +32,7 @@ public class DAOException extends BusinessException {
 	 * @param cause
 	 */
 	public DAOException(Throwable cause) {
-		super(cause);
+		super("DAO异常",cause);
 		// TODO 自动生成构造函数存根
 	}
 

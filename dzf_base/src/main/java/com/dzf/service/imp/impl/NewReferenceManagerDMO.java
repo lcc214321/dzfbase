@@ -20,9 +20,8 @@ import com.dzf.dao.jdbc.framework.SQLParameter;
 import com.dzf.dao.jdbc.framework.processor.ArrayListProcessor;
 import com.dzf.dao.jdbc.framework.processor.ColumnListProcessor;
 import com.dzf.dao.jdbc.framework.processor.ResultSetProcessor;
-import com.dzf.model.pub.IInSqlBatchCallBack;
-import com.dzf.model.pub.InSqlBatchCaller;
-import com.dzf.pub.BusinessException;
+import com.dzf.service.IInSqlBatchCallBack;
+import com.dzf.service.InSqlBatchCaller;
 
 
 /**
@@ -98,13 +97,13 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 	public NewReferenceManagerDMO(SingleObjectBO singleObjectBO) {
 		super();
 		if(singleObjectBO==null)
-			throw new BusinessException("SingleObjectBO未成功初始化");
+			throw new DAOException("SingleObjectBO未成功初始化");
 		this.singleObjectBO=singleObjectBO;
 	}
 
 	private Boolean checkBasePKsIsRefrencedInCorp(final String tableName,
 			String pk_corp, String inSql, boolean isModifyCheck)
-			throws BusinessException {
+			throws DAOException {
 		List<BD_Realtion> relationList = getRelationListByTableNameAndWithcorp(
 				tableName, true, isModifyCheck);
 		for (BD_Realtion relation : relationList) {
@@ -134,10 +133,10 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 	 * @param inSql
 	 *            多个PK拼成的InSql. 形如('PK1','PK2',...'PKn')
 	 * @return 任意一个PK被引用就返回true,所有PK都未被引用则返回false.
-	 * @throws BusinessException
+	 * @throws DAOException
 	 */
 	private Boolean checkPKsIsRefrenced(final String tableName, String inSql,
-			boolean isModifyCheck) throws BusinessException {
+			boolean isModifyCheck) throws DAOException {
 		List<BD_Realtion> relationList = getRelationListByTableName(tableName,
 				isModifyCheck);
 		for (int i = 0; i < relationList.size(); i++) {
@@ -272,7 +271,7 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 	}
 
 	public Set<String> getReferencedBasePksInCorp(String tableName,
-			List<String> basePks, final String pk_corp)throws BusinessException {
+			List<String> basePks, final String pk_corp)throws DAOException {
 		if (tableName == null)
 			throw new IllegalArgumentException("talbeName cann't be null");
 		final Set<String> referencedPkSet = new HashSet<String>();
@@ -313,7 +312,7 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 				caller.execute(new IInSqlBatchCallBack() {
 					@SuppressWarnings("unchecked")
 					public Object doWithInSql(String inSql)
-							throws BusinessException, SQLException {
+							throws DAOException {
 						List<Object[]> rs = (List<Object[]>) baseDAO.executeQuery(new StringBuilder(
 												selectSql).append(inSql)
 												.toString(), param, new ArrayListProcessor());
@@ -325,11 +324,7 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 						}
 						return null;
 					}});
-			} catch (SQLException e) {
-				log.warn("查询数据库表" + relation.tableName + "对表" + tableName
-						+ "的引用时出错,可能是对应产品没安装");
-				log.warn(e.getMessage(), e);
-			} catch (BusinessException e) {
+			}  catch (DAOException e) {
 				log.warn("查询数据库表" + relation.tableName + "对表" + tableName
 						+ "的引用时出错,可能是对应产品没安装");
 				log.warn(e.getMessage(), e);
@@ -344,11 +339,11 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 	 * @param keys
 	 * @param isModifyCheck
 	 * @return
-	 * @throws BusinessException
+	 * @throws DAOException
 	 */
 	@SuppressWarnings("unchecked")
 	public String[] getReferencedKeys(String tableName, String[] keys,
-			boolean isModifyCheck) throws BusinessException {
+			boolean isModifyCheck) throws DAOException {
 		if (tableName == null)
 			throw new IllegalArgumentException("talbeName cann't be null");
 		if (keys == null || keys.length == 0)
@@ -386,7 +381,7 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 
 							@SuppressWarnings("unchecked")
 							public Object doWithInSql(String inSql)
-									throws BusinessException, SQLException {
+									throws DAOException {
 								List<String> tempList = (List<String>)getSingleObjectBO().executeQuery
 										(new StringBuilder(
 												selectSql).append(inSql)
@@ -406,7 +401,7 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 								List<String> l = new ArrayList<String>();
 
 								public Object doWithInSql(String inSql)
-										throws BusinessException, SQLException {
+										throws DAOException {
 									String checkSql = new StringBuilder(
 											selectSql).append(inSql).append(
 											" and nvl(dr,0) = 0 ")
@@ -424,11 +419,7 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 							break;
 					}
 				}
-			} catch (SQLException e) {
-				log.warn("查询数据库表" + relation.tableName + "对表" + tableName
-						+ "的引用时出错,可能是对应产品没安装");
-				log.warn(e.getMessage(), e);
-			} catch (BusinessException e) {
+			} catch (DAOException e) {
 				log.warn("查询数据库表" + relation.tableName + "对表" + tableName
 						+ "的引用时出错,可能是对应产品没安装");
 				log.warn(e.getMessage(), e);
@@ -439,7 +430,7 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 	}
 
 	private ArrayList<BD_Realtion> getRelationListByTableName(String tableName,
-			boolean isModifyCheck) throws BusinessException {
+			boolean isModifyCheck) throws DAOException {
 		return getRelationListByTableNameAndWithcorp(tableName, false,
 				isModifyCheck);
 	}
@@ -452,7 +443,7 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 	@SuppressWarnings("unchecked")
 	private ArrayList<BD_Realtion> getRelationListByTableNameAndWithcorp(
 			String tableName, boolean isWithCorp, boolean isModifyCheck)
-			throws BusinessException {
+			throws DAOException {
 		String newTableName = isWithCorp ? WITH_CORP_FLAG + tableName
 				: tableName;
 
@@ -574,7 +565,7 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 	}
 
 	public boolean isBasePkReferencedInCorp(String tableName, String pk_corp,
-			String key, boolean isModifyCheck) throws BusinessException {
+			String key, boolean isModifyCheck) throws DAOException {
 		List<BD_Realtion> relationList = getRelationListByTableNameAndWithcorp(
 				tableName, true, isModifyCheck);
 		return checkReferenceHelper(tableName, pk_corp, key, relationList);
@@ -582,7 +573,7 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 
 	public boolean isBasePkReferencedInCorp(String tableName, String pk_corp,
 			String key, String[] excludedTableNames, boolean isModifyCheck)
-			throws BusinessException {
+			throws DAOException {
 		List<BD_Realtion> relationList = getRelationListByTableNameAndWithcorp(
 				tableName, true, isModifyCheck);
 		List<BD_Realtion> fieltedList = filterValidRelations(
@@ -592,7 +583,7 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 
 	public boolean isBasePksReferencedInCorp(final String tableName,
 			final String pk_corp, List<String> keys, final boolean isModifyCheck)
-			throws BusinessException {
+			throws DAOException {
 		if (tableName == null || keys == null || keys.size() == 0)
 			return false;
 		if (keys.size() == 1)
@@ -604,8 +595,7 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 		IInSqlBatchCallBack callback = new IInSqlBatchCallBack() {
 			Boolean referenced = Boolean.FALSE;
 
-			public Object doWithInSql(String inSql) throws BusinessException,
-					SQLException {
+			public Object doWithInSql(String inSql) throws DAOException {
 				Boolean referenceFlag = checkBasePKsIsRefrencedInCorp(
 						tableName, pk_corp, inSql, isModifyCheck);
 				referenced = Boolean.valueOf(referenced.booleanValue()
@@ -617,7 +607,7 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 			Boolean result = (Boolean) caller.execute(callback);
 			return result.booleanValue();
 
-		} catch (BusinessException e)// 忽略查询引用时发生的异常
+		} catch (DAOException e)// 忽略查询引用时发生的异常
 		{
 			log.warn("查询引用发生异常,可以忽略.");
 			log.warn(e.getMessage(), e);
@@ -636,10 +626,10 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 	// * @param tableName
 	// * @param keys
 	// * @return
-	// * @throws BusinessException
+	// * @throws DAOException
 	// */
 	// public boolean isReferenced(final String tableName, String[] keys) throws
-	// BusinessException
+	// DAOException
 	// {
 	// if(tableName==null||keys==null||keys.length==0)
 	// return false;
@@ -655,10 +645,10 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 	 * @param tableName
 	 * @param keys
 	 * @return
-	 * @throws BusinessException
+	 * @throws DAOException
 	 */
 	public boolean isReferenced(final String tableName, List<String> keys,
-			final boolean isModifyCheck) throws BusinessException {
+			final boolean isModifyCheck) throws DAOException {
 
 		if (tableName == null || keys == null || keys.size() == 0)
 			return false;
@@ -670,8 +660,7 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 		IInSqlBatchCallBack callback = new IInSqlBatchCallBack() {
 			Boolean referenced = Boolean.FALSE;
 
-			public Object doWithInSql(String inSql) throws BusinessException,
-					SQLException {
+			public Object doWithInSql(String inSql) throws DAOException {
 				Boolean referenceFlag = checkPKsIsRefrenced(tableName, inSql,
 						isModifyCheck);
 				referenced = Boolean.valueOf(referenced.booleanValue()
@@ -683,7 +672,7 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 			Boolean result = (Boolean) caller.execute(callback);
 			return result.booleanValue();
 
-		} catch (BusinessException e)// 忽略查询引用时发生的异常
+		} catch (DAOException e)// 忽略查询引用时发生的异常
 		{
 			log.warn("查询引用发生异常,可以忽略.");
 			log.warn(e.getMessage(), e);
@@ -706,7 +695,7 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 	 * @throws SQLException
 	 */
 	public boolean isReferenced(String tableName, String key,
-			boolean isModifyCheck) throws BusinessException {
+			boolean isModifyCheck) throws DAOException {
 
 		List<BD_Realtion> relationList = getRelationListByTableName(tableName,
 				isModifyCheck);
@@ -716,7 +705,7 @@ public class NewReferenceManagerDMO /* extends DataManageObject */
 
 	public boolean isReferenced(String tableName, String key,
 			String[] excludedTableNames, boolean isModifyCheck)
-			throws BusinessException {
+			throws DAOException {
 		List<BD_Realtion> relationList = getRelationListByTableName(tableName,
 				isModifyCheck);
 		List<BD_Realtion> fieltedList = filterValidRelations(

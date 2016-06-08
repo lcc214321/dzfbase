@@ -8,7 +8,6 @@ import com.dzf.framework.comn.NetObjectInputStream;
 import com.dzf.framework.comn.NetObjectOutputStream;
 import com.dzf.model.sys.sys_power.UserVO;
 import com.dzf.pub.lang.DZFBoolean;
-import com.dzf.pub.lang.DZFDate;
 
 public class UserSerializable extends AbstractSerializable<UserVO> {
 

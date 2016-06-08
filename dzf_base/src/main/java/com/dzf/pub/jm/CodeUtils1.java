@@ -7,6 +7,8 @@ import java.io.ObjectInputStream;
 import org.apache.log4j.Logger;
 import org.springframework.core.io.ClassPathResource;
 
+import com.dzf.pub.DZFWarpException;
+
 
 
 /**
@@ -38,30 +40,33 @@ public class CodeUtils1 {
 				defaultkey = (String)ois.readObject();
 			}
 		}catch (Exception ex){
-			ex.printStackTrace();
+			LOG.error(ex);
+			throw new DZFWarpException(ex);
 		}
 	}
 
-	public static String enCode(String value) throws Exception{
+	public static String enCode(String value) throws DZFWarpException{
 		if(pubkey == null || "".equals(pubkey))
 			readUIParameter();
 		String key = null;
 		try{
 			key =  RC4.encry_RC4_string(value, defaultkey);
 		}catch(Exception e){
-			LOG.info(e);
+			LOG.error(e);
+			throw new DZFWarpException(e);
 		}
 		return key;
 	}
 
-	public static String deCode(String pvalue) throws Exception{
+	public static String deCode(String pvalue) throws DZFWarpException{
 		if(prikey == null || "".equals(prikey))
 			readUIParameter();
 		String key = null;
 		try{
 			key = RC4.decry_RC4(pvalue,defaultkey);
 		}catch(Exception e){
-			LOG.info(e);
+			LOG.error(e);
+			throw new DZFWarpException(e);
 		}
 		return key;
 	}

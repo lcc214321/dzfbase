@@ -23,13 +23,6 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.easemob.dzf.server.comm.HTTPMethod;
-import com.easemob.server.dzf.httpclient.vo.Credential;
-import com.easemob.server.dzf.httpclient.vo.Token;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.apache.http.NameValuePair;
 import org.glassfish.jersey.client.JerseyClient;
 import org.glassfish.jersey.client.JerseyClientBuilder;
@@ -40,6 +33,12 @@ import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.easemob.dzf.server.comm.HTTPMethod;
+import com.easemob.server.dzf.httpclient.vo.Credential;
+import com.easemob.server.dzf.httpclient.vo.Token;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;

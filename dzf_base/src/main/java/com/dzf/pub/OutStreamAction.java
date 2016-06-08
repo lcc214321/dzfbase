@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.dzf.framework.comn.NetObjectInputStream;
 import com.dzf.framework.comn.NetObjectOutputStream;
-import com.dzf.pub.BusinessException;
 
 public class OutStreamAction extends BaseAppAction{
 
@@ -26,14 +25,13 @@ public class OutStreamAction extends BaseAppAction{
 			obj=nis.readObject();
 		} catch (Exception e) {
 			
-			throw new BusinessException(e);
+			throw new DZFWarpException(e);
 		}finally{
 			if(is!=null)
 				try {
 					is.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					throw new DZFWarpException(e);
 				}
 		}
 	
@@ -51,14 +49,13 @@ public class OutStreamAction extends BaseAppAction{
 			nis.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			throw new BusinessException(e);
+			throw new DZFWarpException(e);
 		}finally{
 			if(os!=null)
 				try {
 					os.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					throw new DZFWarpException(e);
 				}
 		}
 

@@ -2,16 +2,16 @@ package com.dzf.pub.cache_new;
 
 import javax.sql.DataSource;
 
-import redis.clients.jedis.Jedis;
-
 import com.dzf.dao.bs.SingleObjectBO;
 import com.dzf.dao.jdbc.framework.DataSourceFactory;
 import com.dzf.framework.comn.IOUtils;
 import com.dzf.model.sys.sys_power.UserVO;
-import com.dzf.pub.BusinessException;
+import com.dzf.pub.DZFWarpException;
 import com.dzf.pub.Redis.IRedisCallback;
 import com.dzf.pub.Redis.RedisClient;
 import com.dzf.pub.cache.UserSerializable;
+
+import redis.clients.jedis.Jedis;
 
 public class UserCache {
 
@@ -48,7 +48,7 @@ public class UserCache {
 				try {
 					obj= IOUtils.getObject(bs, new UserSerializable());
 				} catch (Exception e) {
-					throw new BusinessException(e);
+					throw new DZFWarpException(e);
 				}
 				return obj;
 			}
@@ -70,7 +70,7 @@ public class UserCache {
 						return null;
 					jedis.set(userid.getBytes(),IOUtils.getBytes(cvo1, new UserSerializable()));
 				} catch (Exception e) {
-					throw new BusinessException(e);
+					throw new DZFWarpException(e);
 				}
 				return null;
 			}
@@ -90,7 +90,7 @@ public class UserCache {
 				try {
 					jedis.del(userid.getBytes());//set(corp.getBytes(),IOUtils.getBytes(cvo1, new CorpSerializable()));
 				} catch (Exception e) {
-					throw new BusinessException(e);
+					throw new DZFWarpException(e);
 				}
 				return null;
 			}

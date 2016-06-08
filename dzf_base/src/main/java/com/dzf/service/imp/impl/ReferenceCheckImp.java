@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dzf.dao.bs.SingleObjectBO;
-import com.dzf.pub.BusinessException;
+import com.dzf.pub.DZFWarpException;
 import com.dzf.pub.lang.DZFBoolean;
 import com.dzf.service.imp.IReferenceCheck;
 
@@ -37,7 +37,7 @@ public class ReferenceCheckImp implements IReferenceCheck {
 	}
 	
 	public Set<String> getBasePkReferencedInCorp(String tableName,
-			List<String> basePks, String pk_corp) throws BusinessException {
+			List<String> basePks, String pk_corp) throws DZFWarpException {
 		return new NewReferenceManagerDMO(getSingleObjectBO()).getReferencedBasePksInCorp(
 				tableName, basePks, pk_corp);
 	}
@@ -50,7 +50,7 @@ public class ReferenceCheckImp implements IReferenceCheck {
 	 */
 	@SuppressWarnings("unchecked")
 	public HashMap getIsReferencedByKeys(String tableName, String[] keys)
-			throws BusinessException {
+			throws DZFWarpException {
 		if (tableName == null)
 			throw new IllegalArgumentException("talbeName cann't be null");
 		if (keys == null || keys.length == 0)
@@ -66,7 +66,7 @@ public class ReferenceCheckImp implements IReferenceCheck {
 
 	@SuppressWarnings("unchecked")
 	public HashMap getIsReferencedByKeysWhenModify(String tableName,
-			String[] keys) throws BusinessException {
+			String[] keys) throws DZFWarpException {
 		if (tableName == null)
 			throw new IllegalArgumentException("talbeName cann't be null");
 		if (keys == null || keys.length == 0)
@@ -81,32 +81,32 @@ public class ReferenceCheckImp implements IReferenceCheck {
 	}
 
 	public String[] getReferencedKeys(String tableName, String[] keys)
-			throws BusinessException {
+			throws DZFWarpException {
 		return new NewReferenceManagerDMO(getSingleObjectBO()).getReferencedKeys(tableName, keys,
 				false);
 	}
 
 	public String[] getReferencedKeysWhenModify(String tableName, String[] keys)
-			throws BusinessException {
+			throws DZFWarpException {
 		return new NewReferenceManagerDMO(getSingleObjectBO()).getReferencedKeys(tableName, keys,
 				true);
 	}
 
 	public boolean isBasePkReferencedInCorp(String tableName,
-			List<String> basePks, String pk_corp) throws BusinessException {
+			List<String> basePks, String pk_corp) throws DZFWarpException {
 		return new NewReferenceManagerDMO(getSingleObjectBO()).isBasePksReferencedInCorp(
 				tableName, pk_corp, basePks, false);
 	}
 
 	public boolean isBasePkReferencedInCorp(String tableName, String basePk,
-			String pk_corp) throws BusinessException {
+			String pk_corp) throws DZFWarpException {
 		return new NewReferenceManagerDMO(getSingleObjectBO()).isBasePkReferencedInCorp(tableName,
 				pk_corp, basePk, false);
 	}
 
 	public boolean isBasePkReferencedInCorp(String tableName, String basePk,
 			String pk_corp, String[] excludedTableNames)
-			throws BusinessException {
+			throws DZFWarpException {
 		return new NewReferenceManagerDMO(getSingleObjectBO()).isBasePkReferencedInCorp(tableName,
 				pk_corp, basePk, excludedTableNames, false);
 	}
@@ -119,7 +119,7 @@ public class ReferenceCheckImp implements IReferenceCheck {
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean isReferenced(String tableName, ArrayList keys)
-			throws BusinessException {
+			throws DZFWarpException {
 		return new NewReferenceManagerDMO(getSingleObjectBO())
 				.isReferenced(tableName, keys, false);
 	}
@@ -131,29 +131,29 @@ public class ReferenceCheckImp implements IReferenceCheck {
 	 *      java.lang.String)
 	 */
 	public boolean isReferenced(String tableName, String key)
-			throws BusinessException {
+			throws DZFWarpException {
 		return new NewReferenceManagerDMO(getSingleObjectBO()).isReferenced(tableName, key, false);
 	}
 
 	public boolean isReferenced(String tableName, String key,
-			String[] excludedTableNames) throws BusinessException {
+			String[] excludedTableNames) throws DZFWarpException {
 		return new NewReferenceManagerDMO(getSingleObjectBO()).isReferenced(tableName, key,
 				excludedTableNames, false);
 	}
 
 	@SuppressWarnings("unchecked")
 	public boolean isReferencedWhenModify(String tableName, ArrayList keys)
-			throws BusinessException {
+			throws DZFWarpException {
 		return new NewReferenceManagerDMO(getSingleObjectBO()).isReferenced(tableName, keys, true);
 	}
 
 	public boolean isReferencedWhenModify(String tableName, String key)
-			throws BusinessException {
+			throws DZFWarpException {
 		return new NewReferenceManagerDMO(getSingleObjectBO()).isReferenced(tableName, key, true);
 	}
 
 	public boolean isReferencedWhenModify(String tableName, String key,
-			String[] excludedTableNames) throws BusinessException {
+			String[] excludedTableNames) throws DZFWarpException {
 		return new NewReferenceManagerDMO(getSingleObjectBO()).isReferenced(tableName, key,
 				excludedTableNames, true);
 	}

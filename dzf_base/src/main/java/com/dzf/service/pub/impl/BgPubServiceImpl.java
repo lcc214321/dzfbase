@@ -14,7 +14,7 @@ import com.dzf.dao.jdbc.framework.processor.BeanListProcessor;
 import com.dzf.model.pub.ConditionVO;
 import com.dzf.model.sys.sys_power.CorpVO;
 import com.dzf.model.sys.sys_power.UserVO;
-import com.dzf.pub.BusinessException;
+import com.dzf.pub.DZFWarpException;
 import com.dzf.pub.SuperVO;
 import com.dzf.pub.Field.FieldMapping;
 import com.dzf.pub.Field.FieldValidateUtils;
@@ -39,7 +39,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 
 	@Override
 	public List<SuperVO> quyerInfovo(Class className,String tableName, String condition,
-			SQLParameter params,int pageNo, int pageSize,String order) throws BusinessException {
+			SQLParameter params,int pageNo, int pageSize,String order) throws DZFWarpException {
 		List<SuperVO>  rs = (List<SuperVO>)singleObjectBO.execQueryWithPage(className, tableName, condition,
 				params,pageNo,pageSize,order);
 		if(rs == null || rs.size() == 0)
@@ -51,7 +51,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 	
 	@Override
 	public<T> List<T> quyerInfovo(Class className,CorpVO corpVo,
-			UserVO uservo, String sort, String order) throws BusinessException {
+			UserVO uservo, String sort, String order) throws DZFWarpException {
 
 		try {
 			SuperVO svo = (SuperVO) className.newInstance();
@@ -79,7 +79,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 			return completinfo(rs, corpVo.getPk_corp());
 			
 		} catch (Exception e) {
-			throw new BusinessException(e);
+			throw new DZFWarpException(e);
 		}
 	}
 	
@@ -87,7 +87,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 	 * 传入查询条件查询
 	 * */
 	@Override
-	public<T> List<T> quyerWithCondtion(Class className,ConditionVO[] cd,String sort,String order)  throws BusinessException {
+	public<T> List<T> quyerWithCondtion(Class className,ConditionVO[] cd,String sort,String order)  throws DZFWarpException {
 		List<SuperVO> rs;
 		StringBuffer sb = new StringBuffer();
 		SQLParameter sp = new SQLParameter();
@@ -134,18 +134,18 @@ public class BgPubServiceImpl implements IBgPubServices {
 			return completinfo(rs, pk_corp);
 			
 		} catch (Exception e) {
-			throw new BusinessException(e);
+			throw new DZFWarpException(e);
 		}
 	}
 	
 	
 	// 获取总页数
-	public int getTotalRow(String sql) throws BusinessException  {
+	public int getTotalRow(String sql) throws DZFWarpException  {
 		return singleObjectBO.getTotalRow(sql);
 	}
 
 	@Override
-	public void delteInfovo(SuperVO bean)  throws BusinessException {
+	public void delteInfovo(SuperVO bean)  throws DZFWarpException {
 		SuperVO tvo = (SuperVO)bean.clone();
 		FieldValidateUtils.Validate(tvo);
 		
@@ -154,7 +154,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 
 	}
 	@Override
-	public List<SuperVO> quyerByPkcorp(Class className,String pk_corp) throws BusinessException{
+	public List<SuperVO> quyerByPkcorp(Class className,String pk_corp) throws DZFWarpException{
 			SQLParameter sp=new SQLParameter();
 			sp.addParam(pk_corp);
 			List<SuperVO> listVo = (List<SuperVO>) singleObjectBO.retrieveByClause(className, "pk_corp=? and nvl(dr,0) = 0 ", sp);
@@ -163,7 +163,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 	
 	
 	@Override
-	public SuperVO saveNew(SuperVO vo) throws BusinessException {
+	public SuperVO saveNew(SuperVO vo) throws DZFWarpException {
 		SuperVO tvo =(SuperVO)vo.clone();
 		FieldValidateUtils.Validate(tvo);
 		
@@ -172,7 +172,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 		return (SuperVO)singleObjectBO.saveObject((String)tvo.getAttributeValue("pk_corp"), tvo);
 	};
 	@Override
-	public void update(SuperVO vo) throws BusinessException {
+	public void update(SuperVO vo) throws DZFWarpException {
 		SuperVO tvo =(SuperVO)vo.clone();
 		FieldValidateUtils.Validate(tvo);
 		
@@ -181,7 +181,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 		singleObjectBO.saveObject((String)tvo.getAttributeValue("pk_corp"), tvo);
 	}
 	@Override
-	public void updateDzf(SuperVO vo) throws BusinessException {
+	public void updateDzf(SuperVO vo) throws DZFWarpException {
 		SuperVO tvo =(SuperVO)vo.clone();
 		FieldValidateUtils.Validate(tvo);
 		singleObjectBO.saveObject((String)tvo.getAttributeValue("pk_corp"), tvo);
@@ -192,9 +192,9 @@ public class BgPubServiceImpl implements IBgPubServices {
 	 * 按字段更新
 	 * **/
 	@Override
-	public void updateByColumn(SuperVO vo,String[] columns) throws BusinessException {
+	public void updateByColumn(SuperVO vo,String[] columns) throws DZFWarpException {
 		if(columns==null||columns.length<=0){
-			throw new BusinessException(" 更新字段不可为空");
+			throw new DZFWarpException(" 更新字段不可为空");
 		}
 		SuperVO tvo =(SuperVO)vo.clone();
 		FieldValidateUtils.Validate(tvo);
@@ -206,17 +206,17 @@ public class BgPubServiceImpl implements IBgPubServices {
 	
 	@Override
 	public int getTotalRow(String tablename, String condition, SQLParameter sp)
-			throws BusinessException {
+			throws DZFWarpException {
 		return singleObjectBO.getTotalRow(tablename, condition, sp);
 	}
 
-	public<T> List<T> completinfo(List<SuperVO>  rs,String pk_corp) throws BusinessException{
+	public<T> List<T> completinfo(List<SuperVO>  rs,String pk_corp) throws DZFWarpException{
 		return (List<T>)rs;
 	}
 	
 
 	@SuppressWarnings("unchecked")
-	public<T> Map<String,T> queryMap(Class className,String pk_corp) throws BusinessException{
+	public<T> Map<String,T> queryMap(Class className,String pk_corp) throws DZFWarpException{
 		
 		Map<String,T> rsmap = new HashMap<String,T>();
 		try{
@@ -232,7 +232,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 			}
 		}
 		}catch(Exception e){
-			throw new BusinessException(e);
+			throw new DZFWarpException(e);
 		}
 		return rsmap;
 	}
@@ -242,18 +242,18 @@ public class BgPubServiceImpl implements IBgPubServices {
 	/**
 	 * 更新前检查
 	 * */
-	public DZFBoolean checkBeforeUpdata(SuperVO vo)throws  BusinessException{
+	public DZFBoolean checkBeforeUpdata(SuperVO vo)throws  DZFWarpException{
 		return DZFBoolean.TRUE;
 	}
 	
 	/**
 	 * 新增前检查
 	 * */
-	public DZFBoolean checkBeforeSaveNew(SuperVO vo)throws  BusinessException{
+	public DZFBoolean checkBeforeSaveNew(SuperVO vo)throws  DZFWarpException{
 		return DZFBoolean.TRUE;
 	}
 	@Override
-	public void delteInfovoDzf(SuperVO bean) throws BusinessException {
+	public void delteInfovoDzf(SuperVO bean) throws DZFWarpException {
 		// TODO Auto-generated method stub
 		
 	}

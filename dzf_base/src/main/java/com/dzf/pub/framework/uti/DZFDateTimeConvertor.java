@@ -11,12 +11,12 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import oracle.sql.TIMESTAMP;
-
 import org.apache.commons.beanutils.ConversionException;
 import org.apache.commons.beanutils.Converter;
 
 import com.dzf.pub.lang.DZFDateTime;
+
+import oracle.sql.TIMESTAMP;
 
 public class DZFDateTimeConvertor implements Converter {
 

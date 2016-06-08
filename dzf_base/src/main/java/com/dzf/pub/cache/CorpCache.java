@@ -4,8 +4,6 @@ import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 
-import redis.clients.jedis.Jedis;
-
 import com.dzf.dao.bs.SingleObjectBO;
 import com.dzf.dao.jdbc.framework.DataSourceFactory;
 import com.dzf.framework.comn.IOUtils;
@@ -13,6 +11,8 @@ import com.dzf.model.sys.sys_power.CorpVO;
 import com.dzf.pub.Redis.IRedisCallback;
 import com.dzf.pub.Redis.RedisClient;
 import com.dzf.pub.jm.CodeUtils1;
+
+import redis.clients.jedis.Jedis;
 
 public class CorpCache {
 private static CorpCache fc=new CorpCache();

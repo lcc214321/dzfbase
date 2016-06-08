@@ -5,13 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import net.sf.jsqlparser.util.ExpressionUtils;
-
 import com.dzf.model.sys.sys_power.CorpVO;
 import com.dzf.pub.BusinessException;
 import com.dzf.pub.StringUtil;
 import com.dzf.pub.SuperVO;
 import com.dzf.pub.cache.CorpCache;
+
+import net.sf.jsqlparser.util.ExpressionUtils;
 
 
 public class FieldValidateUtils {

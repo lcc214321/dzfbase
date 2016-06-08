@@ -1,9 +1,7 @@
 package com.dzf.model.sys.sys_power;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
-import com.dzf.pub.IGlobalConstants;
 import com.dzf.pub.SuperVO;
 import com.dzf.pub.lang.DZFDateTime;
 

@@ -21,6 +21,7 @@ import com.dzf.dao.jdbc.framework.processor.BeanListProcessor;
 import com.dzf.dao.jdbc.framework.processor.ColumnProcessor;
 import com.dzf.dao.jdbc.framework.processor.ResultSetProcessor;
 import com.dzf.pub.BusinessException;
+import com.dzf.pub.DZFWarpException;
 import com.dzf.pub.IDGenerate;
 import com.dzf.pub.StringUtil;
 import com.dzf.pub.SuperVO;
@@ -157,40 +158,40 @@ public class SingleObjectBO {
 	}
 	public Object executeQuery(String wheresql, SQLParameter parameter,Class[] cs ) throws DAOException {
 		try{
-		BeanListProcessor processor1=new BeanListProcessor(cs[0]);
-		BaseDAO dao = new BaseDAO(dataSource);
-		SuperVO so=(SuperVO) cs[0].newInstance();
-		String sql="Select * from "+so.getTableName()+" where "+wheresql;
-		List svo= (List) dao.executeQuery(sql, parameter, processor1);
-		int len=cs==null?0:cs.length;
-		if(len>1&&svo!=null&&svo.size()>0){
-			SuperVO so1=(SuperVO) cs[1].newInstance();
-			sql="(Select pk_corp,"+so.getPKFieldName()+" f1 from "+so.getTableName()+" where "+wheresql+")";
-			sql="select t1.* from "+so1.getTableName()+" t1,"+sql+" t2 where t1.pk_corp=t2.pk_corp and t2.f1=t1."+so1.getParentPKFieldName();
-			List svos= (List) dao.executeQuery(sql, parameter, new BeanListProcessor(cs[1]));
-			
-			Map<String, List<SuperVO>> map = DZfcommonTools.hashlizeObject(svos, new String[]{so1.getParentPKFieldName()});//返回MAP信息
-			svos=null;
-			//len=svo==null?0:svo.length;
-			String s=null;
-			SuperVO sr=null;
-			for(Object x : svo){
-				sr=(SuperVO) x;
-				s=sr.getPrimaryKey();
-				List<SuperVO> liz = map.get(s);
-				if(liz != null && !liz.isEmpty()){
-					sr.setChildren( DZfcommonTools.convertToSuperVO(liz.toArray(new SuperVO[0])));;
+			BeanListProcessor processor1=new BeanListProcessor(cs[0]);
+			BaseDAO dao = new BaseDAO(dataSource);
+			SuperVO so=(SuperVO) cs[0].newInstance();
+			String sql="Select * from "+so.getTableName()+" where "+wheresql;
+			List svo= (List) dao.executeQuery(sql, parameter, processor1);
+			int len=cs==null?0:cs.length;
+			if(len>1&&svo!=null&&svo.size()>0){
+				SuperVO so1=(SuperVO) cs[1].newInstance();
+				sql="(Select pk_corp,"+so.getPKFieldName()+" f1 from "+so.getTableName()+" where "+wheresql+")";
+				sql="select t1.* from "+so1.getTableName()+" t1,"+sql+" t2 where t1.pk_corp=t2.pk_corp and t2.f1=t1."+so1.getParentPKFieldName();
+				List svos= (List) dao.executeQuery(sql, parameter, new BeanListProcessor(cs[1]));
+				
+				Map<String, List<SuperVO>> map = DZfcommonTools.hashlizeObject(svos, new String[]{so1.getParentPKFieldName()});//返回MAP信息
+				svos=null;
+				//len=svo==null?0:svo.length;
+				String s=null;
+				SuperVO sr=null;
+				for(Object x : svo){
+					sr=(SuperVO) x;
+					s=sr.getPrimaryKey();
+					List<SuperVO> liz = map.get(s);
+					if(liz != null && !liz.isEmpty()){
+						sr.setChildren( DZfcommonTools.convertToSuperVO(liz.toArray(new SuperVO[0])));;
+					}
 				}
+				map=null;
 			}
-			map=null;
-		}
-		return svo;
-		}catch(Exception e){
-			throw new DAOException(e.getMessage());
+			return svo;
+		}catch (Exception e) {
+			throw new DZFWarpException(e);
 		}
 	}
 
-	public SuperVO queryVOByID(String pk, Class cs) throws BusinessException {
+	public SuperVO queryVOByID(String pk, Class cs) throws DAOException {
 //		try {
 //			if (pk == null)
 //				return null;
@@ -208,7 +209,7 @@ public class SingleObjectBO {
 		return this.queryByPrimaryKey(cs, pk);
 	}
 	
-	public SuperVO queryByPrimaryKey( Class cs,String pk) throws BusinessException {
+	public SuperVO queryByPrimaryKey( Class cs,String pk) throws DAOException {
 		try {
 			if (pk == null)
 				return null;
@@ -231,7 +232,7 @@ public class SingleObjectBO {
 	 * 
 	 */
 	public SuperVO queryObject(String pkid, Class[] cs)
-			throws BusinessException {
+			throws DAOException {
 		try {
 			if (pkid == null)
 				return null;
@@ -373,7 +374,7 @@ private SuperVO updatevo(String corp, SuperVO svo){
 	 * 
 	 */
 	public SuperVO saveObject(String corp, SuperVO svo)
-			throws BusinessException {
+			throws DAOException {
 
 		try{
 			String pkid =svo.getPrimaryKey();
@@ -421,7 +422,7 @@ private SuperVO updatevo(String corp, SuperVO svo){
 //		}
 	}
 //	public SuperVO saveObject1(final String corp, final SuperVO svo)
-//			throws BusinessException {
+//			throws DAOException {
 //
 //		try {
 //			String pkid =svo.getPrimaryKey();
@@ -525,38 +526,38 @@ private SuperVO updatevo(String corp, SuperVO svo){
 		return new Integer(dao.executeQuery(sql, parameter, new ColumnProcessor()).toString());
 	}
 	
-	public int update(SuperVO svo) throws BusinessException {
+	public int update(SuperVO svo) throws DAOException {
 		BaseDAO dao = new BaseDAO(dataSource);
 		return dao.updateVO(svo);
 	}
 	
-	public void update(SuperVO svo,String[] fieldNames) throws BusinessException {
+	public void update(SuperVO svo,String[] fieldNames) throws DAOException {
 		BaseDAO dao = new BaseDAO(dataSource);
 		dao.updateVO(svo,fieldNames);
 	}
 	
 	
-	public int updateAry(SuperVO[] vos) throws BusinessException{
+	public int updateAry(SuperVO[] vos) throws DAOException{
 		BaseDAO dao = new BaseDAO(dataSource);
 		return dao.updateVOArray(vos);
 	}
 	
-	public int updateAry(SuperVO[] vos, String[] fieldNames) throws BusinessException{
+	public int updateAry(SuperVO[] vos, String[] fieldNames) throws DAOException{
 		BaseDAO dao = new BaseDAO(dataSource);
 		return dao.updateVOArray(vos,fieldNames);
 	}
 	
-	public int executeUpdate(String sql, SQLParameter parameter) throws BusinessException{
+	public int executeUpdate(String sql, SQLParameter parameter) throws DAOException{
 		BaseDAO dao = new BaseDAO(dataSource);
 		return dao.executeUpdate(sql, parameter);
 	}
 	
-	public int executeBatchUpdate(String sqls, SQLParameter[] parameters) throws BusinessException{
+	public int executeBatchUpdate(String sqls, SQLParameter[] parameters) throws DAOException{
 		BaseDAO dao = new BaseDAO(dataSource);
 		return dao.executeBatchUpdate(sqls, parameters);
 	}
 	
-	public String[] insertVOArr(String pk_corp,SuperVO[] vos)throws BusinessException{
+	public String[] insertVOArr(String pk_corp,SuperVO[] vos)throws DAOException{
 		BaseDAO dao = new BaseDAO(dataSource);
 		return dao.insertVOArray(pk_corp,vos);
 	}

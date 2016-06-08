@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import com.dzf.pub.BusinessException;
+import com.dzf.pub.DZFWarpException;
 
 
 /**
@@ -25,7 +25,7 @@ public interface IReferenceCheck {
 	 * @return
 	 */
 	public Set<String> getBasePkReferencedInCorp(String tableName,
-			List<String> basePks, String pk_corp)throws BusinessException;
+			List<String> basePks, String pk_corp)throws DZFWarpException;
 	
 	/**
 	 * 检查表tableName中,指定的多个主键keys的引用情况.
@@ -37,15 +37,15 @@ public interface IReferenceCheck {
 	 * @param keys
 	 *            被查询引用的表的主键值数组
 	 * @return
-	 * @throws BusinessException
+	 * @throws DZFWarpException
 	 */
 	@SuppressWarnings("unchecked")
 	public HashMap getIsReferencedByKeys(String tableName, String[] keys)
-			throws BusinessException;
+			throws DZFWarpException;
 
 	@SuppressWarnings("unchecked")
 	public abstract HashMap getIsReferencedByKeysWhenModify(String tableName,
-			String[] keys) throws BusinessException;
+			String[] keys) throws DZFWarpException;
 
 	/**
 	 * 检查表tableName中,指定的多个主键keys的引用情况. 返回被引用的主键数组,如果所有keys均未被引用,则返回null.
@@ -53,10 +53,10 @@ public interface IReferenceCheck {
 	 * @param tableName
 	 * @param keys
 	 * @return
-	 * @throws BusinessException
+	 * @throws DZFWarpException
 	 */
 	public String[] getReferencedKeys(String tableName, String[] keys)
-			throws BusinessException;
+			throws DZFWarpException;
 
 	/**
 	 * 检查表tableName中,指定的多个主键keys在档案修改时的的引用情况. 返回被引用的主键数组,如果所有keys均未被引用,则返回null.
@@ -64,10 +64,10 @@ public interface IReferenceCheck {
 	 * @param tableName
 	 * @param keys
 	 * @return
-	 * @throws BusinessException
+	 * @throws DZFWarpException
 	 */
 	public String[] getReferencedKeysWhenModify(String tableName, String[] keys)
-			throws BusinessException;
+			throws DZFWarpException;
 
 	/**
 	 * 指定管理档案表中的基本档案主键字段在指定公司是否被引用.
@@ -79,10 +79,10 @@ public interface IReferenceCheck {
 	 * @param pk_corp
 	 *            公司
 	 * @return
-	 * @throws BusinessException
+	 * @throws DZFWarpException
 	 */
 	public boolean isBasePkReferencedInCorp(String tableName,
-			List<String> basePks, String pk_corp) throws BusinessException;
+			List<String> basePks, String pk_corp) throws DZFWarpException;
 
 	/**
 	 * 指定管理档案表中的基本档案主键字段在指定公司是否被引用.
@@ -94,10 +94,10 @@ public interface IReferenceCheck {
 	 * @param pk_corp
 	 *            公司
 	 * @return
-	 * @throws BusinessException
+	 * @throws DZFWarpException
 	 */
 	public boolean isBasePkReferencedInCorp(String tableName, String basePk,
-			String pk_corp) throws BusinessException;
+			String pk_corp) throws DZFWarpException;
 
 	/**
 	 * 指定管理档案表中的基本档案主键字段在指定公司是否被引用.
@@ -111,11 +111,11 @@ public interface IReferenceCheck {
 	 * @param excludedTableNames
 	 *            不需要进行校验的表名
 	 * @return
-	 * @throws BusinessException
+	 * @throws DZFWarpException
 	 */
 	public boolean isBasePkReferencedInCorp(String tableName, String basePk,
 			String pk_corp, String[] excludedTableNames)
-			throws BusinessException;
+			throws DZFWarpException;
 
 	/**
 	 * 查询tableName中主键字段的值为keys的记录是否被引用了 任何一个记录被引用将返回true 没有一个记录被引用将返回false
@@ -123,11 +123,11 @@ public interface IReferenceCheck {
 	 * @param tableName
 	 * @param keys
 	 * @return
-	 * @throws BusinessException
+	 * @throws DZFWarpException
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean isReferenced(final String tableName, ArrayList keys)
-			throws BusinessException;
+			throws DZFWarpException;
 
 	/**
 	 * 查询tableName中主键字段的值为key的记录是否被引用了
@@ -135,10 +135,10 @@ public interface IReferenceCheck {
 	 * @param tableName
 	 * @param key
 	 * @return ture 如果被引用,否则为false
-	 * @throws BusinessException
+	 * @throws DZFWarpException
 	 */
 	public boolean isReferenced(String tableName, String key)
-			throws BusinessException;
+			throws DZFWarpException;
 
 	/**
 	 * 检查tableNaem中主键字段为key的纪录是否被除excludedTableNames之外的表引用。
@@ -150,16 +150,16 @@ public interface IReferenceCheck {
 	 * @return
 	 */
 	public boolean isReferenced(String tableName, String key,
-			String[] excludedTableNames) throws BusinessException;
+			String[] excludedTableNames) throws DZFWarpException;
 
 	@SuppressWarnings("unchecked")
 	public boolean isReferencedWhenModify(String tableName, ArrayList keys)
-			throws BusinessException;
+			throws DZFWarpException;
 
 	public boolean isReferencedWhenModify(String tableName, String key)
-			throws BusinessException;
+			throws DZFWarpException;
 
 	public boolean isReferencedWhenModify(String tableName, String key,
-			String[] excludedTableNames) throws BusinessException;
+			String[] excludedTableNames) throws DZFWarpException;
 
 }

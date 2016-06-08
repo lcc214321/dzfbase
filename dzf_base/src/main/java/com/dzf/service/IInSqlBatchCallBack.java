@@ -4,11 +4,9 @@
  * TODO To change the template for this generated file go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-package com.dzf.model.pub;
+package com.dzf.service;
 
-import java.sql.SQLException;
-
-import com.dzf.pub.BusinessException;
+import com.dzf.pub.DZFWarpException;
 
 /**
  * @author liujian
@@ -18,5 +16,5 @@ import com.dzf.pub.BusinessException;
  */
 public interface IInSqlBatchCallBack
 {
-	public Object doWithInSql(String inSql) throws BusinessException,SQLException;
+	public Object doWithInSql(String inSql) throws DZFWarpException;
 }

@@ -1,23 +1,11 @@
-/*
- * Created on 2005-6-2
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-package com.dzf.model.pub;
+package com.dzf.service;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.dzf.pub.BusinessException;
+import com.dzf.pub.DZFWarpException;
 
-/**
- * @author liujian
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
+
 public class InSqlBatchCaller
 {
 	ArrayList pks = new ArrayList();
@@ -68,31 +56,7 @@ public class InSqlBatchCaller
 			this.group_size = GROUP_COUNT;		
 	}
 
-	public Object execute(IInSqlBatchCallBack callBack) throws BusinessException,SQLException
-	{
-//		Object result = null;
-//		int n = 1;
-//		for (int i = 0; i < pks.size(); i++,n++)
-//		{
-//			if(n==group_size||i==pks.size()-1)
-//			{
-//				StringBuffer buf = new StringBuffer();
-//				buf.append("(");
-//				for (int j = 0; j < n; j++)
-//				{
-//					buf.append("'");
-//					buf.append(pks.get(i-n+j+1));
-//					if(j==n-1)
-//						buf.append("')");
-//					else
-//						buf.append("',");
-//					
-//				}
-//				result = callBack.doWithInSql(buf.toString());
-//				n = 0;
-//			}
-//		}
-//		return result;
+	public Object execute(IInSqlBatchCallBack callBack) throws DZFWarpException {
 		Object result = null;
 		int n = 0;
 		StringBuffer buf = null;

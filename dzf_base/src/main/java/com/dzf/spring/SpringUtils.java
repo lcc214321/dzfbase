@@ -8,7 +8,6 @@ import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.dzf.pub.DZFRequestFilter;
 import com.dzf.pub.cache.ServletRequestCache;
 
 public class SpringUtils {

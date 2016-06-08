@@ -1,12 +1,14 @@
 package com.dzf.pub;
 
 import org.apache.log4j.Logger;
-import org.springframework.dao.DataAccessException;
 
 
+/**
+ * 正常的业务提示信息提示到前台
+ *
+ */
 
-
-public class BusinessException extends DataAccessException {
+public class BusinessException extends DZFWarpException {
 	
 	static final long serialVersionUID = -35466L;
 	
@@ -15,11 +17,6 @@ public class BusinessException extends DataAccessException {
     private String hint;
 
 	private String errorCodeString = ""; 
- 
-
-//    public BusinessException() {
-//        super();
-//    }
 
 
     public BusinessException(String s) {
@@ -43,15 +40,6 @@ public class BusinessException extends DataAccessException {
         hint = newHint;
     }
 
-
-    public BusinessException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-
-    public BusinessException(Throwable cause) {
-        super("",cause);
-    }
 
 	public String getErrorCodeString() {
 		return errorCodeString;

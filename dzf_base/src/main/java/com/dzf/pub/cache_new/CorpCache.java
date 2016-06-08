@@ -2,16 +2,16 @@ package com.dzf.pub.cache_new;
 
 import javax.sql.DataSource;
 
-import redis.clients.jedis.Jedis;
-
 import com.dzf.dao.bs.SingleObjectBO;
 import com.dzf.dao.jdbc.framework.DataSourceFactory;
 import com.dzf.framework.comn.IOUtils;
 import com.dzf.model.sys.sys_power.CorpVO;
-import com.dzf.pub.BusinessException;
+import com.dzf.pub.DZFWarpException;
 import com.dzf.pub.Redis.IRedisCallback;
 import com.dzf.pub.Redis.RedisClient;
 import com.dzf.pub.cache.CorpSerializable;
+
+import redis.clients.jedis.Jedis;
 
 public class CorpCache {
 private static CorpCache fc=new CorpCache();
@@ -49,7 +49,7 @@ public CorpVO get(String userid,final String corp){
 				}
 				obj= IOUtils.getObject(bs, new CorpSerializable());
 			} catch (Exception e) {
-				throw new BusinessException(e);
+				throw new DZFWarpException(e);
 			}
 			return obj;
 		}
@@ -72,7 +72,7 @@ public CorpVO get(String userid,final String corp){
 				}
 				jedis.set(corp.getBytes(),IOUtils.getBytes(cvo1, new CorpSerializable()));
 			} catch (Exception e) {
-				throw new BusinessException(e);
+				throw new DZFWarpException(e);
 			}
 			return null;
 		}
@@ -92,7 +92,7 @@ RedisClient.getInstance().exec(new IRedisCallback() {
 			try {
 				jedis.del(corp.getBytes());//set(corp.getBytes(),IOUtils.getBytes(cvo1, new CorpSerializable()));
 			} catch (Exception e) {
-				throw new BusinessException(e);
+				throw new DZFWarpException(e);
 			}
 			return null;
 		}

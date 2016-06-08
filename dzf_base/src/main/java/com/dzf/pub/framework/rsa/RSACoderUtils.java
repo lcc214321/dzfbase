@@ -6,7 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import com.dzf.framework.comn.IOUtils;
-import com.dzf.pub.BusinessException;
+import com.dzf.pub.DZFWarpException;
 import com.dzf.pub.IGlobalConstants;
 import com.dzf.pub.MD516;
 import com.dzf.pub.StringUtil;
@@ -15,7 +15,6 @@ import com.dzf.pub.StringUtil;
 public class RSACoderUtils {
 
 	public RSACoderUtils() {
-		// TODO Auto-generated constructor stub
 	}
     private static String publicKey;  
     private static String privateKey;  
@@ -42,7 +41,7 @@ public class RSACoderUtils {
   	  		corp = getToken(hs, userid, corp,(HashSet<String>) hs.getAttribute(IGlobalConstants.POWER_MAP));  
   	  		hs.setAttribute(IGlobalConstants.login_token,corp);
   		}catch(Exception e){
-  			throw new BusinessException(e.getMessage());
+  			throw new DZFWarpException(e);
   		}
   		
   	}
@@ -53,7 +52,7 @@ public class RSACoderUtils {
   	  	HashSet<String> set=(HashSet<String>) hs.getAttribute(IGlobalConstants.POWER_MAP);
   	  	return validateToken(hs,userid,corp,set);
   		}catch(Exception e){
-  			throw new BusinessException(e.getMessage());
+  			throw new DZFWarpException(e);
   		}
   	}
   	//加密
@@ -76,10 +75,10 @@ public class RSACoderUtils {
   	  		//hs.setAttribute(IGlobalConstants.login_token,corp);
   	  		return b;
   		}catch(Exception e){
-  			throw new BusinessException(e.getMessage());
+  			throw new DZFWarpException(e);
   		}
   	}
-  	public static String getSessionID(String token)throws BusinessException{
+  	public static String getSessionID(String token)throws DZFWarpException{
   		if(StringUtil.isEmptyWithTrim(token))return null;
   		
   		byte[] bs=getValue(token);
@@ -90,8 +89,7 @@ public class RSACoderUtils {
 				return strs[1];
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new DZFWarpException(e);
 		}
   		}
 //  			
@@ -107,7 +105,7 @@ public class RSACoderUtils {
   				bs=RSACoder.decryptByPrivateKey(Base64Util.getFromBASE64(token), privateKey);
 			//bs=Base64Util.getFromBASE64(token);
   		}catch(Exception e){
-  			throw new BusinessException(e);
+  			throw new DZFWarpException(e);
   		}
   		return bs;
   	}
@@ -133,20 +131,5 @@ public class RSACoderUtils {
 		
 		return IOUtils.getBytes(new String[]{str,hs.getId()});
 	}
-	public static void test(){
-		StringBuffer sb=new StringBuffer();
-		sb.append("sfsdfsdfsfs");
-		String str;
-		try {
-			str = Base64Util.getBASE64(RSACoder.encryptByPublicKey(Base64Util.getBASE64(sb.toString()).getBytes(), publicKey));
-			str= new String(RSACoder.decryptByPrivateKey(Base64Util.getFromBASE64(str), privateKey));
-	  		str=new String(Base64Util.getFromBASE64(str));
-	  		str=str.substring(str.lastIndexOf("     "));
-	  		str=str.trim();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	
-	}
+
 }
