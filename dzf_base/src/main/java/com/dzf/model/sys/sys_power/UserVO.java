@@ -80,13 +80,20 @@ public class UserVO extends SuperVO {
 	private String user_qq;
 	@FieldAlias("mail")
 	private String user_mail;
-	
+	private DZFBoolean isOwner;
 	//关联中服网账号
 	private String zfuser_code;
 	//中服OAuth服务针对大账房应用分给指定中服账号的refreshtoken，可用它来直接重复申请access_token，而不必重新申请授权码
 	private String zf_refreshtoken;
 	private DZFBoolean isfactory;
 	
+	
+	public DZFBoolean getIsOwner() {
+		return isOwner;
+	}
+	public void setIsOwner(DZFBoolean isOwner) {
+		this.isOwner = isOwner;
+	}
 	public DZFBoolean getIsfactory() {
 		return isfactory;
 	}
