@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import com.dzf.framework.comn.IOUtils;
+import com.dzf.pub.WiseRunException;
 import com.dzf.pub.DZFWarpException;
 import com.dzf.pub.IGlobalConstants;
 import com.dzf.pub.MD516;
@@ -41,7 +42,7 @@ public class RSACoderUtils {
   	  		corp = getToken(hs, userid, corp,(HashSet<String>) hs.getAttribute(IGlobalConstants.POWER_MAP));  
   	  		hs.setAttribute(IGlobalConstants.login_token,corp);
   		}catch(Exception e){
-  			throw new DZFWarpException(e);
+  			throw new WiseRunException(e);
   		}
   		
   	}
@@ -52,7 +53,7 @@ public class RSACoderUtils {
   	  	HashSet<String> set=(HashSet<String>) hs.getAttribute(IGlobalConstants.POWER_MAP);
   	  	return validateToken(hs,userid,corp,set);
   		}catch(Exception e){
-  			throw new DZFWarpException(e);
+  			throw new WiseRunException(e);
   		}
   	}
   	//加密
@@ -75,7 +76,7 @@ public class RSACoderUtils {
   	  		//hs.setAttribute(IGlobalConstants.login_token,corp);
   	  		return b;
   		}catch(Exception e){
-  			throw new DZFWarpException(e);
+  			throw new WiseRunException(e);
   		}
   	}
   	public static String getSessionID(String token)throws DZFWarpException{
@@ -89,7 +90,7 @@ public class RSACoderUtils {
 				return strs[1];
 			}
 		} catch (Exception e) {
-			throw new DZFWarpException(e);
+			throw new WiseRunException(e);
 		}
   		}
 //  			
@@ -105,7 +106,7 @@ public class RSACoderUtils {
   				bs=RSACoder.decryptByPrivateKey(Base64Util.getFromBASE64(token), privateKey);
 			//bs=Base64Util.getFromBASE64(token);
   		}catch(Exception e){
-  			throw new DZFWarpException(e);
+  			throw new WiseRunException(e);
   		}
   		return bs;
   	}

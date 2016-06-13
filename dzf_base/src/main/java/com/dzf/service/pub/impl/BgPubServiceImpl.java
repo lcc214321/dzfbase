@@ -14,6 +14,8 @@ import com.dzf.dao.jdbc.framework.processor.BeanListProcessor;
 import com.dzf.model.pub.ConditionVO;
 import com.dzf.model.sys.sys_power.CorpVO;
 import com.dzf.model.sys.sys_power.UserVO;
+import com.dzf.pub.BusinessException;
+import com.dzf.pub.WiseRunException;
 import com.dzf.pub.DZFWarpException;
 import com.dzf.pub.SuperVO;
 import com.dzf.pub.Field.FieldMapping;
@@ -79,7 +81,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 			return completinfo(rs, corpVo.getPk_corp());
 			
 		} catch (Exception e) {
-			throw new DZFWarpException(e);
+			throw new WiseRunException(e);
 		}
 	}
 	
@@ -134,7 +136,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 			return completinfo(rs, pk_corp);
 			
 		} catch (Exception e) {
-			throw new DZFWarpException(e);
+			throw new WiseRunException(e);
 		}
 	}
 	
@@ -194,7 +196,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 	@Override
 	public void updateByColumn(SuperVO vo,String[] columns) throws DZFWarpException {
 		if(columns==null||columns.length<=0){
-			throw new DZFWarpException(" 更新字段不可为空");
+			throw new BusinessException(" 更新字段不可为空");
 		}
 		SuperVO tvo =(SuperVO)vo.clone();
 		FieldValidateUtils.Validate(tvo);
@@ -232,7 +234,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 			}
 		}
 		}catch(Exception e){
-			throw new DZFWarpException(e);
+			throw new WiseRunException(e);
 		}
 		return rsmap;
 	}

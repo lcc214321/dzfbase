@@ -6,7 +6,7 @@ import com.dzf.dao.bs.SingleObjectBO;
 import com.dzf.dao.jdbc.framework.DataSourceFactory;
 import com.dzf.framework.comn.IOUtils;
 import com.dzf.model.sys.sys_power.UserVO;
-import com.dzf.pub.DZFWarpException;
+import com.dzf.pub.WiseRunException;
 import com.dzf.pub.Redis.IRedisCallback;
 import com.dzf.pub.Redis.RedisClient;
 import com.dzf.pub.cache.UserSerializable;
@@ -48,7 +48,7 @@ public class UserCache {
 				try {
 					obj= IOUtils.getObject(bs, new UserSerializable());
 				} catch (Exception e) {
-					throw new DZFWarpException(e);
+					throw new WiseRunException(e);
 				}
 				return obj;
 			}
@@ -70,7 +70,7 @@ public class UserCache {
 						return null;
 					jedis.set(userid.getBytes(),IOUtils.getBytes(cvo1, new UserSerializable()));
 				} catch (Exception e) {
-					throw new DZFWarpException(e);
+					throw new WiseRunException(e);
 				}
 				return null;
 			}
@@ -90,7 +90,7 @@ public class UserCache {
 				try {
 					jedis.del(userid.getBytes());//set(corp.getBytes(),IOUtils.getBytes(cvo1, new CorpSerializable()));
 				} catch (Exception e) {
-					throw new DZFWarpException(e);
+					throw new WiseRunException(e);
 				}
 				return null;
 			}

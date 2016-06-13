@@ -20,8 +20,7 @@ import com.dzf.dao.jdbc.framework.processor.ArrayProcessor;
 import com.dzf.dao.jdbc.framework.processor.BeanListProcessor;
 import com.dzf.dao.jdbc.framework.processor.ColumnProcessor;
 import com.dzf.dao.jdbc.framework.processor.ResultSetProcessor;
-import com.dzf.pub.BusinessException;
-import com.dzf.pub.DZFWarpException;
+import com.dzf.pub.WiseRunException;
 import com.dzf.pub.IDGenerate;
 import com.dzf.pub.StringUtil;
 import com.dzf.pub.SuperVO;
@@ -187,7 +186,7 @@ public class SingleObjectBO {
 			}
 			return svo;
 		}catch (Exception e) {
-			throw new DZFWarpException(e);
+			throw new WiseRunException(e);
 		}
 	}
 

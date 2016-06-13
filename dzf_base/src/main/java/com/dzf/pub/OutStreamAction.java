@@ -25,13 +25,13 @@ public class OutStreamAction extends BaseAppAction{
 			obj=nis.readObject();
 		} catch (Exception e) {
 			
-			throw new DZFWarpException(e);
+			throw new WiseRunException(e);
 		}finally{
 			if(is!=null)
 				try {
 					is.close();
 				} catch (IOException e) {
-					throw new DZFWarpException(e);
+					throw new WiseRunException(e);
 				}
 		}
 	
@@ -49,13 +49,13 @@ public class OutStreamAction extends BaseAppAction{
 			nis.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			throw new DZFWarpException(e);
+			throw new WiseRunException(e);
 		}finally{
 			if(os!=null)
 				try {
 					os.close();
 				} catch (IOException e) {
-					throw new DZFWarpException(e);
+					throw new WiseRunException(e);
 				}
 		}
 

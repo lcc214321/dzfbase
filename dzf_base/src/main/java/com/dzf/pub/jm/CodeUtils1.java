@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import org.apache.log4j.Logger;
 import org.springframework.core.io.ClassPathResource;
 
+import com.dzf.pub.WiseRunException;
 import com.dzf.pub.DZFWarpException;
 
 
@@ -41,7 +42,7 @@ public class CodeUtils1 {
 			}
 		}catch (Exception ex){
 			LOG.error(ex);
-			throw new DZFWarpException(ex);
+			throw new WiseRunException(ex);
 		}
 	}
 
@@ -53,7 +54,7 @@ public class CodeUtils1 {
 			key =  RC4.encry_RC4_string(value, defaultkey);
 		}catch(Exception e){
 			LOG.error(e);
-			throw new DZFWarpException(e);
+			throw new WiseRunException(e);
 		}
 		return key;
 	}
@@ -66,7 +67,7 @@ public class CodeUtils1 {
 			key = RC4.decry_RC4(pvalue,defaultkey);
 		}catch(Exception e){
 			LOG.error(e);
-			throw new DZFWarpException(e);
+			throw new WiseRunException(e);
 		}
 		return key;
 	}

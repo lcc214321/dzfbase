@@ -6,6 +6,8 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import com.dzf.framework.comn.IOUtils;
+import com.dzf.pub.BusinessException;
+import com.dzf.pub.WiseRunException;
 import com.dzf.pub.DZFWarpException;
 import com.dzf.pub.IGlobalConstants;
 import com.dzf.pub.MD516;
@@ -42,14 +44,14 @@ public class XwwyAppRSACoderUtils {
   	public static void createToken(HttpSession hs,String xwwy_sessionid){
   		try{
   			if(xwwy_sessionid== null || "".equals(xwwy_sessionid)){
-  				throw new DZFWarpException("参数为空！");
+  				throw new BusinessException("参数为空！");
   			}
   			String userid=(String) hs.getAttribute(IGlobalConstants.login_user);
   	  		String corp=(String) hs.getAttribute(IGlobalConstants.login_corp);
   	  		corp = getToken(hs, userid, corp,xwwy_sessionid,(HashSet<String>) hs.getAttribute(IGlobalConstants.POWER_MAP));  
   	  		hs.setAttribute(IGlobalConstants.login_token,corp);
   		}catch(Exception e){
-  			throw new DZFWarpException(e);
+  			throw new WiseRunException(e);
   		}
   		
   	}
@@ -60,18 +62,18 @@ public class XwwyAppRSACoderUtils {
   	  		String xwwy_sessionid  = (String)hs.getAttribute("xwwy_sessionid");
   	  		HashSet<String> set=(HashSet<String>) hs.getAttribute(IGlobalConstants.POWER_MAP);
 			if(xwwy_sessionid== null || "".equals(xwwy_sessionid)){
-  				throw new DZFWarpException("参数为空！");
+  				throw new BusinessException("参数为空！");
   			}
   	  	return validateToken(hs,userid,corp,xwwy_sessionid,set);
   		}catch(Exception e){
-  			throw new DZFWarpException(e);
+  			throw new WiseRunException(e);
   		}
   	}
   	//校验
   	public static boolean validateToken(HttpSession hs,String uid,String cp,String xwwy_sessionid,HashSet<String> set){
   		try{
   			if(xwwy_sessionid== null || "".equals(xwwy_sessionid)){
-  				throw new DZFWarpException("传输参数为空！");
+  				throw new BusinessException("传输参数为空！");
   			}
   			String userid=(String) hs.getAttribute(IGlobalConstants.login_user);
   	  		String corp=(String) hs.getAttribute(IGlobalConstants.login_corp);
@@ -90,7 +92,7 @@ public class XwwyAppRSACoderUtils {
   	  		//hs.setAttribute(IGlobalConstants.login_token,corp);
   	  		return b;
   		}catch(Exception e){
-  			throw new DZFWarpException(e);
+  			throw new WiseRunException(e);
   		}
   	}
   	public static String getSessionID(String token)throws DZFWarpException{
@@ -104,7 +106,7 @@ public class XwwyAppRSACoderUtils {
 				return strs[1];
 			}
 		} catch (Exception e) {
-			throw new DZFWarpException(e);
+			throw new WiseRunException(e);
 		}
   		}
 //  			
@@ -120,7 +122,7 @@ public class XwwyAppRSACoderUtils {
   				bs=RSACoder.decryptByPrivateKey(Base64Util.getFromBASE64(token), privateKey);
 			//bs=Base64Util.getFromBASE64(token);
   		}catch(Exception e){
-  			throw new DZFWarpException(e);
+  			throw new WiseRunException(e);
   		}
   		return bs;
   	}
