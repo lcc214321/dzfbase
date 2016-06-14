@@ -442,8 +442,8 @@ public class BaseAction<T> extends ActionSupport {
 			grid.setMsg(e.getMessage());
 		}else{
 			grid.setMsg(errorinfo);
+			log.error(errorinfo,e);
 		}
-		log.error(errorinfo,e);
 		grid.setSuccess(false);
 	}
 
@@ -455,8 +455,8 @@ public class BaseAction<T> extends ActionSupport {
 			json.setMsg(e.getMessage());
 		}else{
 			json.setMsg(errorinfo);
+			log.error(errorinfo,e);
 		}
-		log.error(errorinfo,e);
 		json.setSuccess(false);
 	}
 }
