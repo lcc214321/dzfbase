@@ -24,11 +24,9 @@ public class DZfcommonTools {
 	 */
 	public static String getCombinesKey(Object vo, String[] groupFields) {
 		if (vo == null)
-			throw new IllegalArgumentException(
-					"AggVOSummarize.getCombinesKey vo cann't be null");
+			throw new BusinessException("分组数据为空！");
 		if (groupFields == null || groupFields.length == 0)
-			throw new IllegalArgumentException(
-					"AggVOSummarize.getCombinesKey groupFields cann't be null or empty");
+			throw new BusinessException("分组字段为空！");
 		StringBuffer result = new StringBuffer();
 		for (int i = 0; i < groupFields.length; i++) {
 			if (i == 0) {
