@@ -2,6 +2,7 @@ package com.dzf.model.sys.sys_power;
 
 import com.dzf.pub.SuperVO;
 import com.dzf.pub.Field.FieldAlias;
+import com.dzf.pub.lang.DZFBoolean;
 import com.dzf.pub.lang.DZFDateTime;
 
 /**
@@ -35,6 +36,12 @@ public class CorpDocVO extends SuperVO {
 	private DZFDateTime ts; // 时间
 
 	private String vfilepath;// 文件存储路径
+
+	@FieldAlias("vurllink")
+	private String vurllink;// 广告链接路径
+
+	@FieldAlias("isads")
+	private DZFBoolean isads;// 是否广告
 
 	public String getDocTemp() {
 		return docTemp;
@@ -106,6 +113,22 @@ public class CorpDocVO extends SuperVO {
 
 	public void setVfilepath(String vfilepath) {
 		this.vfilepath = vfilepath;
+	}
+
+	public String getVurllink() {
+		return vurllink;
+	}
+
+	public void setVurllink(String vurllink) {
+		this.vurllink = vurllink;
+	}
+
+	public DZFBoolean getIsads() {
+		return isads;
+	}
+
+	public void setIsads(DZFBoolean isads) {
+		this.isads = isads;
 	}
 
 	@Override
