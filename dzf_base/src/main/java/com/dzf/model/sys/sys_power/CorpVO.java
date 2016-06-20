@@ -7,28 +7,26 @@ import com.dzf.pub.lang.DZFDate;
 import com.dzf.pub.lang.DZFDateTime;
 import com.dzf.pub.lang.DZFDouble;
 
-@SuppressWarnings("rawtypes")
 public class CorpVO extends SuperVO {
-
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -7255675917825048433L;
 
 	@FieldAlias("bdate")
 	public DZFDate begindate;// (建账日期)
 
 	@FieldAlias("bintro")
-	public String briefintro;// 客户简介
+	public String briefintro;//客户简介
 
 	@FieldAlias("chcode")
 	public String chargedeptcode;
 
 	@FieldAlias("chname")
-	public String chargedeptname;// 公司性质
+	public String chargedeptname;//公司性质
 
 	@FieldAlias("ccounty")
 	public String citycounty;
 
 	@FieldAlias("ctype")
-	public String corptype;// 科目方案
+	public String corptype;//科目方案
 
 	@FieldAlias("carea")
 	public String countryarea;
@@ -37,10 +35,10 @@ public class CorpVO extends SuperVO {
 	public DZFDate icbegindate;// 库存启用日期
 
 	@FieldAlias("cdate")
-	public DZFDate createdate;// 录入日期
+	public DZFDate createdate;//录入日期
 
 	@FieldAlias("d1")
-	public String def1;// 服务机构
+	public String def1;//服务机构
 	// AppSecret
 	@FieldAlias("d10")
 	public String def10;
@@ -73,13 +71,13 @@ public class CorpVO extends SuperVO {
 	public String def19;
 
 	@FieldAlias("d2")
-	public String def2;// 服务热线
+	public String def2;//服务热线
 
 	@FieldAlias("d20")
 	public String def20;
 
 	@FieldAlias("d3")
-	public String def3;// 联系方式
+	public String def3;//联系方式
 
 	@FieldAlias("d4")
 	public String def4;
@@ -104,7 +102,7 @@ public class CorpVO extends SuperVO {
 	public String ecotype;
 
 	@FieldAlias("e1")
-	public String email1;// 电子邮件
+	public String email1;//电子邮件
 
 	@FieldAlias("e2")
 	public String email2;
@@ -118,8 +116,6 @@ public class CorpVO extends SuperVO {
 	@FieldAlias("fcorp")
 	public String fathercorp;
 
-	public String fcorp_name;
-
 	@FieldAlias("f1")
 	public String fax1;
 
@@ -127,40 +123,40 @@ public class CorpVO extends SuperVO {
 	public String fax2;
 
 	@FieldAlias("fname")
-	public String foreignname;// 客户经理
+	public String foreignname;//客户经理
 
 	@FieldAlias("hflag")
-	public DZFBoolean holdflag;// 是否启用固定资产
+	public DZFBoolean holdflag;//是否启用资产
 
 	@FieldAlias("idnum")
 	public String idnumber;
 
 	@FieldAlias("indus")
-	public String industry;// 行业
+	public String industry;//行业
 
 	@FieldAlias("incode")
 	public String innercode;
 
 	@FieldAlias("hasaccount")
-	public DZFBoolean ishasaccount;// 是否已建帐
+	public DZFBoolean ishasaccount;//是否已建帐
 
 	@FieldAlias("seal")
-	public DZFBoolean isseal;// 是否已停用
+	public DZFBoolean isseal;//是否已停用
 
 	@FieldAlias("workingunit")
 	public DZFBoolean isworkingunit;
 
 	@FieldAlias("bodycode")
-	public String legalbodycode;// 法人代表
+	public String legalbodycode;//法人代表
 
 	@FieldAlias("l1")
-	public String linkman1;// 财务负责人
+	public String linkman1;//财务负责人
 
 	@FieldAlias("l2")
-	public String linkman2;// 客户联系人
+	public String linkman2;//客户联系人
 
 	@FieldAlias("l3")
-	public String linkman3;// 微信号
+	public String linkman3;//微信号
 
 	@FieldAlias("backup")
 	public boolean m_isbackup;
@@ -175,10 +171,10 @@ public class CorpVO extends SuperVO {
 	public DZFDouble ownersharerate;
 
 	@FieldAlias("p1")
-	public String phone1;// 联系人电话
+	public String phone1;//联系人电话
 
 	@FieldAlias("p2")
-	public String phone2;// 验证码电话
+	public String phone2;//验证码电话
 
 	@FieldAlias("p3")
 	public String phone3;
@@ -193,7 +189,7 @@ public class CorpVO extends SuperVO {
 	public String pk_currency;
 
 	@FieldAlias("postadd")
-	public String postaddr;// 单位地址
+	public String postaddr;//单位地址
 
 	@FieldAlias("province")
 	public String province;
@@ -208,7 +204,7 @@ public class CorpVO extends SuperVO {
 	public String saleaddr;
 
 	@FieldAlias("sealeddate")
-	public DZFDate sealeddate;// 停止服务日期
+	public DZFDate sealeddate;//停止服务日期
 
 	@FieldAlias("payertype")
 	private Integer taxpayertype; // 纳税人类别
@@ -217,13 +213,13 @@ public class CorpVO extends SuperVO {
 	private DZFDateTime ts;
 
 	@FieldAlias("ucode")
-	public String unitcode;// 公司编码
+	public String unitcode;//公司编码
 
 	@FieldAlias("uinction")
 	private String unitdistinction;
 
 	@FieldAlias("uname")
-	public String unitname;// 公司名称
+	public String unitname;//公司名称
 
 	@FieldAlias("ushortname")
 	public String unitshortname;
@@ -241,13 +237,13 @@ public class CorpVO extends SuperVO {
 	public DZFBoolean issettlecenter;
 
 	@FieldAlias("bb_date")
-	private DZFDate busibegindate; // 固定资产启用日期
+	private DZFDate busibegindate; //固定资产启用日期
 
 	@FieldAlias("bd_date")
 	private DZFDate busienddate; // HR业务结束日期
 
 	@FieldAlias("tax_code")
-	public String taxcode;; // --公司类别(普通,结算中心)-- 税务代码
+	public String taxcode;; // --公司类别(普通,结算中心)--  税务代码
 
 	@FieldAlias("accountcorp")
 	private DZFBoolean isaccountcorp;// 是否会计公司
@@ -259,23 +255,35 @@ public class CorpVO extends SuperVO {
 	private DZFBoolean iscurr;// 是否多币种
 
 	@FieldAlias("costforwardstyle")
-	private Integer icostforwardstyle;// 成本结转类型
+	private Integer icostforwardstyle;//成本结转类型
 
 	@FieldAlias("buildic")
-	private DZFBoolean bbuildic;// --启用ic模块-- 是否库存管理
+	private DZFBoolean bbuildic;// --启用ic模块--  是否库存管理
 
 	@FieldAlias("useretail")
 	public DZFBoolean isuseretail; // 是否用于零售
 
 	@FieldAlias("indusname")
-	public String indusname;// 行业名称
+	public String indusname;//行业名称
 
 	@FieldAlias("ctypename")
-	public String ctypename;// 行业科目方案名称
+	public String ctypename;// 行业科目方案
 
 	@FieldAlias("croparea")
-	public String cropArea;
+	public String cropArea;// 行业科目名称
+	
+	@FieldAlias("issmall")
+	private  DZFBoolean issmall;//是否小型微利企业[做纳税申报使用]
+	
+	@FieldAlias("establishtime")
+	private String establishtime;//成立时间
 
+	/** 公司属性 : (add by liuxing) */
+	@FieldAlias("companyproperty")
+	public Integer companyproperty;
+	/** 会计公司ID */
+	@FieldAlias("accountfactoryid")
+	public String accountfactoryid;
 	/**
 	 * 新版管理平台新增字段
 	 */
@@ -298,7 +306,7 @@ public class CorpVO extends SuperVO {
 	@FieldAlias("ccrecode")
 	public String vsoccrecode;// 社会信用代码
 	@FieldAlias("dsdate")
-	private DZFDate dscodedate;// 信用代码到期日
+	private DZFDate dscodedate;//信用代码到期日
 	@FieldAlias("nkname")
 	public String vbankname;// 开户银行
 	@FieldAlias("nkcode")
@@ -354,12 +362,12 @@ public class CorpVO extends SuperVO {
 	@FieldAlias("caltaxpwd")
 	public String vlocaltaxpwd;// 地税密码
 	@FieldAlias("vperpwd")
-	public String vpersonalpwd;// 个税密码
+	public String vpersonalpwd;//个税密码
 
 	@FieldAlias("rporatetax")
 	public Integer vcorporatetax;// 企业所得税
 	@FieldAlias("xtype")
-	public DZFBoolean vtaxtype;// 是否有税控机
+	public DZFBoolean vtaxtype;// 税控类型
 	@FieldAlias("xcode")
 	public String vtaxcode;// 税务登记证号
 
@@ -374,42 +382,22 @@ public class CorpVO extends SuperVO {
 	@FieldAlias("wqcountid")
 	public String vwqaccount;// 外勤会计主键
 	@FieldAlias("dcldate")
-	public DZFDate destablishdate;// 成立日期
+	public DZFDate destablishdate;//成立日期
 	@FieldAlias("ukey")
-	public DZFBoolean isukey;// 地税有无UKEY
+	public DZFBoolean isukey;//地税有无UKEY
 	@FieldAlias("dudate")
-	private DZFDate dukeydate;// UKEY到期日
+	private DZFDate dukeydate;//UKEY到期日
 	@FieldAlias("sourceid")
-	private String pk_source;// 来源主键
-
+	private String pk_source;//来源主键
+	
 	private String text;
 
-	/** 公司属性 : (add by liuxing) */
-	@FieldAlias("companyproperty")
-	public Integer companyproperty;
-	/** 会计公司ID */
-	@FieldAlias("accountfactoryid")
-	public String accountfactoryid;
+	private String accountcoderule;
 	
+	//
 	@FieldAlias("capital")
 	public DZFDouble registcapital;// 注册资本
-
-	public Integer getCompanyproperty() {
-		return companyproperty;
-	}
-
-	public void setCompanyproperty(Integer companyproperty) {
-		this.companyproperty = companyproperty;
-	}
-
-	public String getAccountfactoryid() {
-		return accountfactoryid;
-	}
-
-	public void setAccountfactoryid(String accountfactoryid) {
-		this.accountfactoryid = accountfactoryid;
-	}
-
+	
 	/**
 	 * 使用主键字段进行初始化的构造子。
 	 * 
@@ -418,13 +406,33 @@ public class CorpVO extends SuperVO {
 	public CorpVO() {
 	}
 
+	
+	public Integer getCompanyproperty() {
+		return companyproperty;
+	}
+
+
+	public void setCompanyproperty(Integer companyproperty) {
+		this.companyproperty = companyproperty;
+	}
+
+
+	public String getAccountfactoryid() {
+		return accountfactoryid;
+	}
+
+
+	public void setAccountfactoryid(String accountfactoryid) {
+		this.accountfactoryid = accountfactoryid;
+	}
+
+
 	/**
 	 * 使用主键进行初始化的构造子。
 	 * 
 	 * 创建日期：(2001-5-16)
 	 * 
-	 * @param ??fieldNameForMethod??
-	 *            主键值
+	 * @param ??fieldNameForMethod?? 主键值
 	 */
 	public CorpVO(String newPk_corp) {
 
@@ -2586,7 +2594,7 @@ public class CorpVO extends SuperVO {
 	public void setVcorporationid(String vcorporationid) {
 		this.vcorporationid = vcorporationid;
 	}
-
+	
 	public DZFBoolean getIspersonal() {
 		return ispersonal;
 	}
@@ -2987,20 +2995,33 @@ public class CorpVO extends SuperVO {
 		this.wqcountname = wqcountname;
 	}
 
-	public String getFcorp_name() {
-		return fcorp_name;
+    public DZFBoolean isIssmall() {
+		return issmall;
 	}
 
-	public void setFcorp_name(String fcorp_name) {
-		this.fcorp_name = fcorp_name;
+	public void setIssmall(DZFBoolean issmall) {
+		this.issmall = issmall;
 	}
 
-	public DZFDouble getRegistcapital() {
-		return registcapital;
+	public String getEstablishtime() {
+		return establishtime;
 	}
 
-	public void setRegistcapital(DZFDouble registcapital) {
-		this.registcapital = registcapital;
+	public void setEstablishtime(String establishtime) {
+		this.establishtime = establishtime;
 	}
 
+
+	public String getAccountcoderule() {
+		return accountcoderule;
+	}
+
+
+	public void setAccountcoderule(String accountcoderule) {
+		this.accountcoderule = accountcoderule;
+	}
+	
+	
+	
+		
 }
