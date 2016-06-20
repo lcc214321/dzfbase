@@ -394,6 +394,10 @@ public class CorpVO extends SuperVO {
 
 	private String accountcoderule;
 	
+	//
+	@FieldAlias("capital")
+	public DZFDouble registcapital;// 注册资本
+	
 	/**
 	 * 使用主键字段进行初始化的构造子。
 	 * 
