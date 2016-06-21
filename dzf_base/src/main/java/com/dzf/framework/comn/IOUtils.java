@@ -35,13 +35,15 @@ public class IOUtils {
 					nos.write(obj[i].getBytes());
 				}
 			}
+			nos.flush();
+			bout.flush();
 			return bout.toByteArray();
 		} catch (Exception e) {
 			throw new WiseRunException(e);
 		} finally {
 			if (bout != null) {
 				try {
-					bout.flush();
+//					bout.flush();
 					bout.close();
 				} catch (Exception e) {
 					throw new WiseRunException(e);
@@ -49,7 +51,7 @@ public class IOUtils {
 			}
 			if (nos != null) {
 				try {
-					nos.flush();
+//					nos.flush();
 					nos.close();
 				} catch (Exception e) {
 					throw new WiseRunException(e);
@@ -68,6 +70,7 @@ public class IOUtils {
 			nos = new NetObjectOutputStream(bout);
 
 			nos.writeObject(obj);
+			nos.flush();
 			return bout.toByteArray();
 			// int len=obj==null?0:obj.length;
 			// nos.write(len);
@@ -80,7 +83,7 @@ public class IOUtils {
 		} finally {
 			if (bout != null) {
 				try {
-					bout.flush();
+//					bout.flush();
 					bout.close();
 				} catch (Exception e) {
 					throw new WiseRunException(e);
@@ -88,7 +91,7 @@ public class IOUtils {
 			}
 			if (nos != null) {
 				try {
-					nos.flush();
+//					nos.flush();
 					nos.close();
 				} catch (Exception e) {
 					throw new WiseRunException(e);
@@ -106,14 +109,15 @@ public class IOUtils {
 			nos = new NetObjectOutputStream(bout);
 
 			iser.setSerializable(svo, nos);
-
+			nos.flush();
+			bout.flush();
 			return bout.toByteArray();
 		} catch (Exception e) {
 			throw new WiseRunException(e);
 		} finally {
 			if (bout != null) {
 				try {
-					bout.flush();
+//					bout.flush();
 					bout.close();
 				} catch (Exception e) {
 					throw new WiseRunException(e);
@@ -121,7 +125,7 @@ public class IOUtils {
 			}
 			if (nos != null) {
 				try {
-					nos.flush();
+//					nos.flush();
 					nos.close();
 				} catch (Exception e) {
 					throw new WiseRunException(e);
