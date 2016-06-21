@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.dzf.framework.comn.NetObjectInputStream;
 import com.dzf.framework.comn.NetObjectOutputStream;
 import com.dzf.model.sys.sys_power.CorpVO;
+import com.dzf.pub.StringUtil;
 import com.dzf.pub.lang.DZFBoolean;
 
 public class CorpSerializable extends AbstractSerializable<CorpVO> {
@@ -83,7 +84,10 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 		cvo.setCorptype(readerString(nos, -1));
 		cvo.setChargedeptname(readerString(nos, -1));
 		cvo.setDef10(readerString(nos, -1));
-		cvo.setCompanyproperty(Integer.parseInt(readerString(nos, -1)));
+		String perty = readerString(nos, -1);
+		if(!StringUtil.isEmpty(perty)){
+			cvo.setCompanyproperty(Integer.parseInt(perty));
+		}
 		cvo.setAccountfactoryid(readerString(nos, -1));
 		return cvo;
 	}
