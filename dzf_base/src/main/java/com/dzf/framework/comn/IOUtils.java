@@ -71,6 +71,7 @@ public class IOUtils {
 
 			nos.writeObject(obj);
 			nos.flush();
+			bout.flush();
 			return bout.toByteArray();
 			// int len=obj==null?0:obj.length;
 			// nos.write(len);
