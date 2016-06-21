@@ -43,7 +43,6 @@ public class IOUtils {
 		} finally {
 			if (bout != null) {
 				try {
-//					bout.flush();
 					bout.close();
 				} catch (Exception e) {
 					throw new WiseRunException(e);
@@ -51,7 +50,6 @@ public class IOUtils {
 			}
 			if (nos != null) {
 				try {
-//					nos.flush();
 					nos.close();
 				} catch (Exception e) {
 					throw new WiseRunException(e);
@@ -84,7 +82,6 @@ public class IOUtils {
 		} finally {
 			if (bout != null) {
 				try {
-//					bout.flush();
 					bout.close();
 				} catch (Exception e) {
 					throw new WiseRunException(e);
@@ -92,7 +89,6 @@ public class IOUtils {
 			}
 			if (nos != null) {
 				try {
-//					nos.flush();
 					nos.close();
 				} catch (Exception e) {
 					throw new WiseRunException(e);
@@ -118,7 +114,6 @@ public class IOUtils {
 		} finally {
 			if (bout != null) {
 				try {
-//					bout.flush();
 					bout.close();
 				} catch (Exception e) {
 					throw new WiseRunException(e);
@@ -126,7 +121,6 @@ public class IOUtils {
 			}
 			if (nos != null) {
 				try {
-//					nos.flush();
 					nos.close();
 				} catch (Exception e) {
 					throw new WiseRunException(e);
