@@ -58,7 +58,7 @@ public class UserCache {
 						}
 					}
 				} catch (Exception e) {
-//					throw new BusinessException(e);
+
 					log.error("缓存服务器连接未成功。");
 				}
 				return obj;
@@ -75,7 +75,7 @@ public class UserCache {
 			try {
 				cvo.setUser_name(CodeUtils1.deCode(cvo.getUser_name()));
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("解密用户名失败！cvo.getUser_name()为"+cvo.getUser_name()+"，不能解密",e);
 			}
 		}
 		final UserVO cvo1=cvo;
@@ -88,7 +88,7 @@ public class UserCache {
 						return null;
 					jedis.set(userid.getBytes(),IOUtils.getBytes(cvo1, new UserSerializable()));
 				} catch (Exception e) {
-//					throw new BusinessException(e);
+
 					log.error("缓存服务器连接未成功。");
 				}
 				return null;
@@ -109,7 +109,7 @@ public class UserCache {
 				try {
 					jedis.del(userid.getBytes());//set(corp.getBytes(),IOUtils.getBytes(cvo1, new CorpSerializable()));
 				} catch (Exception e) {
-//					throw new BusinessException(e);
+
 					log.error("缓存服务器连接未成功。");
 				}
 				return null;
