@@ -1,8 +1,12 @@
 package com.dzf.pub.cache;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
+
+import redis.clients.jedis.Jedis;
 
 import com.dzf.dao.bs.SingleObjectBO;
 import com.dzf.dao.jdbc.framework.DataSourceFactory;
@@ -12,13 +16,26 @@ import com.dzf.pub.Redis.IRedisCallback;
 import com.dzf.pub.Redis.RedisClient;
 import com.dzf.pub.jm.CodeUtils1;
 
-import redis.clients.jedis.Jedis;
-
 public class CorpCache {
 private static CorpCache fc=new CorpCache();
 //private SoftReferenceMap<String, CorpVO> map=new SoftReferenceMap<String,CorpVO>();
 private Logger log = Logger.getLogger(this.getClass());
+private CorpVO getCorpVOByRedis(Jedis jedis, final String userid,final String corp){
+	CorpVO obj=null;
+	try {
+byte[] bs=	jedis.get(corp.getBytes());
 
+
+		if(bs == null){
+			return null;
+		}
+		obj= (CorpVO) IOUtils.getObject(bs, new CorpSerializable());
+	} catch (Exception e) {
+		log.error("缓存服务器连接未成功。");
+		return null;
+	}
+	return obj;
+}
 public void add(final String key,final CorpVO m){
 	RedisClient.getInstance().exec(new IRedisCallback() {
 		@Override
@@ -32,39 +49,11 @@ public void add(final String key,final CorpVO m){
 		}
 	});
 }
-public CorpVO get(String userid,final String corp){
-	if(corp == null){
-		return null;
-	}
-	 CorpVO cvo=(CorpVO) RedisClient.getInstance().exec(new IRedisCallback() {
-		
-		@Override
-		public Object exec(Jedis jedis) {
-		
-			Object obj=null;
-			try {
-		byte[] bs=	jedis.get(corp.getBytes());
-		
-		
-				if(bs == null){
-					return obj;
-				}
-				obj= IOUtils.getObject(bs, new CorpSerializable());
-			} catch (Exception e) {
-//				throw new BusinessException(e);
-				log.error("缓存服务器连接未成功。");
-				return obj;
-			}
-			return obj;
-		}
-	});
-	//CorpVO cvo= map.get(corp);
-	if(cvo==null){
-		synchronized(CorpCache.class){
-			if(cvo==null){
+
+private CorpVO getCorpVO(final String userid,final String corp){
 	DataSource ds=DataSourceFactory.getDataSource(userid, corp);
 	SingleObjectBO sob=new SingleObjectBO(ds);
-	cvo=	(CorpVO) sob.queryVOByID(corp, CorpVO.class);
+	CorpVO	cvo=	(CorpVO) sob.queryVOByID(corp, CorpVO.class);
 	if (cvo != null) {
 		try {
 			cvo.setUnitname(CodeUtils1.deCode(cvo.getUnitname()));
@@ -72,32 +61,13 @@ public CorpVO get(String userid,final String corp){
 			cvo.setPhone1(CodeUtils1.deCode(cvo.getPhone1()));
 			cvo.setPhone2(CodeUtils1.deCode(cvo.getPhone2()));
 		} catch (Exception e) {
-			log.error("公司信息解密失败！",e);
-		}
-	}
-	final CorpVO cvo1=cvo;
-	RedisClient.getInstance().exec(new IRedisCallback() {
-		
-		@Override
-		public Object exec(Jedis jedis) {
-			try {
-				if(cvo1 == null){
-					return null;
-				}
-				jedis.set(corp.getBytes(),IOUtils.getBytes(cvo1, new CorpSerializable()));
-			} catch (Exception e) {
-//				throw new BusinessException(e);
-				log.error("缓存服务器连接未成功。");
-			}
-			return null;
-		}
-	});
-			}
+			e.printStackTrace();
 		}
 	}
 	return cvo;
 }
-			
+
+
 public void remove(final String corp){
 	//map.remove(corp);
 RedisClient.getInstance().exec(new IRedisCallback() {
@@ -115,7 +85,41 @@ RedisClient.getInstance().exec(new IRedisCallback() {
 		}
 	});
 }
+public CorpVO get(final String userid,final String corp){
+	if(corp == null){
+		return null;
+	}
+	 CorpVO cvo=(CorpVO) RedisClient.getInstance().exec(new IRedisCallback() {
+		
+		@Override
+		public Object exec(Jedis jedis) {
+			 CorpVO cvo= getCorpVOByRedis(jedis,userid,corp);
+				if(cvo==null){
+					ReentrantLock lock=CorpLock.getInstance().get(corp);//	LockUtils.getInstance().getNextID(corp);
+					lock.lock();
+					try{
+					cvo= getCorpVOByRedis(jedis,userid,corp);
+					if(cvo==null){
+				cvo=getCorpVO(userid,corp);
+				if(cvo == null)	return null;
+				try {
+					jedis.set(corp.getBytes(),IOUtils.getBytes(cvo, new CorpSerializable()));
+				} catch (Exception e) {
+					log.error("缓存服务器连接未成功。");
+				}
 
+					}
+			}finally{
+				lock.unlock();
+			}
+				}
+			
+		
+		return cvo;
+	}
+		 });
+		 return cvo;
+}
 public CorpVO get(String userid,String corp,boolean isforce){
 	return get(userid,corp);
 //	if(isforce)
