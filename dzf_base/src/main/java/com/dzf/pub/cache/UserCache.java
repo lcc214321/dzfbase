@@ -93,7 +93,7 @@ public class UserCache {
 					cvo=getUserVO(userid,corp);
 					if(cvo == null)	return null;
 					try {
-						jedis.set(corp.getBytes(),IOUtils.getBytes(cvo, new CorpSerializable()));
+						jedis.set(userid.getBytes(),IOUtils.getBytes(cvo, new UserSerializable()));
 					} catch (Exception e) {
 						log.error("缓存服务器连接未成功。");
 					}
