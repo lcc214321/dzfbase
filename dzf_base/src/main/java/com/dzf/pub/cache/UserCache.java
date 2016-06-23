@@ -76,7 +76,7 @@ public class UserCache {
 		});
 	}
 	public UserVO get(final String userid,final String corp){
-		if(corp == null){
+		if(userid == null){
 			return null;
 		}
 		UserVO cvo=(UserVO) RedisClient.getInstance().exec(new IRedisCallback() {
@@ -85,7 +85,7 @@ public class UserCache {
 			public Object exec(Jedis jedis) {
 				UserVO cvo= getUserVOByRedis(jedis,userid,corp);
 					if(cvo==null){
-						ReentrantLock lock=CorpLock.getInstance().get(corp);//	LockUtils.getInstance().getNextID(corp);
+						ReentrantLock lock=UserLock.getInstance().get(userid);//	LockUtils.getInstance().getNextID(corp);
 						lock.lock();
 						try{
 						cvo= getUserVOByRedis(jedis,userid,corp);
