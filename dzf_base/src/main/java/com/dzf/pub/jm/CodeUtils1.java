@@ -46,6 +46,7 @@ public class CodeUtils1 {
 		}
 	}
 
+	//这里异常吃掉
 	public static String enCode(String value) throws DZFWarpException{
 		if(pubkey == null || "".equals(pubkey))
 			readUIParameter();
@@ -53,12 +54,13 @@ public class CodeUtils1 {
 		try{
 			key =  RC4.encry_RC4_string(value, defaultkey);
 		}catch(Exception e){
-			LOG.error(e);
-			throw new WiseRunException(e);
+			LOG.error(value+"，加密失败",e);
+			key = value;
 		}
 		return key;
 	}
 
+	//这里异常吃掉
 	public static String deCode(String pvalue) throws DZFWarpException{
 		if(prikey == null || "".equals(prikey))
 			readUIParameter();
@@ -66,8 +68,8 @@ public class CodeUtils1 {
 		try{
 			key = RC4.decry_RC4(pvalue,defaultkey);
 		}catch(Exception e){
-			LOG.error(e);
-			throw new WiseRunException(e);
+			LOG.error(pvalue+",解密失败",e);
+			key = pvalue;
 		}
 		return key;
 	}
