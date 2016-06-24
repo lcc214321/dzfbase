@@ -61,7 +61,7 @@ private CorpVO getCorpVO(final String userid,final String corp){
 			cvo.setPhone1(CodeUtils1.deCode(cvo.getPhone1()));
 			cvo.setPhone2(CodeUtils1.deCode(cvo.getPhone2()));
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("解密失败！",e);
 		}
 	}
 	return cvo;
