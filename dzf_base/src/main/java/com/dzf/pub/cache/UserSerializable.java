@@ -38,7 +38,8 @@ write(nos,svo.getPk_signcorp());
 write(nos,svo.getCorpnm());
 write(nos,svo.getCrtcorp());
 write(nos,svo.getPhone());
-
+write(nos, svo.getSkin());
+write(nos, svo.getKjskin());
 	
 	
 	}
@@ -74,6 +75,8 @@ write(nos,svo.getPhone());
 	svo.setCorpnm(readerString(nos,-1));
 	svo.setCrtcorp(readerString(nos,-1));
 	svo.setPhone(readerString(nos,-1));
+	svo.setSkin(readerString(nos, -1));
+	svo.setKjskin(readerString(nos, -1));
 		return svo;
 	}
 	

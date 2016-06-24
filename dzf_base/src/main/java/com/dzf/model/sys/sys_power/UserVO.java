@@ -87,6 +87,9 @@ public class UserVO extends SuperVO {
 	private String zf_refreshtoken;
 	private DZFBoolean isfactory;
 	
+	private String skin;
+	private String kjskin;
+	
 	
 	public DZFBoolean getIsOwner() {
 		return isOwner;
@@ -324,6 +327,18 @@ public class UserVO extends SuperVO {
 	@Override
 	public String getParentPKFieldName() {
 		return null;
+	}
+	public String getSkin() {
+		return skin;
+	}
+	public void setSkin(String skin) {
+		this.skin = skin;
+	}
+	public String getKjskin() {
+		return kjskin;
+	}
+	public void setKjskin(String kjskin) {
+		this.kjskin = kjskin;
 	}
 	
 }
