@@ -94,7 +94,10 @@ public class SingleObjectBO {
 
 		}
 	}
-
+	public void deleteByPKs(Class className, String[] pks)throws DAOException{
+		BaseDAO dao = new BaseDAO(dataSource);
+		dao.deleteByPKs(className, pks);
+	}
 	public int deleteObjectByID(String pk, Class[] cs) throws DAOException {
 		String[] keys = null;
 		String userid = null;
