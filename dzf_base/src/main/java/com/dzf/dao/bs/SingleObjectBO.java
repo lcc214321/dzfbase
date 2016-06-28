@@ -169,7 +169,7 @@ public class SingleObjectBO {
 			if(len>1&&svo!=null&&svo.size()>0){
 				SuperVO so1=(SuperVO) cs[1].newInstance();
 				sql="(Select pk_corp,"+so.getPKFieldName()+" f1 from "+so.getTableName()+" where "+wheresql+")";
-				sql="select t1.* from "+so1.getTableName()+" t1,"+sql+" t2 where t1.pk_corp=t2.pk_corp and t2.f1=t1."+so1.getParentPKFieldName();
+				sql="select t1.* from "+so1.getTableName()+" t1,"+sql+" t2 where nvl(t1.dr,0) = 0 and t1.pk_corp=t2.pk_corp and t2.f1=t1."+so1.getParentPKFieldName();
 				List svos= (List) dao.executeQuery(sql, parameter, new BeanListProcessor(cs[1]));
 				
 				Map<String, List<SuperVO>> map = DZfcommonTools.hashlizeObject(svos, new String[]{so1.getParentPKFieldName()});//返回MAP信息
@@ -521,9 +521,9 @@ private SuperVO updatevo(String corp, SuperVO svo){
 		if(tablename.contains(";")||Condition.contains(";")){
 			throw new DAOException("传入表名及参数或含有非法字符");
 		}
-		String sql = " SELECT COUNT(*) FROM "+tablename;
+		String sql = " SELECT COUNT(*) FROM "+tablename+" where nvl(dr,0) = 0 ";
 		if(Condition!=null&&Condition.length()>0){
-			sql=sql+" where "+Condition;
+			sql=sql+" and  "+Condition;
 		}
 		return new Integer(dao.executeQuery(sql, parameter, new ColumnProcessor()).toString());
 	}
