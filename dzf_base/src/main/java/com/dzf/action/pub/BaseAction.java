@@ -409,7 +409,16 @@ public class BaseAction<T> extends ActionSupport {
 		} 
 		return null;
 	}
+	
+	public String getLoginUserid(){
+		String userid=(String) getRequest().getSession().getAttribute(IGlobalConstants.login_user);
+		return userid;
+	}
 
+	public String getLogincorppk(){
+		String corp=(String) getRequest().getSession().getAttribute("login_corp");
+		return corp;
+	}
 	/**
 	 * 获取登录公司信息
 	 * */
