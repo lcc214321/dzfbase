@@ -72,9 +72,12 @@ public class ReferenceCheckImp implements IReferenceCheck {
 		if (keys == null || keys.length == 0)
 			return new HashMap();
 		HashMap result = new HashMap();
-		for (int i = 0; i < keys.length; i++) {
-			String key = keys[i];
-			boolean referenceFlag = isReferencedWhenModify(tableName, key);
+		int len=keys.length;
+		String key ;
+		boolean referenceFlag;
+		for (int i = 0; i < len; i++) {
+			 key = keys[i];
+			 referenceFlag = isReferencedWhenModify(tableName, key);
 			result.put(key, DZFBoolean.valueOf(referenceFlag));
 		}
 		return result;

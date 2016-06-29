@@ -12,20 +12,20 @@ import com.dzf.pub.SuperVO;
 
 public interface IBgPubServices {
 	//分页查询
-	public<T>  List<T> quyerInfovo(Class className,String tableName, String condition,
+	public<T>  List<T> queryInfovo(Class className,String tableName, String condition,
 			SQLParameter params,int pageNo, int pageSize,String order)  throws DZFWarpException ;
 	
 	//不分页查询
-	public<T> List<T> quyerInfovo(Class className,CorpVO corpVo,
+	public<T> List<T> queryInfovo(Class className,CorpVO corpVo,
 			UserVO uservo,String sort,String order)  throws DZFWarpException ;
 	
 	//条件查询
-	public <T>  List<T> quyerWithCondtion(Class className,ConditionVO[] cd,String sort,String order)  throws DZFWarpException ;
+	public <T>  List<T> queryWithCondtion(Class className,ConditionVO[] cd,String sort,String order)  throws DZFWarpException ;
 	
 	//删除
-	public void delteInfovo(SuperVO bean)  throws DZFWarpException ;
+	public void deleteInfovo(SuperVO bean)  throws DZFWarpException ;
 	//删除
-	public void delteInfovoDzf(SuperVO bean)  throws DZFWarpException ;
+	public void deleteInfovoDzf(SuperVO bean)  throws DZFWarpException ;
 	
 	//获取总行数
 	public int getTotalRow(String tablename,String condition,SQLParameter sp)  throws DZFWarpException ;
@@ -47,7 +47,7 @@ public interface IBgPubServices {
 	 * @param pk_corp
 	 * @return
 	 */
-	public<T> List<T> quyerByPkcorp(Class className,String pk_corp)throws DZFWarpException ;
+	public<T> List<T> queryByPkcorp(Class className,String pk_corp)throws DZFWarpException ;
 
 
 }

@@ -40,7 +40,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 	}
 
 	@Override
-	public List<SuperVO> quyerInfovo(Class className,String tableName, String condition,
+	public List<SuperVO> queryInfovo(Class className,String tableName, String condition,
 			SQLParameter params,int pageNo, int pageSize,String order) throws DZFWarpException {
 		List<SuperVO>  rs = (List<SuperVO>)singleObjectBO.execQueryWithPage(className, tableName, condition,
 				params,pageNo,pageSize,order);
@@ -52,7 +52,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 
 	
 	@Override
-	public<T> List<T> quyerInfovo(Class className,CorpVO corpVo,
+	public<T> List<T> queryInfovo(Class className,CorpVO corpVo,
 			UserVO uservo, String sort, String order) throws DZFWarpException {
 
 		try {
@@ -61,7 +61,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 			SQLParameter sp = new SQLParameter();
 
 			StringBuffer sb = new StringBuffer();
-			sb.append(" select * from " + svo.getTableName());
+			sb.append(" select * from ").append(svo.getTableName());
 			if (corpVo != null) {
 				sb.append(" where pk_corp=? and nvl(dr,0)=0");
 				sp.addParam(corpVo.getPk_corp());
@@ -89,7 +89,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 	 * 传入查询条件查询
 	 * */
 	@Override
-	public<T> List<T> quyerWithCondtion(Class className,ConditionVO[] cd,String sort,String order)  throws DZFWarpException {
+	public<T> List<T> queryWithCondtion(Class className,ConditionVO[] cd,String sort,String order)  throws DZFWarpException {
 		List<SuperVO> rs;
 		StringBuffer sb = new StringBuffer();
 		SQLParameter sp = new SQLParameter();
@@ -147,7 +147,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 	}
 
 	@Override
-	public void delteInfovo(SuperVO bean)  throws DZFWarpException {
+	public void deleteInfovo(SuperVO bean)  throws DZFWarpException {
 		SuperVO tvo = (SuperVO)bean.clone();
 		FieldValidateUtils.Validate(tvo);
 		
@@ -156,7 +156,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 
 	}
 	@Override
-	public List<SuperVO> quyerByPkcorp(Class className,String pk_corp) throws DZFWarpException{
+	public List<SuperVO> queryByPkcorp(Class className,String pk_corp) throws DZFWarpException{
 			SQLParameter sp=new SQLParameter();
 			sp.addParam(pk_corp);
 			List<SuperVO> listVo = (List<SuperVO>) singleObjectBO.retrieveByClause(className, "pk_corp=? and nvl(dr,0) = 0 ", sp);
@@ -255,7 +255,7 @@ public class BgPubServiceImpl implements IBgPubServices {
 		return DZFBoolean.TRUE;
 	}
 	@Override
-	public void delteInfovoDzf(SuperVO bean) throws DZFWarpException {
+	public void deleteInfovoDzf(SuperVO bean) throws DZFWarpException {
 		// TODO Auto-generated method stub
 		
 	}
