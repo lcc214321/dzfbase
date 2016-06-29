@@ -184,11 +184,21 @@ public class NetObjectInputStream extends ObjectInputStream {
 	}
 
 	public int read(byte[] buf, int off, int len) throws IOException {
-		return objIn.read(buf, off, len);
+		//return objIn.read(buf, off, len);
+		readFully(buf, off, len);
+		return len;
 	}
 
 	public int read(byte[] b) throws IOException {
-		return objIn.read(b);
+		//return objIn.read(b);
+		int n=0;
+		int readLen=0;
+		int len=b.length;
+		while ((n = objIn.read(b, readLen, len - readLen)) > 0)
+		{ readLen += n; 
+		if (readLen >= len) 
+			break; }
+		return len;
 	}
 
 	public boolean readBoolean() throws IOException {
