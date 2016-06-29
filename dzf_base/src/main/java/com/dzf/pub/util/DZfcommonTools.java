@@ -84,7 +84,7 @@ public class DZfcommonTools {
 		if(array == null || array.length == 0)
 			return null;
 		Map<String,String> map = new HashMap<String, String>();
-		String val = null;
+	//	String val = null;
 		for(String v : array){
 			if(isNotNull(v))
 				map.put(v, v);
@@ -124,12 +124,13 @@ public class DZfcommonTools {
 		if (keys == null || keys.length == 0)
 			throw new BusinessException("分组字段不能为空。");
 		String key = null;
+		List<T> list =null;
 		for (int i = 0; i < objs.size(); i++) {
 			key = getCombinesKey(objs.get(i), keys);
 			if(result.containsKey(key)){
 				result.get(key).add(objs.get(i));
 			}else{
-				List<T> list = new ArrayList<T>();
+				list = new ArrayList<T>();
 				list.add(objs.get(i));
 				result.put(key, list);
 			}
