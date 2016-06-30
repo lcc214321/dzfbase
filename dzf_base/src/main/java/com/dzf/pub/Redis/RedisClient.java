@@ -57,7 +57,12 @@ public class RedisClient {
 		obj=ircb.exec(tx);
 	}catch(Exception e){
 		if(jedis == null){
-			return null;
+			try{
+			obj=ircb.exec(null);
+			return obj;
+			}catch(Exception ee){
+				
+			}
 		}
 	}finally{
 		if(jedis!=null){
