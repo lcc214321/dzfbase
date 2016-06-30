@@ -79,12 +79,18 @@ public class RedisClient {
 //		Jedis jedis=getJedisPool().getResource();
 		Jedis jedis=null;
 		Object obj = null;
+		
 	try{
 		jedis=getJedisPool().getResource();
 		obj=ircb.exec(jedis);
 	}catch(Exception e){
 		if(jedis == null){
-			return null;
+			try{
+			obj=ircb.exec(null);
+			return obj;
+			}catch(Exception ee){
+				
+			}
 		}
 	}finally{
 		if(jedis!=null){

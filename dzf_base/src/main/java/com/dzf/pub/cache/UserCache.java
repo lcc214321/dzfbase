@@ -83,16 +83,26 @@ public class UserCache {
 			
 			@Override
 			public Object exec(Jedis jedis) {
-				UserVO cvo= getUserVOByRedis(jedis,userid,corp);
+				UserVO cvo=null;
+				if(jedis==null){
+					cvo=getUserVO(userid,corp);
+					return cvo;
+				}
+				cvo=getUserVOByRedis(jedis,userid,corp);
 					if(cvo==null){
-						ReentrantLock lock=UserLock.getInstance().get(userid);//	LockUtils.getInstance().getNextID(corp);
+						ReentrantLock lock=null;
+				
+						UserLock.getInstance().get(userid);//	LockUtils.getInstance().getNextID(corp);
 						lock.lock();
+					
 						try{
+						
 						cvo= getUserVOByRedis(jedis,userid,corp);
 						if(cvo==null){
 					cvo=getUserVO(userid,corp);
 					if(cvo == null)	return null;
 					try {
+						
 						jedis.set(userid.getBytes(),IOUtils.getBytes(cvo, new UserSerializable()));
 					} catch (Exception e) {
 						log.error("缓存服务器连接未成功。");
@@ -100,6 +110,7 @@ public class UserCache {
 
 						}
 				}finally{
+					if(lock!=null)
 					lock.unlock();
 				}
 					}

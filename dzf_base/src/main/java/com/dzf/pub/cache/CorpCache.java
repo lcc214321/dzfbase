@@ -93,6 +93,10 @@ public CorpVO get(final String userid,final String corp){
 		
 		@Override
 		public Object exec(Jedis jedis) {
+			if(jedis==null){
+				return getCorpVO(userid,corp);
+
+			}
 			 CorpVO cvo= getCorpVOByRedis(jedis,userid,corp);
 				if(cvo==null){
 					ReentrantLock lock=CorpLock.getInstance().get(corp);//	LockUtils.getInstance().getNextID(corp);
