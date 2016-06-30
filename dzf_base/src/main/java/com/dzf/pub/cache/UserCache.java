@@ -76,50 +76,48 @@ public class UserCache {
 		});
 	}
 	public UserVO get(final String userid,final String corp){
-		if(userid == null){
+		if (userid == null) {
 			return null;
 		}
-		UserVO cvo=(UserVO) RedisClient.getInstance().exec(new IRedisCallback() {
-			
+		UserVO cvo = (UserVO) RedisClient.getInstance().exec(new IRedisCallback() {
+
 			@Override
 			public Object exec(Jedis jedis) {
-				UserVO cvo=null;
-				if(jedis==null){
-					cvo=getUserVO(userid,corp);
+				UserVO cvo = null;
+				if (jedis == null) {
+					cvo = getUserVO(userid, corp);
 					return cvo;
 				}
-				cvo=getUserVOByRedis(jedis,userid,corp);
-					if(cvo==null){
-						ReentrantLock lock=null;
-				
-						UserLock.getInstance().get(userid);//	LockUtils.getInstance().getNextID(corp);
-						lock.lock();
-					
-						try{
-						
-						cvo= getUserVOByRedis(jedis,userid,corp);
-						if(cvo==null){
-					cvo=getUserVO(userid,corp);
-					if(cvo == null)	return null;
+				cvo = getUserVOByRedis(jedis, userid, corp);
+				if (cvo == null) {
+					ReentrantLock lock = UserLock.getInstance().get(userid);// LockUtils.getInstance().getNextID(corp);
+					lock.lock();
+
 					try {
-						
-						jedis.set(userid.getBytes(),IOUtils.getBytes(cvo, new UserSerializable()));
-					} catch (Exception e) {
-						log.error("缓存服务器连接未成功。");
-					}
+
+						cvo = getUserVOByRedis(jedis, userid, corp);
+						if (cvo == null) {
+							cvo = getUserVO(userid, corp);
+							if (cvo == null)
+								return null;
+							try {
+
+								jedis.set(userid.getBytes(), IOUtils.getBytes(cvo, new UserSerializable()));
+							} catch (Exception e) {
+								log.error("缓存服务器连接未成功。");
+							}
 
 						}
-				}finally{
-					if(lock!=null)
-					lock.unlock();
-				}
+					} finally {
+						if (lock != null)
+							lock.unlock();
 					}
-				
-			
-			return cvo;
-		}
-			 });
-			 return cvo;
+				}
+
+				return cvo;
+			}
+		});
+		return cvo;
 	}
 //	public UserVO get(final String userid,final String corp){
 //		
