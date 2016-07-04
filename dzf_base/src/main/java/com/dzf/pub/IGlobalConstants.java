@@ -6,6 +6,10 @@ import java.util.TreeMap;
 
 public interface IGlobalConstants extends IDefaultValue{
 
+	//应用类型
+	public final static String appid = "appid"; 
+	//客户端地址
+	public final static String remote_address = "remote_address";
     //用户登录session
 	public final static String login_user = "login_user";
 	

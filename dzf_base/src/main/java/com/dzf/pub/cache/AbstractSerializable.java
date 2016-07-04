@@ -23,6 +23,23 @@ public abstract class AbstractSerializable<T> implements IDzfSerializable<T> {
 		if(len>0)
 			nos.write(bs);
 	}
+	/**
+	 * 与readLongString配对使用
+	 * @param nos
+	 * @param str
+	 * @throws IOException
+	 */
+	protected void writeLongString(NetObjectOutputStream nos, String str) throws IOException {
+		int len = 0;
+		byte[] bs = new byte[0];
+		if (str != null) {
+			bs = str.getBytes();
+			len = bs.length;
+		}
+		nos.writeInt(len);
+		if (len > 0)
+			nos.write(bs);
+	}
 	protected void write(NetObjectOutputStream nos,DZFBoolean b) throws IOException{
 			if(b==null)b=DZFBoolean.FALSE;
 			nos.writeBoolean(b.booleanValue());
@@ -84,11 +101,29 @@ public abstract class AbstractSerializable<T> implements IDzfSerializable<T> {
 	protected DZFBoolean readerDZFBoolean(NetObjectInputStream nos) throws IOException{
 	return new DZFBoolean(nos.readBoolean());
 	}
-	protected String readerString(NetObjectInputStream nos,int len) throws IOException{
-		if(len<0)len=nos.readByte();
-		byte[] bs=new byte[len];
-		if(len>0)
-		nos.read(bs);
-	return len>0?new String(bs):null;
+
+	protected String readerString(NetObjectInputStream nos, int len) throws IOException {
+		if (len < 0)
+			len = nos.readByte();
+		byte[] bs = new byte[len];
+		if (len > 0)
+			nos.read(bs);
+		return len > 0 ? new String(bs) : null;
 	}
+	/**
+	 * 与writeLongString配对
+	 * @param nos
+	 * @param len
+	 * @return
+	 * @throws IOException
+	 */
+	protected String readLongString(NetObjectInputStream nos, int len) throws IOException {
+		if (len < 0)
+			len = nos.readInt();
+		byte[] bs = new byte[len];
+		if (len > 0)
+			nos.read(bs);
+		return len > 0 ? new String(bs) : null;
+	}
+
 }
