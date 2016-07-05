@@ -34,7 +34,6 @@ public class DzfSessionRedisSynchronizeService extends TimerTask {
 			
 			SessionCache.getInstance().addSession(session);
 		}
-		//清理hashmap
-		SSOServerUtils.autoClearTicket();
+
 	}
 }
