@@ -27,8 +27,11 @@ public class DzfSessionContext {
 		if (instance == null)
 		{
 			instance = new DzfSessionContext();
-			ScheduledThreadPoolExecutor stexec = new ScheduledThreadPoolExecutor(1);
+			ScheduledThreadPoolExecutor stexec = new ScheduledThreadPoolExecutor(2);
+			//同步session到redis服务器
 			stexec.scheduleAtFixedRate(new DzfSessionRedisSynchronizeService(instance), 1, 1, TimeUnit.MINUTES);	///延迟一分钟启动，间隔2分钟
+			//清理ssoserver的ticket map, 无redis缓存时才使用该hashmap
+			stexec.scheduleAtFixedRate(new DzfTicketClearService(), 5, 10, TimeUnit.MINUTES);	///延迟5分钟启动，间隔10分钟
 		}
 		return instance;
 	}

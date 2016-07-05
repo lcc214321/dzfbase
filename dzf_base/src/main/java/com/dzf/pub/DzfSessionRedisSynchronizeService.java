@@ -18,6 +18,7 @@ public class DzfSessionRedisSynchronizeService extends TimerTask {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
+		//同步session
 		ConcurrentHashMap<String, HttpSession> myMap = sessionContext.getMymap();
 		HttpSession session = null;
 		String pk_user = null;
@@ -33,6 +34,7 @@ public class DzfSessionRedisSynchronizeService extends TimerTask {
 			
 			SessionCache.getInstance().addSession(session);
 		}
-			
+		//清理hashmap
+		SSOServerUtils.autoClearTicket();
 	}
 }
