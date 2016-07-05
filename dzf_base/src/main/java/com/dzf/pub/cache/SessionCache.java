@@ -29,6 +29,7 @@ public class SessionCache {
 	private DZFSessionVO getSessionByRedis(Jedis jedis, final String userid) {
 		DZFSessionVO obj = null;
 		try {
+
 			String realKey = "dzfsso" + userid;
 			byte[] bs = jedis.get(realKey.getBytes());
 
@@ -207,6 +208,10 @@ public class SessionCache {
 
 			@Override
 			public Object exec(Jedis jedis) {
+				if (jedis == null)	//没有缓存服务器，查不到值
+				{
+					return null;
+				}
 				DZFSessionVO sessionvo = getSessionByRedis(jedis, userid);
 				if (sessionvo == null) {
 					ReentrantLock lock = SessionLock.getInstance().get("dzfsso" + userid);	//注意，lock的id，与getSessionByRedis 调用的不一样
