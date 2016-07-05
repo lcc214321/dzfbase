@@ -398,6 +398,9 @@ public class CorpVO extends SuperVO {
 	@FieldAlias("capital")
 	public DZFDouble registcapital;// 注册资本
 	
+	@FieldAlias("kwxjr")
+	private DZFBoolean iskwxjr;//申请科委小巨人基金
+	
 	/**
 	 * 使用主键字段进行初始化的构造子。
 	 * 
@@ -3019,6 +3022,31 @@ public class CorpVO extends SuperVO {
 
 	public void setAccountcoderule(String accountcoderule) {
 		this.accountcoderule = accountcoderule;
+	}
+
+
+	public DZFDouble getRegistcapital() {
+		return registcapital;
+	}
+
+
+	public void setRegistcapital(DZFDouble registcapital) {
+		this.registcapital = registcapital;
+	}
+
+
+	public DZFBoolean getIskwxjr() {
+		return iskwxjr;
+	}
+
+
+	public void setIskwxjr(DZFBoolean iskwxjr) {
+		this.iskwxjr = iskwxjr;
+	}
+
+
+	public DZFBoolean getIssmall() {
+		return issmall;
 	}
 	
 	
