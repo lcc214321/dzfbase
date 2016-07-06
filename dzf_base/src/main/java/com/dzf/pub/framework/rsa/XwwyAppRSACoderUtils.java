@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import com.dzf.framework.comn.IOUtils;
 import com.dzf.pub.BusinessException;
 import com.dzf.pub.WiseRunException;
+import com.dzf.pub.cache.RsaKeyCache;
 import com.dzf.pub.DZFWarpException;
 import com.dzf.pub.IGlobalConstants;
 import com.dzf.pub.MD516;
@@ -23,22 +24,22 @@ public class XwwyAppRSACoderUtils {
 	public XwwyAppRSACoderUtils() {
 		// TODO Auto-generated constructor stub
 	}
-    private static String publicKey;  
-    private static String privateKey;  
-
-    static {  
-       
-
-        try {
-        	 Map<String, Object> keyMap = RSACoder.initKey();  
-			publicKey = RSACoder.getPublicKey(keyMap);
-			privateKey = RSACoder.getPrivateKey(keyMap); 
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}  
-        
-    }
+//    private static String publicKey;  
+//    private static String privateKey;  
+//
+//    static {  
+//       
+//
+//        try {
+//        	 Map<String, Object> keyMap = RSACoder.initKey();  
+//			publicKey = RSACoder.getPublicKey(keyMap);
+//			privateKey = RSACoder.getPrivateKey(keyMap); 
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}  
+//        
+//    }
 
   //加密
   	public static void createToken(HttpSession hs,String xwwy_sessionid){
@@ -119,7 +120,7 @@ public class XwwyAppRSACoderUtils {
   		byte[] bs=null;
   		try{
   		//token= new String(
-  				bs=RSACoder.decryptByPrivateKey(Base64Util.getFromBASE64(token), privateKey);
+  				bs=RSACoder.decryptByPrivateKey(Base64Util.getFromBASE64(token), RsaKeyCache.getInstance().getPrivateKey());//privateKey);
 			//bs=Base64Util.getFromBASE64(token);
   		}catch(Exception e){
   			throw new WiseRunException(e);
@@ -132,7 +133,7 @@ public class XwwyAppRSACoderUtils {
 //		StringBuffer sb=new StringBuffer();
 //		sb.append(userid).append("    ").append(corp);
 //		sb.append("     ").append(hs.getId());
-		corp= Base64Util.getBASE64(RSACoder.encryptByPublicKey(getTokenString(hs,userid,corp,xwwysessionid,set), publicKey));
+		corp= Base64Util.getBASE64(RSACoder.encryptByPublicKey(getTokenString(hs,userid,corp,xwwysessionid,set), RsaKeyCache.getInstance().getPublicKey()));// publicKey));
 		return corp;
 	}
 	private static byte[] getTokenString(HttpSession hs, String userid, String corp,String xwwysessionid,HashSet<String> set)

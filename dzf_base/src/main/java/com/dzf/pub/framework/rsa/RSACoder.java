@@ -17,6 +17,8 @@ import javax.crypto.Cipher;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.dzf.pub.util.RSAUtils;
+
 /** *//**
 * RSA安全编码组件
 *  
@@ -272,22 +274,29 @@ public abstract class RSACoder extends Coder {
      * @throws Exception
      */
     public static Map<String, Object> initKey() throws Exception {  
-        KeyPairGenerator keyPairGen = KeyPairGenerator  
-                .getInstance(KEY_ALGORITHM);  
-        keyPairGen.initialize(1024);  
+    	//2016-07-06注释，改用统一publickey，privatekey
+//        KeyPairGenerator keyPairGen = KeyPairGenerator  
+//                .getInstance(KEY_ALGORITHM);  
+//        keyPairGen.initialize(1024);  
+//
+//        KeyPair keyPair = keyPairGen.generateKeyPair();  
 
-        KeyPair keyPair = keyPairGen.generateKeyPair();  
-
-        // 公钥  
-        RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();  
-
-        // 私钥  
-        RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();  
-
+//        // 公钥  
+//        RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();  
+//
+//        // 私钥  
+//        RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();  
+    	// 公钥  
+    	RSAPublicKey publickey = RSAUtils.getDefaultPublicKey();
+//		String defaultPublicKey = RSACoder.encryptBASE64(publickey.getEncoded());
+		// 私钥  
+		RSAPrivateKey privatekey = RSAUtils.getDefaultPrivateKey();
+//		String defaultPrivateKey = RSACoder.encryptBASE64(privatekey.getEncoded());
+		
         Map<String, Object> keyMap = new HashMap<String, Object>(2);  
 
-        keyMap.put(PUBLIC_KEY, publicKey);  
-        keyMap.put(PRIVATE_KEY, privateKey);  
+        keyMap.put(PUBLIC_KEY, publickey);  
+        keyMap.put(PRIVATE_KEY, privatekey);  
         return keyMap;  
     }  
 } 

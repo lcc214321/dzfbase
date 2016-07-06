@@ -205,7 +205,8 @@ public class DZFRequestFilter implements Filter {
 				String pk_user = (String)session.getAttribute(IGlobalConstants.login_user);
 				String ticket = request.getParameter("t");
 				String qz = request.getParameter("qz");	//提示信息
-				if (StringUtil.isEmptyWithTrim(pk_user) && (longurl.indexOf("/login.jsp") >= 0 || longurl.endsWith(contextpath) || longurl.endsWith(contextpath + "/")))
+//				if (StringUtil.isEmptyWithTrim(pk_user) && (longurl.indexOf("/login.jsp") >= 0 || longurl.endsWith(contextpath) || longurl.endsWith(contextpath + "/")))
+				if (StringUtil.isEmptyWithTrim(pk_user))
 				{
 					String path = this.getClass().getClassLoader().getResource("").getPath();
 		
@@ -236,8 +237,8 @@ public class DZFRequestFilter implements Filter {
 							return;
 						}
 						
-						if (StringUtil.isEmptyWithTrim(pk_user))
-						{
+//						if (StringUtil.isEmptyWithTrim(pk_user))
+//						{
 							if (StringUtil.isEmptyWithTrim(ticket) == false)
 							{
 								boolean isSuccess = false;
@@ -304,11 +305,11 @@ public class DZFRequestFilter implements Filter {
 								
 							}
 							return;
-						}
-						else
-						{
-							//已经登录成功，什么都不用做
-						}
+//						}
+//						else
+//						{
+//							//已经登录成功，什么都不用做
+//						}
 					}
 					else
 					{
