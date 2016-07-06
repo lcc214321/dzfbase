@@ -123,15 +123,20 @@ public class RSACoderUtils {
 			throws Exception {
 		
 //		String str=MD516.Md5(IOUtils.getBytes(set));
-		StringBuffer sbSet = new StringBuffer();
-		Integer[] is = set.toArray(new Integer[0]);
-		Arrays.sort(is);
-		for (Integer i : is)
+		
+		String str = "";
+		
+		if (set != null)
 		{
-			sbSet.append(String.valueOf(i));
+			StringBuffer sbSet = new StringBuffer();
+			Integer[] is = set.toArray(new Integer[0]);
+			Arrays.sort(is);
+			for (Integer i : is)
+			{
+				sbSet.append(String.valueOf(i));
+			}
+			str = MD516.Md5(sbSet.toString().getBytes());
 		}
-		String str = MD516.Md5(sbSet.toString().getBytes());
-
 		str = MD516.Md5(IOUtils.getBytes(new String[]{userid, corp, str}));//new String(IOUtils.getBytes(set)));
 		
 		return IOUtils.getBytes(new String[]{str,hs.getId()});

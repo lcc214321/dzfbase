@@ -140,7 +140,7 @@ public class SessionCache {
 					jedis.set(realKey.getBytes(), IOUtils.getBytes(m, new SessionSerializable()));
 					jedis.expire(realKey, iExpiredSecond);		//失效时间
 					
-					log.error("周天成输出：写redis session缓存成功!");
+
 				} catch (Exception e) {
 					log.error("缓存服务器连接未成功。", e);
 				} finally {
@@ -230,8 +230,7 @@ public class SessionCache {
 				return sessionvo;
 			}
 		});
-		if (sessionvo != null && sessionvo.getSessions().length > 0)
-		log.error("周天成输出：读redis session缓存成功!");
+
 		return sessionvo;
 	}
 
