@@ -74,7 +74,7 @@ public class DzfCookieTool {
 				cookie.setMaxAge(0);
 				cookie.setPath("/");
 				((HttpServletResponse)response).addCookie(cookie);
-			}
+			}else
 			if ("dzfcorp".equals(cookie.getName())) {
 				cookie.setMaxAge(0);
 				cookie.setPath("/");
