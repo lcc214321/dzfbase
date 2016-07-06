@@ -316,6 +316,16 @@ public class DZFRequestFilter implements Filter {
 						//开发调试过程有login.jsp, 保留原交互
 					}
 				}
+				else
+				{
+					//用户已经登陆成功，如果有ticket后缀，则跳转
+					if (StringUtil.isEmptyWithTrim(ticket) == false)
+					{
+						int iIndex = longurl.indexOf(contextpath);
+						res.sendRedirect(longurl.substring(0, iIndex + contextpath.length()) + (qz == null ? "" : "?qz=" + qz));
+						return;
+					}
+				}
 			}
 			catch (Exception e)
 			{
