@@ -717,12 +717,12 @@ public class StringUtil
 
   public static boolean isEmpty(String str)
   {
-    return (str == null) || (str.length() == 0);
+    return (str == null) || (str.length() == 0) || "null".equalsIgnoreCase(str);
   }
 
   public static boolean isEmptyWithTrim(String str)
   {
-    return (str == null) || (str.trim().length() == 0);
+    return (str == null) || (str.trim().length() == 0) || "null".equalsIgnoreCase(str);
   }
 
   public static boolean isContainChinese(String str)
