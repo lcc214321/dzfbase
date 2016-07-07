@@ -18,8 +18,10 @@ import java.security.SecureRandom;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Date;
 
 import javax.crypto.Cipher;
@@ -34,6 +36,8 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dzf.pub.framework.rsa.RSACoder;
+
 /**
  * RSA算法加密/解密工具类。
  * 
@@ -44,8 +48,10 @@ public class RSAUtils {
 
     /** 算法名称 */
     private static final String ALGORITHOM = "RSA";
+//    /**保存生成的密钥对的文件名称。 */
+//    private static final String RSA_PAIR_FILENAME = "/classes/__RSA_PAIR.txt";
     /**保存生成的密钥对的文件名称。 */
-    private static final String RSA_PAIR_FILENAME = "/classes/__RSA_PAIR.txt";
+    private static final String RSA_KEY_FILENAME = "/classes/__RSA_KEY.txt";
     /** 密钥大小 */
     private static final int KEY_SIZE = 1024; 
     /** 默认的安全服务提供者 */
@@ -94,7 +100,7 @@ public class RSAUtils {
      */
     private static String getRSAPairFilePath() {
         String urlPath = RSAUtils.class.getResource("/").getPath();
-        return (new File(urlPath).getParent() + RSA_PAIR_FILENAME);
+        return (new File(urlPath).getParent() + RSA_KEY_FILENAME);
     }
 
     /**
@@ -120,7 +126,15 @@ public class RSAUtils {
         try {
             fos = FileUtils.openOutputStream(rsaPairFile);
             oos = new ObjectOutputStream(fos);
-            oos.writeObject(keyPair);
+            //公钥
+            RSAPublicKey publickey = (RSAPublicKey)keyPair.getPublic();
+            String strPublicKey = RSACoder.encryptBASE64(publickey.getEncoded());
+            //私钥
+            RSAPrivateKey privatekey = (RSAPrivateKey)keyPair.getPrivate();
+            String StrPrivateKey = RSACoder.encryptBASE64(privatekey.getEncoded());
+            
+            oos.writeObject(strPublicKey);
+            oos.writeObject(StrPrivateKey);
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
@@ -151,7 +165,18 @@ public class RSAUtils {
         try {
             fis = FileUtils.openInputStream(rsaPairFile);
             ois = new ObjectInputStream(fis);
-            oneKeyPair = (KeyPair) ois.readObject();
+            
+            String strPublicKey = (String)ois.readObject();
+            X509EncodedKeySpec bobPubKeySpec = new X509EncodedKeySpec(RSACoder.decryptBASE64(strPublicKey));   
+            PublicKey publicKey = keyFactory.generatePublic(bobPubKeySpec);  
+
+            String strPrivateKey = (String)ois.readObject();
+            
+            PKCS8EncodedKeySpec priPKCS8 = new PKCS8EncodedKeySpec(RSACoder.decryptBASE64(strPrivateKey));    
+            PrivateKey privateKey = keyFactory.generatePrivate(priPKCS8);  
+            
+            oneKeyPair = new KeyPair(publicKey, privateKey);
+            
             return oneKeyPair;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -399,7 +424,7 @@ public class RSAUtils {
     
     /** 返回已初始化的默认的公钥。*/
     public static RSAPublicKey getDefaultPublicKey() {
-        KeyPair keyPair = getKeyPair();
+        KeyPair keyPair = (oneKeyPair != null ? oneKeyPair : getKeyPair());
         if(keyPair != null) {
             return (RSAPublicKey)keyPair.getPublic();
         }
@@ -408,7 +433,7 @@ public class RSAUtils {
     
     /** 返回已初始化的默认的私钥。*/
     public static RSAPrivateKey getDefaultPrivateKey() {
-        KeyPair keyPair = getKeyPair();
+        KeyPair keyPair = (oneKeyPair != null ? oneKeyPair : getKeyPair());
         if(keyPair != null) {
             return (RSAPrivateKey)keyPair.getPrivate();
         }
