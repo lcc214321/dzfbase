@@ -9,6 +9,8 @@ import java.util.Set;
 
 import javax.servlet.jsp.JspWriter;
 
+import com.dzf.pub.lang.DZFDate;
+
 public class DzfUtil {
 	
 	//人民币
@@ -89,4 +91,35 @@ public class DzfUtil {
 				}
 			}
 	}
+		public static void WriteYearOptionNew(JspWriter out,DZFDate datesa) {
+			for (String year: years) {
+					try {
+						if(Integer.parseInt(year)>=datesa.getYear()){
+							out.write("<option  value="+year+">"+year +"</option>");
+						}
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			}
+			
+		}
+			public static void WriteMonthOptionNew(JspWriter out,DZFDate datesa,String logindate) {
+				String jzm = datesa.toString().substring(5,7);
+				boolean bool = logindate.substring(0, 4).compareTo(datesa.toString().substring(0,4)) == 0 ;
+				for (String m: month) {
+						try {
+							if(bool){
+								if(m.compareTo(jzm)>=0){
+									out.write("<option value="+m+">"+m+"</option>");
+								}
+							}else{
+								out.write("<option value="+m+">"+m+"</option>");
+							}
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				}
+		}
 }
