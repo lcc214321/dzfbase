@@ -394,6 +394,16 @@ public class CorpVO extends SuperVO {
 
 	private String accountcoderule;
 	
+	//益世税务申报添加字段 WJX
+	@FieldAlias("sbfs")
+	private Integer taxreporttype;//申报方式 WJX 申报方式:0:按月申报，1:按季申报
+	@FieldAlias("zsfs")
+	private Integer taxlevytype;//征收方式 WJX 征收方式:0:定期定额征收（核定征收），1:查账征收
+	@FieldAlias("jspbh")
+	private String golddiskno;//金税盘编号 WJX
+	@FieldAlias("ssyhed")
+	private DZFDouble taxfeeamount;//税收优惠额度 WJX
+	
 	//
 	@FieldAlias("capital")
 	public DZFDouble registcapital;// 注册资本
@@ -408,7 +418,43 @@ public class CorpVO extends SuperVO {
 	 */
 	public CorpVO() {
 	}
+	
+	
+	public Integer getTaxreporttype() {
+		return taxreporttype;
+	}
 
+	public void setTaxreporttype(Integer taxreporttype) {
+		this.taxreporttype = taxreporttype;
+	}
+
+	public Integer getTaxlevytype() {
+		return taxlevytype;
+	}
+
+	public void setTaxlevytype(Integer taxlevytype) {
+		this.taxlevytype = taxlevytype;
+	}
+
+	public String getGolddiskno() {
+		return golddiskno;
+	}
+
+	public void setGolddiskno(String golddiskno) {
+		this.golddiskno = golddiskno;
+	}
+
+	public DZFDouble getTaxfeeamount() {
+		return taxfeeamount;
+	}
+
+	public void setTaxfeeamount(DZFDouble taxfeeamount) {
+		this.taxfeeamount = taxfeeamount;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	
 	public Integer getCompanyproperty() {
 		return companyproperty;
