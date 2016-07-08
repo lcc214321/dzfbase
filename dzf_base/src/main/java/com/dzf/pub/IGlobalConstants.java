@@ -65,10 +65,10 @@ public interface IGlobalConstants extends IDefaultValue{
 		 put(5, "半年付");
 	 }};
 	    
-    public static String DZF_KJ="dzf_kj";
-    public static String SYS_DZF="sys_dzf";
-    public static String SYS_DATA="sys_data";
-    public static String ADMIN_KJ="admin_kj";
+    public static String DZF_KJ="dzf_kj";				//会计端
+    public static String SYS_DZF="sys_dzf";			//集团管理端
+    public static String SYS_DATA="sys_data";			//数据中心
+    public static String ADMIN_KJ="admin_kj";			//会计管理端
     public static String DZF_FACTORY="dzf_factory";//会计工厂
     
     public static String POWER_MAP="powerMap";

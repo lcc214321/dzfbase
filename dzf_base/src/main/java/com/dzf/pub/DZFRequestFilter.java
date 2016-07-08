@@ -230,12 +230,15 @@ public class DZFRequestFilter implements Filter {
 					if (f.exists() == false)	//没有login.jsp则是通过ssoserver统一登录
 					{
 						//检查是否有统一登录服务器配置
-						String ssoserver = getSSOServerAddress();
-						if (ssoserver == null)
+						String[] ssoservercfg = getSSOServerCfg();
+						if (ssoservercfg == null)
 						{
 							errorRetMsg = "请配置统一登录服务器";
 							return;
 						}
+						String ssoserver = ssoservercfg[0];
+						String appid = ssoservercfg[1];
+						String loginjsp = ssoservercfg[2];
 						
 //						if (StringUtil.isEmptyWithTrim(pk_user))
 //						{
@@ -244,7 +247,7 @@ public class DZFRequestFilter implements Filter {
 								boolean isSuccess = false;
 								DZFSession ticketobj = null;
 								
-								String ssoserver_url = ssoserver + "/TicketServlet";
+								String ssoserver_url = ssoserver + "TicketServlet";
               
 				            	Map<String, String> map = new HashMap<String, String>();
 				            	map.put("ticket", ticket);
@@ -301,7 +304,14 @@ public class DZFRequestFilter implements Filter {
 								String encoderURL = URLEncoder.encode(longurl, "UTF-8");
 								//没有用户，也没有ticket
 								//跳转至ssoserver用户登录
-								res.sendRedirect(ssoserver + "/login_kj.jsp?service=" + encoderURL);
+								StringBuffer newurl = new StringBuffer();
+								newurl.append(ssoserver);
+								newurl.append(loginjsp);
+								newurl.append("?service=");
+								newurl.append(encoderURL);
+								newurl.append("&appid=");
+								newurl.append(appid);
+								res.sendRedirect(newurl.toString());
 								
 							}
 							return;
@@ -318,7 +328,7 @@ public class DZFRequestFilter implements Filter {
 				}
 				else
 				{
-					//用户已经登陆成功，如果有ticket后缀，则跳转
+					//用户已经登陆成功，如果有ticket后缀，则跳转一下，删掉t=xxx长串
 					if (StringUtil.isEmptyWithTrim(ticket) == false)
 					{
 						int iIndex = longurl.indexOf(contextpath);
@@ -434,9 +444,14 @@ try{
 	        filterChain.doFilter(request, response);
 			return;
 	}
-	private String getSSOServerAddress()
+	/**
+	 * String[] server, appid, loginjsp
+	 * @return
+	 */
+	private String[] getSSOServerCfg()
 	{
-		String server = null;
+		String [] saReturn = null;
+
 		 Properties prop = new Properties();   
 		 InputStream in = null;
 		 try{
@@ -444,7 +459,10 @@ try{
 			 in =  this.getClass().getResourceAsStream("/ssoserver.properties");
 
 			 prop.load(in);     ///加载属性列表
-			 server = prop.getProperty("server");
+			 saReturn = new String[3];
+			 saReturn[0] = prop.getProperty("server");
+			 saReturn[1] = prop.getProperty("appid");
+			 saReturn[2] = prop.getProperty("loginjsp");
 			 
 		 }   catch  (IOException e1)  {    
 
@@ -461,7 +479,7 @@ try{
 				 {}
 			 }
 		 }
-		 return server;
+		 return saReturn;
 	}
 	 public static HttpSession getSession(ServletRequest request, boolean create)
 	  {
