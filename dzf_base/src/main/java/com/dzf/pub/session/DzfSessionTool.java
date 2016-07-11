@@ -54,6 +54,9 @@ public class DzfSessionTool {
 	}
 	public static void clearSession(HttpSession httpsession)
 	{
+		//退出的信息也要清除
+		httpsession.removeAttribute(IGlobalConstants.logout_msg);
+		
 		httpsession.removeAttribute(IGlobalConstants.login_user);
 		httpsession.removeAttribute(IGlobalConstants.appid);
 		httpsession.removeAttribute(IGlobalConstants.login_date);
