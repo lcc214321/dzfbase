@@ -103,11 +103,17 @@ public class DZFRequestFilter implements Filter {
 			//session修改开始			
 			String token = DzfCookieTool.getToken(request);
 			
-			boolean bDeleteSession = false;
-			boolean bDeleteCookie = false;
+			String ticket = request.getParameter("t");
+			
+
 			String errorRetMsg = null;	//错误返回提示信息
+			
+			String appid = null;
 			try 
 			{
+				boolean bDeleteSession = false;
+				boolean bDeleteCookie = false;
+				
 				//检查是否有统一登录服务器配置
 				String[] ssoservercfg = DzfServerProperty.getInstance().getDzfServerCfg();
 				if (ssoservercfg == null)
@@ -116,99 +122,113 @@ public class DZFRequestFilter implements Filter {
 					return;
 				}
 				String ssoserver = ssoservercfg[0];
-				String appid = ssoservercfg[1];
+				appid = ssoservercfg[1];
 				String loginjsp = ssoservercfg[2];
+				String pk_user = null;								//从cookie中获得
+				String sessionUser = (String)session.getAttribute(IGlobalConstants.login_user);
 				
-				if (token == null)
+				if (StringUtil.isEmptyWithTrim(ticket))				//票换用户信息过程不能走下面代码
 				{
-					//可能是登录过程，客户端无cookie
-				}
-				else
-				{
-					String realtoken = DzfCookieTool.getRealToken(token);
-					if (StringUtil.isEmptyWithTrim(realtoken) == false)
+					if (token == null)
 					{
-						String[] sa = realtoken.split(",");
-						String remoteIp = sa[0];
-						String pk_user = sa[1];
-						String appid_token = sa[2];
-						
-						String sessionUser = (String)session.getAttribute(IGlobalConstants.login_user);
-						
-						if (StringUtil.isEmptyWithTrim(sessionUser))
-						{
-							//当客户端token存在，tomcat服务器缓存里面又没有用户session时，才到redis服务器检查是否有在线信息
-							DZFSessionVO sessionvo = SessionCache.getInstance().get(pk_user);
-							List<DZFSession> listRedisSession = new ArrayList<DZFSession>();
-							
-							boolean bFound = false;						//成功从redis服务器找到session标志
-							DZFSession dzfCacheSession = null;
-							if (sessionvo != null)
-							{
-								DZFSession[] sessions = sessionvo.getSessions();
-								for (DZFSession cachesession : sessions)
-								{
-									if (bFound == false 
-											&& appid.equals(cachesession.getAppid()) 
-											&& appid.equals(appid_token)
-											&& remoteIp.equals(req.getRemoteAddr()))
-									{
-										dzfCacheSession = cachesession;
-										bFound = true;
-									}
-									else
-									{
-										listRedisSession.add(cachesession);
-									}
-								}
-							}
-							if (bFound)	//redis服务器上有在线用户信息
-							{
-								//服务器session没有用户信息，重新自动登录
-								//这种情况可能是集群转发服务器发生了跳转，跳至新服务器，或者应用服务器重启，redis服务器与客户端还正常运行
-								if (DzfSessionContext.getInstance().getSessionByPkUser(pk_user) != null && !DzfSessionContext.getInstance().getSessionByPkUser(pk_user).getId().equals(session.getId())) 
-			                	{
-			                		DzfSessionContext.getInstance().DelUserSessionByPkUser(pk_user, false);
-			                	}
-								//把redis缓存信息重新赋值给httpsession
-								DzfSessionTool.fillValueToHttpSession(dzfCacheSession, session);
-	
-								DzfSessionContext.getInstance().AddUserSession(session);
-								RSACoderUtils.createToken(session);
-		
-							}
-							else
-							{
-								//客户端由token，但应用服务器无session，redis缓存服务器也没有登录信息，不能登录
-								bDeleteCookie = true;
-							}
-						}
-						else		//有应用服务器用户
-						{
-							//应用服务器上有用户信息，只需判断token用户与应用服务器用户是否一致即可
-							if (sessionUser.equals(pk_user) == false)
-							{
-								//这种情况应该是客户端由A用户登录成功过，又由B用户成功登录，但B用户信息没有成功写到客户端COOKIE，
-								//这时A用户属于退出状态，B用户登录又不完整，不能算成功登录，所以需要清缓存
-								bDeleteSession = true;
-								bDeleteCookie = true;
-							}
-							else
-							{
-								//一切正常的交互，不需做什么工作，向redis服务器同步session信息在定时服务中运行，不能在每次客户端请求都做。
-							}
-						}
+						//可能是登录过程，客户端无cookie
 					}
 					else
 					{
-						//没有成功解出真正token内容，可能是客户端无cookie，或cookie已陈旧，与服务器不匹配，
-						bDeleteCookie = true;
-						bDeleteSession = true;
+						String realtoken = DzfCookieTool.getRealToken(token);
+						if (StringUtil.isEmptyWithTrim(realtoken) == false)
+						{
+							String[] sa = realtoken.split(",");
+							String remoteIp = sa[0];
+							pk_user = sa[1];
+							String appid_intoken = sa[2];
+	
+							
+							if (StringUtil.isEmptyWithTrim(sessionUser))
+							{
+								//当客户端token存在，tomcat服务器缓存里面又没有用户session时，才到redis服务器检查是否有在线信息
+								DZFSessionVO sessionvo = SessionCache.getInstance().get(pk_user);
+								List<DZFSession> listRedisSession = new ArrayList<DZFSession>();
+								
+								boolean bFound = false;						//成功从redis服务器找到session标志
+								DZFSession dzfCacheSession = null;
+								if (sessionvo != null)
+								{
+									DZFSession[] sessions = sessionvo.getSessions();
+									for (DZFSession cachesession : sessions)
+									{
+										if (bFound == false 
+												&& appid.equals(appid_intoken)
+												&& appid.equals(cachesession.getAppid()) 
+												&& remoteIp.equals(req.getRemoteAddr()))
+										{
+											dzfCacheSession = cachesession;
+											bFound = true;
+										}
+										else
+										{
+											listRedisSession.add(cachesession);
+										}
+									}
+								}
+								if (bFound)	//redis服务器上有在线用户信息
+								{
+									//服务器session没有用户信息，重新自动登录
+									//这种情况可能是集群转发服务器发生了跳转，跳至新服务器，或者应用服务器重启，redis服务器与客户端还正常运行
+									if (DzfSessionContext.getInstance().getSessionByPkUser(pk_user) != null && !DzfSessionContext.getInstance().getSessionByPkUser(pk_user).getId().equals(session.getId())) 
+				                	{
+				                		DzfSessionContext.getInstance().DelUserSessionByPkUser(pk_user, false);
+				                	}
+									//把redis缓存信息重新赋值给httpsession
+									DzfSessionTool.fillValueToHttpSession(dzfCacheSession, session);
+		
+									DzfSessionContext.getInstance().AddUserSession(session);
+									RSACoderUtils.createToken(session);
+			
+								}
+								else
+								{
+									//客户端有token，但应用服务器无session，redis缓存服务器也没有登录信息，不能登录
+									bDeleteCookie = true;
+								}
+							}
+							else		//有应用服务器用户
+							{
+								//应用服务器上有用户信息，只需判断token用户与应用服务器用户是否一致即可
+								if (sessionUser.equals(pk_user) == false)
+								{
+									//这种情况应该是客户端由A用户登录成功过，又由B用户成功登录，但B用户信息没有成功写到客户端COOKIE，
+									//这时A用户属于退出状态，B用户登录又不完整，不能算成功登录，所以需要清缓存
+									bDeleteSession = true;
+									bDeleteCookie = true;
+								}
+								else
+								{
+									//一切正常的交互，不需做什么工作，向redis服务器同步session信息在定时服务中运行，不能在每次客户端请求都做。
+								}
+							}
+						}
+						else
+						{
+							//没有成功解出真正token内容，可能是客户端无cookie，或cookie已陈旧，与服务器不匹配，
+							bDeleteCookie = true;
+							bDeleteSession = true;
+						}
 					}
+					if (bDeleteSession)
+					{
+						if (session.getAttribute(IGlobalConstants.login_user) != null)
+						{
+							DzfSessionTool.clearSession(session);
+						}
+					}
+					if (bDeleteCookie)
+					{
+						DzfCookieTool.deleteCookie(request, response);
+					}
+		
 				}
-						
-				
-	//session修改开始结束
+				//session修改开始结束
 				
 				
 				
@@ -216,11 +236,11 @@ public class DZFRequestFilter implements Filter {
 				
 				String contextpath = req.getContextPath();
 				String longurl = req.getRequestURL().toString();
-				String pk_user = (String)session.getAttribute(IGlobalConstants.login_user);
-				String ticket = request.getParameter("t");
+				String pk_user_session = (String)session.getAttribute(IGlobalConstants.login_user);
+				
 				String qz = request.getParameter("qz");	//提示信息
 //				if (StringUtil.isEmptyWithTrim(pk_user) && (longurl.indexOf("/login.jsp") >= 0 || longurl.endsWith(contextpath) || longurl.endsWith(contextpath + "/")))
-				if (StringUtil.isEmptyWithTrim(pk_user))
+				if (StringUtil.isEmptyWithTrim(pk_user_session))
 				{
 					String path = this.getClass().getClassLoader().getResource("").getPath();
 		
@@ -243,88 +263,77 @@ public class DZFRequestFilter implements Filter {
 	
 					if (f.exists() == false)	//没有login.jsp则是通过ssoserver统一登录
 					{
-						
-						
-//						if (StringUtil.isEmptyWithTrim(pk_user))
-//						{
-							if (StringUtil.isEmptyWithTrim(ticket) == false)
-							{
-								boolean isSuccess = false;
-								DZFSession ticketobj = null;
-								
-								String ssoserver_url = ssoserver + "TicketServlet";
-              
-				            	Map<String, String> map = new HashMap<String, String>();
-				            	map.put("ticket", ticket);
-				            	
-				                try {
-				                	String ticketobjstr = new HttpClientUtil().doPostEntity(ssoserver_url, map, "utf-8");
-				                	if (StringUtil.isEmptyWithTrim(ticketobjstr) == false) {
-				                		ticketobj = new ObjectMapper().readValue(ticketobjstr, DZFSession.class);
-				                		if (StringUtil.isEmptyWithTrim(ticketobj.getPk_user()) == false)
-				                		{
-				                			isSuccess = true;
-				                		}
-				                	}
-					               
-				                } catch (Exception e) {
-				                	//filter 写不写log？
-				                }
-				                if (isSuccess)
-				                {
-				                	pk_user = ticketobj.getPk_user();
-	
-									DzfSessionTool.fillValueToHttpSession(ticketobj, session);
-									
-									DzfSessionContext.getInstance().AddUserSession(session);
-									
-				                	if (DzfSessionContext.getInstance().getSessionByPkUser(pk_user) != null && !DzfSessionContext.getInstance().getSessionByPkUser(pk_user).getId().equals(session.getId())) 
-				                	{
-				                		DzfSessionContext.getInstance().DelUserSessionByPkUser(pk_user, false);
-				                	}
-									
-									RSACoderUtils.createToken(session);
-									//写登录成功信息到客户端
-									DzfCookieTool.writeCookie(session, request, response);
-									
-									//走到这里，cookie和session已不能删除了。
-									bDeleteCookie = false;	
-									bDeleteSession = false;
-									
-									int iIndex = longurl.indexOf(contextpath);
-									res.sendRedirect(longurl.substring(0, iIndex + contextpath.length()) + (qz == null ? "" : "?qz=" + qz));
-
-				                }
-				                else
-				                {
-				                	errorRetMsg = "无权操作,请联系管理员";
+						if (StringUtil.isEmptyWithTrim(ticket) == false)
+						{
+							boolean isSuccess = false;
+							DZFSession ticketobj = null;
 							
-									bDeleteCookie = true;	
-									bDeleteSession = true;
-			
-				                }
-							}
-							else
-							{
-								String encoderURL = URLEncoder.encode(longurl, "UTF-8");
-								//没有用户，也没有ticket
-								//跳转至ssoserver用户登录
-								StringBuffer newurl = new StringBuffer();
-								newurl.append(ssoserver);
-								newurl.append(loginjsp);
-								newurl.append("?service=");
-								newurl.append(encoderURL);
-								newurl.append("&appid=");
-								newurl.append(appid);
-								res.sendRedirect(newurl.toString());
+							String ssoserver_url = ssoserver + "TicketServlet";
+          
+			            	Map<String, String> map = new HashMap<String, String>();
+			            	map.put("ticket", ticket);
+			            	
+			                try {
+			                	String ticketobjstr = new HttpClientUtil().doPostEntity(ssoserver_url, map, "utf-8");
+			                	if (StringUtil.isEmptyWithTrim(ticketobjstr) == false) {
+			                		ticketobj = new ObjectMapper().readValue(ticketobjstr, DZFSession.class);
+			                		if (StringUtil.isEmptyWithTrim(ticketobj.getPk_user()) == false)
+			                		{
+			                			isSuccess = true;
+			                		}
+			                	}
+				               
+			                } catch (Exception e) {
+			                	//filter 写不写log？
+			                }
+			                if (isSuccess)
+			                {
+			                	pk_user = ticketobj.getPk_user();
+
+								DzfSessionTool.fillValueToHttpSession(ticketobj, session);
 								
-							}
-							return;
-//						}
-//						else
-//						{
-//							//已经登录成功，什么都不用做
-//						}
+								DzfSessionContext.getInstance().AddUserSession(session);
+								
+			                	if (DzfSessionContext.getInstance().getSessionByPkUser(pk_user) != null && !DzfSessionContext.getInstance().getSessionByPkUser(pk_user).getId().equals(session.getId())) 
+			                	{
+			                		DzfSessionContext.getInstance().DelUserSessionByPkUser(pk_user, false);
+			                	}
+								
+								RSACoderUtils.createToken(session);
+								//写登录成功信息到客户端
+								DzfCookieTool.writeCookie(session, request, response);
+								
+								
+								
+								int iIndex = longurl.indexOf(contextpath);
+								res.sendRedirect(longurl.substring(0, iIndex + contextpath.length()) + (qz == null ? "" : "?qz=" + qz));
+
+			                }
+			                else
+			                {
+			                	errorRetMsg = "无权操作,请联系管理员";
+						
+								bDeleteCookie = true;	
+								bDeleteSession = true;
+		
+			                }
+						}
+						else
+						{
+							String encoderURL = URLEncoder.encode(longurl, "UTF-8");
+							//没有用户，也没有ticket
+							//跳转至ssoserver用户登录
+							StringBuffer newurl = new StringBuffer();
+							newurl.append(ssoserver);
+							newurl.append(loginjsp);
+							newurl.append("?service=");
+							newurl.append(encoderURL);
+							newurl.append("&appid=");
+							newurl.append(appid);
+							res.sendRedirect(newurl.toString());
+							
+						}
+						return;
 					}
 					else
 					{
@@ -347,18 +356,7 @@ public class DZFRequestFilter implements Filter {
 				//filter写日志否？
 			}
 			finally {
-				if (bDeleteCookie)
-				{
-					//删除cookie
-					DzfCookieTool.deleteCookie(request, response);
-				}
-				if (bDeleteSession)
-				{
-					if (session.getAttribute(IGlobalConstants.login_user) != null)
-					{
-						DzfSessionTool.clearSession(session);
-					}
-				}
+				
 				if (errorRetMsg != null)
 				{
 					res.getWriter().write("{\"success\":false,\"msg\":\"" + errorRetMsg + "\",\"status\":-300}");

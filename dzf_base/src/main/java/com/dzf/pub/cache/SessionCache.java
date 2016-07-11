@@ -3,6 +3,7 @@ package com.dzf.pub.cache;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 
 import javax.servlet.http.HttpSession;
@@ -23,7 +24,7 @@ public class SessionCache {
 	
 	private static SessionCache sc = new SessionCache();
 
-
+	private static ConcurrentHashMap<String, DZFSessionVO> m_hmSession = new ConcurrentHashMap<String, DZFSessionVO>();
 	private Logger log = Logger.getLogger(this.getClass());
 
 	private DZFSessionVO getSessionByRedis(Jedis jedis, final String userid) {
@@ -127,29 +128,36 @@ public class SessionCache {
 		return dzfsession;
 	}
 	private void add(final String key, final DZFSessionVO m, final int iExpiredSecond) {
-		RedisClient.getInstance().exec(new IRedisCallback() {
-			@Override
-			public Object exec(Jedis jedis) {
-				String realKey = "dzfsso" + key;
-				
-				ReentrantLock lock = SessionLock.getInstance().get(realKey);
-				try {
-					//加锁
-					lock.lock();
-
-					jedis.set(realKey.getBytes(), IOUtils.getBytes(m, new SessionSerializable()));
-					jedis.expire(realKey, iExpiredSecond);		//失效时间
+		if (RedisClient.getInstance().getEnabled() == false)
+		{
+			m_hmSession.put(key, m);
+		}
+		else
+		{
+			RedisClient.getInstance().exec(new IRedisCallback() {
+				@Override
+				public Object exec(Jedis jedis) {
+					String realKey = "dzfsso" + key;
 					
-
-				} catch (Exception e) {
-					log.error("缓存服务器连接未成功。", e);
-				} finally {
-					if (lock != null)
-						lock.unlock();
+					ReentrantLock lock = SessionLock.getInstance().get(realKey);
+					try {
+						//加锁
+						lock.lock();
+	
+						jedis.set(realKey.getBytes(), IOUtils.getBytes(m, new SessionSerializable()));
+						jedis.expire(realKey, iExpiredSecond);		//失效时间
+						
+	
+					} catch (Exception e) {
+						log.error("缓存服务器连接未成功。", e);
+					} finally {
+						if (lock != null)
+							lock.unlock();
+					}
+					return null;
 				}
-				return null;
-			}
-		});
+			});
+		}
 	}
 
 	public void remove(final String pk_user, String appid, int iExpiredSecond) {
@@ -206,30 +214,38 @@ public class SessionCache {
 		if (userid == null) {
 			return null;
 		}
-		DZFSessionVO sessionvo = (DZFSessionVO) RedisClient.getInstance().exec(new IRedisCallback() {
+		DZFSessionVO sessionvo = null;
+		if (RedisClient.getInstance().getEnabled() == false)
+		{
+			sessionvo = m_hmSession.get(userid);
+		}
+		else
+		{
+			sessionvo = (DZFSessionVO) RedisClient.getInstance().exec(new IRedisCallback() {
 
-			@Override
-			public Object exec(Jedis jedis) {
-				if (jedis == null)	//没有缓存服务器，查不到值
-				{
-					return null;
-				}
-				DZFSessionVO sessionvo = getSessionByRedis(jedis, userid);
-				if (sessionvo == null) {
-					ReentrantLock lock = SessionLock.getInstance().get("dzfsso" + userid);	//注意，lock的id，与getSessionByRedis 调用的不一样
-					try {
-						lock.lock();
-						sessionvo = getSessionByRedis(jedis, userid);
-
-					} finally {
-						if (lock != null)
-							lock.unlock();
+				@Override
+				public Object exec(Jedis jedis) {
+					if (jedis == null)	//没有缓存服务器，查不到值
+					{
+						return null;
 					}
+					DZFSessionVO sessionvo = getSessionByRedis(jedis, userid);
+					if (sessionvo == null) {
+						ReentrantLock lock = SessionLock.getInstance().get("dzfsso" + userid);	//注意，lock的id，与getSessionByRedis 调用的不一样
+						try {
+							lock.lock();
+							sessionvo = getSessionByRedis(jedis, userid);
+	
+						} finally {
+							if (lock != null)
+								lock.unlock();
+						}
+					}
+	
+					return sessionvo;
 				}
-
-				return sessionvo;
-			}
-		});
+			});
+		}
 
 		return sessionvo;
 	}

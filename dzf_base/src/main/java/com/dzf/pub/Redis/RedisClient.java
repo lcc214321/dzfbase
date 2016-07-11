@@ -21,7 +21,10 @@ public class RedisClient {
 
 	// 新增启用参数
 	private boolean isEnabled = true;
-
+	public boolean getEnabled()
+	{
+		return isEnabled;
+	}
 	private RedisClient() {
 		// initialPool();
 		// initialShardedPool();

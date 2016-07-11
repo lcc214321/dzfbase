@@ -1,5 +1,8 @@
 package com.dzf.pub.session;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
@@ -62,22 +65,26 @@ public class DzfCookieTool {
 		return null;
 	}
 	/**
-	 * 删除客户端cookie
+	 * 删除客户端cookie中appid信息
 	 * @param request
 	 * @param response
 	 */
 	public static void deleteCookie(ServletRequest request, ServletResponse response)
 	{
+		String contentPath = ((HttpServletRequest)request).getContextPath() + "/";
 		Cookie[] cookies = ((HttpServletRequest)request).getCookies();
+		
 		for (Cookie cookie : cookies) {
-			if ("dzfsso".equals(cookie.getName())) {
+			if ("dzfsso".equals(cookie.getName())) 
+			{
+				cookie.getValue();
 				cookie.setMaxAge(0);
-				cookie.setPath("/");
+				cookie.setPath(contentPath);
 				((HttpServletResponse)response).addCookie(cookie);
-			}else
-			if ("dzfcorp".equals(cookie.getName())) {
+			}
+			else if ("dzfcorp".equals(cookie.getName())) {
 				cookie.setMaxAge(0);
-				cookie.setPath("/");
+				cookie.setPath(contentPath);
 				((HttpServletResponse)response).addCookie(cookie);
 			} 
 		}
@@ -90,26 +97,35 @@ public class DzfCookieTool {
 	 */
 	public static void writeCookie(HttpSession session, ServletRequest request, ServletResponse response)
 	{
+		String pk_user = (String)session.getAttribute(IGlobalConstants.login_user);
+		
+		String appid = (String)session.getAttribute(IGlobalConstants.appid);
+		
+		String contentPath = ((HttpServletRequest)request).getContextPath() + "/";
+		
 		StringBuffer sb = new StringBuffer();
 		sb.append(request.getRemoteAddr());
 		sb.append(",");
-		sb.append((String)session.getAttribute(IGlobalConstants.login_user));
+		sb.append(pk_user);
+		
 		sb.append(",");
-		sb.append((String)session.getAttribute(IGlobalConstants.appid));
+		sb.append(appid);
+
 		try {
 			String encryptToken = new String(UrlBase64.encode(RSACoder.encryptByPublicKey(sb.toString().getBytes(), RsaKeyCache.getInstance().getPublicKey())));
 			
 			Cookie cookie = new Cookie("dzfsso", encryptToken);
-			cookie.setPath("/");
+			cookie.setPath(contentPath);
 			((HttpServletResponse)response).addCookie(cookie);
 			
 			String pk_corp = (String)session.getAttribute(IGlobalConstants.login_corp);
 			pk_corp = (pk_corp == null ? "nullxx" : pk_corp);
+			
 			//公司cookie，des加密
 			Encode DesEncoder = new Encode();
 			String encryptPk_corp =  new String(UrlBase64.encode(DesEncoder.encode(pk_corp).getBytes()));
 			cookie = new Cookie("dzfcorp", encryptPk_corp);
-			cookie.setPath("/");
+			cookie.setPath(contentPath);
 			((HttpServletResponse)response).addCookie(cookie);
 		}
 		catch  (Exception e)
