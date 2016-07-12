@@ -64,6 +64,7 @@ public class SoftReferenceMap<K, V>  {
 
 
     public V put(K key, V value) {
+    	clearMap();
         SoftValue<K, V> softReference = new SoftValue<K, V>(key, value, queue);
         temp.put(key, softReference);
         return null;
