@@ -36,7 +36,7 @@ import com.dzf.pub.cache.ServletRequestCache;
 import com.dzf.pub.cache.SessionCache;
 import com.dzf.pub.framework.rsa.RSACoderUtils;
 import com.dzf.pub.httpclient.HttpClientUtil;
-import com.dzf.pub.session.DZFSession;
+
 import com.dzf.pub.session.DzfCookieTool;
 import com.dzf.pub.session.DzfSessionTool;
 import com.dzf.pub.util.RSAUtils;
@@ -139,72 +139,53 @@ public class DZFRequestFilter implements Filter {
 						if (StringUtil.isEmptyWithTrim(realtoken) == false)
 						{
 							String[] sa = realtoken.split(",");
-							String remoteIp = sa[0];
+							String strUUID = sa[0];
 							pk_user = sa[1];
 							String appid_intoken = sa[2];
 	
+							//从redis服务器检查此用户是否有在其它客户端在线，也就是当前用户是否被踢
+							DZFSessionVO sessionvo_ByUserid = SessionCache.getInstance().getByUserID(pk_user, appid);
 							
-							if (StringUtil.isEmptyWithTrim(sessionUser))
+							if (sessionvo_ByUserid != null)
 							{
-								//当客户端token存在，tomcat服务器缓存里面又没有用户session时，才到redis服务器检查是否有在线信息
-								DZFSessionVO sessionvo = SessionCache.getInstance().get(pk_user);
-								List<DZFSession> listRedisSession = new ArrayList<DZFSession>();
-								
-								boolean bFound = false;						//成功从redis服务器找到session标志
-								DZFSession dzfCacheSession = null;
-								if (sessionvo != null)
+								if (strUUID.equals(sessionvo_ByUserid.getUuid()))
 								{
-									DZFSession[] sessions = sessionvo.getSessions();
-									for (DZFSession cachesession : sessions)
+									if (StringUtil.isEmptyWithTrim(sessionUser))
 									{
-										if (bFound == false 
-												&& appid.equals(appid_intoken)
-												&& appid.equals(cachesession.getAppid()) 
-												&& remoteIp.equals(req.getRemoteAddr()))
-										{
-											dzfCacheSession = cachesession;
-											bFound = true;
-										}
-										else
-										{
-											listRedisSession.add(cachesession);
-										}
+										//把redis缓存信息重新赋值给httpsession
+										DzfSessionTool.fillValueToHttpSession(sessionvo_ByUserid, session);
+			
+//										DzfSessionContext.getInstance().AddUserSession(session);
+										RSACoderUtils.createToken(session);
+									}
+									else
+									{
+										//一切正常的交互，不需做什么工作，向redis服务器同步session信息在定时服务中运行，不能在每次客户端请求都做。
 									}
 								}
-								if (bFound)	//redis服务器上有在线用户信息
-								{
-									//服务器session没有用户信息，重新自动登录
-									//这种情况可能是集群转发服务器发生了跳转，跳至新服务器，或者应用服务器重启，redis服务器与客户端还正常运行
-									if (DzfSessionContext.getInstance().getSessionByPkUser(pk_user) != null && !DzfSessionContext.getInstance().getSessionByPkUser(pk_user).getId().equals(session.getId())) 
-				                	{
-				                		DzfSessionContext.getInstance().DelUserSessionByPkUser(pk_user, false);
-				                	}
-									//把redis缓存信息重新赋值给httpsession
-									DzfSessionTool.fillValueToHttpSession(dzfCacheSession, session);
-		
-									DzfSessionContext.getInstance().AddUserSession(session);
-									RSACoderUtils.createToken(session);
-			
-								}
 								else
 								{
-									//客户端有token，但应用服务器无session，redis缓存服务器也没有登录信息，不能登录
+									//此用户在其他客户端登录了
 									bDeleteCookie = true;
+									bDeleteSession = true;
+									session.setAttribute(IGlobalConstants.logout_msg,"被其它用户强制退出！");
 								}
 							}
-							else		//有应用服务器用户
+							else if (StringUtil.isEmptyWithTrim(sessionUser) == false)
 							{
-								//应用服务器上有用户信息，只需判断token用户与应用服务器用户是否一致即可
-								if (sessionUser.equals(pk_user) == false)
+								//cookie存在，httpseesion也存在，但redis缓存没有了，只要cookie中的用户与session中的用户一致，即可继续使用
+								if (sessionUser.equals(pk_user))
 								{
-									//这种情况应该是客户端由A用户登录成功过，又由B用户成功登录，但B用户信息没有成功写到客户端COOKIE，
-									//这时A用户属于退出状态，B用户登录又不完整，不能算成功登录，所以需要清缓存
-									bDeleteSession = true;
-									bDeleteCookie = true;
+
+									//httpsession 重新缓存到redis
+									SessionCache.getInstance().addSession(session);
+
 								}
 								else
 								{
-									//一切正常的交互，不需做什么工作，向redis服务器同步session信息在定时服务中运行，不能在每次客户端请求都做。
+									//这种情况不太可能出现, 
+									bDeleteCookie = true;
+									bDeleteSession = true;
 								}
 							}
 						}
@@ -231,125 +212,125 @@ public class DZFRequestFilter implements Filter {
 				//session修改开始结束
 				
 				
-				
-				//SSOServer跳转
-				
-				String contextpath = req.getContextPath();
-				String longurl = req.getRequestURL().toString();
-				String pk_user_session = (String)session.getAttribute(IGlobalConstants.login_user);
-				
-				String qz = request.getParameter("qz");	//提示信息
-//				if (StringUtil.isEmptyWithTrim(pk_user) && (longurl.indexOf("/login.jsp") >= 0 || longurl.endsWith(contextpath) || longurl.endsWith(contextpath + "/")))
-				if (StringUtil.isEmptyWithTrim(pk_user_session))
-				{
-					String path = this.getClass().getClassLoader().getResource("").getPath();
-		
-				
-					String regex = "(WEB-INF)[\\/\\\\]{1}(classes)";
-					Pattern p = Pattern.compile(regex);
-					Matcher m = p.matcher(path);
-					
-					if(m.find()) {
-						
-						path = path.substring(0, m.start());
-					}
-	
-					String os = System.getProperties().getProperty("os.name");
-					if (path.startsWith("/") && os != null && os.toLowerCase().startsWith("win"))
-					{
-						path = path.substring(1);
-					}
-					File f = new File(path + "login.jsp");
-	
-					if (f.exists() == false)	//没有login.jsp则是通过ssoserver统一登录
-					{
-						if (StringUtil.isEmptyWithTrim(ticket) == false)
-						{
-							boolean isSuccess = false;
-							DZFSession ticketobj = null;
-							
-							String ssoserver_url = ssoserver + "TicketServlet";
-          
-			            	Map<String, String> map = new HashMap<String, String>();
-			            	map.put("ticket", ticket);
-			            	
-			                try {
-			                	String ticketobjstr = new HttpClientUtil().doPostEntity(ssoserver_url, map, "utf-8");
-			                	if (StringUtil.isEmptyWithTrim(ticketobjstr) == false) {
-			                		ticketobj = new ObjectMapper().readValue(ticketobjstr, DZFSession.class);
-			                		if (StringUtil.isEmptyWithTrim(ticketobj.getPk_user()) == false)
-			                		{
-			                			isSuccess = true;
-			                		}
-			                	}
-				               
-			                } catch (Exception e) {
-			                	//filter 写不写log？
-			                }
-			                if (isSuccess)
-			                {
-			                	pk_user = ticketobj.getPk_user();
-
-								DzfSessionTool.fillValueToHttpSession(ticketobj, session);
-								
-								DzfSessionContext.getInstance().AddUserSession(session);
-								
-			                	if (DzfSessionContext.getInstance().getSessionByPkUser(pk_user) != null && !DzfSessionContext.getInstance().getSessionByPkUser(pk_user).getId().equals(session.getId())) 
-			                	{
-			                		DzfSessionContext.getInstance().DelUserSessionByPkUser(pk_user, false);
-			                	}
-								
-								RSACoderUtils.createToken(session);
-								//写登录成功信息到客户端
-								DzfCookieTool.writeCookie(session, request, response);
-								
-								
-								
-								int iIndex = longurl.indexOf(contextpath);
-								res.sendRedirect(longurl.substring(0, iIndex + contextpath.length()) + (qz == null ? "" : "?qz=" + qz));
-
-			                }
-			                else
-			                {
-			                	errorRetMsg = "无权操作,请联系管理员";
-						
-								bDeleteCookie = true;	
-								bDeleteSession = true;
-		
-			                }
-						}
-						else
-						{
-							String encoderURL = URLEncoder.encode(longurl, "UTF-8");
-							//没有用户，也没有ticket
-							//跳转至ssoserver用户登录
-							StringBuffer newurl = new StringBuffer();
-							newurl.append(ssoserver);
-							newurl.append(loginjsp);
-							newurl.append("?service=");
-							newurl.append(encoderURL);
-							newurl.append("&appid=");
-							newurl.append(appid);
-							res.sendRedirect(newurl.toString());
-							
-						}
-						return;
-					}
-					else
-					{
-						//开发调试过程有login.jsp, 保留原交互
-					}
-				}
-				else
-				{
-					//用户已经登陆成功，如果有ticket后缀，则跳转一下，删掉t=xxx长串
-					if (StringUtil.isEmptyWithTrim(ticket) == false)
-					{
-						int iIndex = longurl.indexOf(contextpath);
-						res.sendRedirect(longurl.substring(0, iIndex + contextpath.length()) + (qz == null ? "" : "?qz=" + qz));
-						return;
-					}
-				}
+			
+//				//SSOServer跳转
+//				
+//				String contextpath = req.getContextPath();
+//				String longurl = req.getRequestURL().toString();
+//				String pk_user_session = (String)session.getAttribute(IGlobalConstants.login_user);
+//				
+//				String qz = request.getParameter("qz");	//提示信息
+//
+//				if (StringUtil.isEmptyWithTrim(pk_user_session))
+//				{
+//					String path = this.getClass().getClassLoader().getResource("").getPath();
+//		
+//				
+//					String regex = "(WEB-INF)[\\/\\\\]{1}(classes)";
+//					Pattern p = Pattern.compile(regex);
+//					Matcher m = p.matcher(path);
+//					
+//					if(m.find()) {
+//						
+//						path = path.substring(0, m.start());
+//					}
+//	
+//					String os = System.getProperties().getProperty("os.name");
+//					if (path.startsWith("/") && os != null && os.toLowerCase().startsWith("win"))
+//					{
+//						path = path.substring(1);
+//					}
+//					File f = new File(path + "login.jsp");
+//	
+//					if (f.exists() == false)	//没有login.jsp则是通过ssoserver统一登录
+//					{
+//						if (StringUtil.isEmptyWithTrim(ticket) == false)
+//						{
+//							boolean isSuccess = false;
+//							DZFSessionVO ticketobj = null;
+//							
+//							String ssoserver_url = ssoserver + "TicketServlet";
+//          
+//			            	Map<String, String> map = new HashMap<String, String>();
+//			            	map.put("ticket", ticket);
+//			            	
+//			                try {
+//			                	String ticketobjstr = new HttpClientUtil().doPostEntity(ssoserver_url, map, "utf-8");
+//			                	if (StringUtil.isEmptyWithTrim(ticketobjstr) == false) {
+//			                		ticketobj = new ObjectMapper().readValue(ticketobjstr, DZFSessionVO.class);
+//			                		if (StringUtil.isEmptyWithTrim(ticketobj.getPk_user()) == false)
+//			                		{
+//			                			isSuccess = true;
+//			                		}
+//			                	}
+//				               
+//			                } catch (Exception e) {
+//			                	//filter 写不写log？
+//			                }
+//			                if (isSuccess)
+//			                {
+//			                	pk_user = ticketobj.getPk_user();
+//
+//								DzfSessionTool.fillValueToHttpSession(ticketobj, session);
+//								
+////								DzfSessionContext.getInstance().AddUserSession(session);
+//								
+////			                	if (DzfSessionContext.getInstance().getSessionByPkUser(pk_user) != null && !DzfSessionContext.getInstance().getSessionByPkUser(pk_user).getId().equals(session.getId())) 
+////			                	{
+////			                		DzfSessionContext.getInstance().DelUserSessionByPkUser(pk_user, false);
+////			                	}
+//								
+//								RSACoderUtils.createToken(session);
+//								//写登录成功信息到客户端
+//								DzfCookieTool.writeCookie(session, request, response);
+//								
+//								
+//								
+//								int iIndex = longurl.indexOf(contextpath);
+//								res.sendRedirect(longurl.substring(0, iIndex + contextpath.length()) + (qz == null ? "" : "?qz=" + qz));
+//
+//			                }
+//			                else
+//			                {
+//			                	errorRetMsg = "无权操作,请联系管理员";
+//						
+//								bDeleteCookie = true;	
+//								bDeleteSession = true;
+//		
+//			                }
+//						}
+//						else
+//						{
+//							String encoderURL = URLEncoder.encode(longurl, "UTF-8");
+//							//没有用户，也没有ticket
+//							//跳转至ssoserver用户登录
+//							StringBuffer newurl = new StringBuffer();
+//							newurl.append(ssoserver);
+//							newurl.append(loginjsp);
+//							newurl.append("?service=");
+//							newurl.append(encoderURL);
+//							newurl.append("&appid=");
+//							newurl.append(appid);
+//							res.sendRedirect(newurl.toString());
+//							
+//						}
+//						return;
+//					}
+//					else
+//					{
+//						//开发调试过程有login.jsp, 保留原交互
+//					}
+//				}
+//				else
+//				{
+//					//用户已经登陆成功，如果有ticket后缀，则跳转一下，删掉t=xxx长串
+//					if (StringUtil.isEmptyWithTrim(ticket) == false)
+//					{
+//						int iIndex = longurl.indexOf(contextpath);
+//						res.sendRedirect(longurl.substring(0, iIndex + contextpath.length()) + (qz == null ? "" : "?qz=" + qz));
+//						return;
+//					}
+//				}
 			}
 			catch (Exception e)
 			{
@@ -367,6 +348,7 @@ public class DZFRequestFilter implements Filter {
 			}
 
 			////ssoserver跳转 结束
+
 			
 			String url = req.getRequestURI();
 			if( req!=null && (url.endsWith("DzfApplet.jar")||url.endsWith("fileupload.jar") || url.endsWith(".css") || url.endsWith(".js")  || url.endsWith(".jpg") || url.endsWith(".png") || url.endsWith(".gif"))){

@@ -9,7 +9,6 @@ import com.dzf.framework.comn.NetObjectInputStream;
 import com.dzf.framework.comn.NetObjectOutputStream;
 import com.dzf.model.pub.DZFSessionVO;
 import com.dzf.pub.cache.AbstractSerializable;
-import com.dzf.pub.session.DZFSession;
 
 public class TicketSerializable extends AbstractSerializable<DZFSessionVO> {
 
@@ -20,13 +19,12 @@ public class TicketSerializable extends AbstractSerializable<DZFSessionVO> {
 	@Override
 	public void setSerializable(DZFSessionVO sessionvo, NetObjectOutputStream nos) throws IOException {
 		
-		DZFSession session = sessionvo.getSessions()[0];
 		
-		write(nos, session.getPk_corp());
-		write(nos, session.getPk_user());
-		write(nos, session.getDate());
-		write(nos, session.getRemoteIp());
-		Set<Integer> hsset = session.getDzfMap();
+		write(nos, sessionvo.getPk_corp());
+		write(nos, sessionvo.getPk_user());
+		write(nos, sessionvo.getDate());
+		write(nos, sessionvo.getRemoteIp());
+		Set<Integer> hsset = sessionvo.getDzfMap();
 		int iDzfMapLen = (hsset == null ? 0 : hsset.size());
 		writeInt(nos, iDzfMapLen);
 		if (iDzfMapLen > 0)
@@ -37,10 +35,10 @@ public class TicketSerializable extends AbstractSerializable<DZFSessionVO> {
 				writeInt(nos, it.next());
 			}
 		}
-		write(nos, session.getRemoteIp());
-		nos.writeLong(session.getLasttime());
-		write(nos, session.getSessionid());
-		write(nos, session.getAppid());
+		write(nos, sessionvo.getRemoteIp());
+		nos.writeLong(sessionvo.getLasttime());
+		write(nos, sessionvo.getSessionid());
+		write(nos, sessionvo.getAppid());
 		
 	}
 
@@ -52,11 +50,11 @@ public class TicketSerializable extends AbstractSerializable<DZFSessionVO> {
 		Set<Integer> hsset = null;
 		
 
-		DZFSession session = new DZFSession();
-		session.setPk_corp(readerString(nos, -1));
-		session.setPk_user(readerString(nos, -1));
-		session.setDate(readerString(nos, -1));
-		session.setRemoteIp(readerString(nos, -1));
+		DZFSessionVO sessionvo = new DZFSessionVO();
+		sessionvo.setPk_corp(readerString(nos, -1));
+		sessionvo.setPk_user(readerString(nos, -1));
+		sessionvo.setDate(readerString(nos, -1));
+		sessionvo.setRemoteIp(readerString(nos, -1));
 
 		iDzfMapLen = nos.readInt();
 		
@@ -67,15 +65,14 @@ public class TicketSerializable extends AbstractSerializable<DZFSessionVO> {
 			{
 				hsset.add(nos.readInt());
 			}
-			session.setDzfMap(hsset);
+			sessionvo.setDzfMap(hsset);
 		}
-		session.setRemoteIp(readerString(nos, -1));
-		session.setLasttime(nos.readLong());
-		session.setSessionid(readerString(nos, -1));
-		session.setAppid(readerString(nos, -1));
+		sessionvo.setRemoteIp(readerString(nos, -1));
+		sessionvo.setLasttime(nos.readLong());
+		sessionvo.setSessionid(readerString(nos, -1));
+		sessionvo.setAppid(readerString(nos, -1));
 			
-		DZFSessionVO sessionvo = new DZFSessionVO();
-		sessionvo.setSessions(new DZFSession[] {session});
+		
 		return sessionvo;
 	}
 

@@ -4,6 +4,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
+import com.dzf.model.pub.DZFSessionVO;
 import com.dzf.pub.DzfSessionContext;
 import com.dzf.pub.IGlobalConstants;
 import com.dzf.pub.StringUtil;
@@ -13,9 +14,10 @@ public class DzfSessionTool {
 	public DzfSessionTool() {
 		// TODO Auto-generated constructor stub
 	}
-	public static DZFSession createSession(HttpSession httpsession)
+	public static DZFSessionVO createSession(HttpSession httpsession)
 	{
-		DZFSession session = new DZFSession();
+		DZFSessionVO session = new DZFSessionVO();
+		session.setUuid((String)httpsession.getAttribute(IGlobalConstants.uuid));
 		session.setPk_user((String)httpsession.getAttribute(IGlobalConstants.login_user));
 		session.setPk_corp((String)httpsession.getAttribute(IGlobalConstants.login_corp));
 		session.setAppid((String)httpsession.getAttribute(IGlobalConstants.appid));
@@ -29,13 +31,11 @@ public class DzfSessionTool {
 		return session;
 		
 	}
-	public static void fillValueToHttpSession(DZFSession dzfsession, HttpSession httpsession)
+	public static void fillValueToHttpSession(DZFSessionVO dzfsession, HttpSession httpsession)
 	{
+		httpsession.setAttribute(IGlobalConstants.uuid, dzfsession.getUuid());
 		httpsession.setAttribute(IGlobalConstants.login_user, dzfsession.getPk_user());
-		if (dzfsession.getPk_corp() != null)
-		{
-			httpsession.setAttribute(IGlobalConstants.login_corp, dzfsession.getPk_corp());
-		}
+
 		httpsession.setAttribute(IGlobalConstants.appid, dzfsession.getAppid());
 		httpsession.setAttribute(IGlobalConstants.login_date, dzfsession.getDate());
 		if (dzfsession.getDzfMap() != null)
@@ -43,6 +43,10 @@ public class DzfSessionTool {
 			httpsession.setAttribute(IGlobalConstants.POWER_MAP, dzfsession.getDzfMap());
 		}
 		httpsession.setAttribute(IGlobalConstants.remote_address, dzfsession.getRemoteIp());
+		if (dzfsession.getPk_corp() != null)
+		{
+			httpsession.setAttribute(IGlobalConstants.login_corp, dzfsession.getPk_corp());
+		}
 		if (dzfsession.getToken() != null)
 		{
 			httpsession.setAttribute(IGlobalConstants.login_token, dzfsession.getToken());
@@ -54,13 +58,17 @@ public class DzfSessionTool {
 	}
 	public static void clearSession(HttpSession httpsession)
 	{
-		//退出的信息也要清除
-		httpsession.removeAttribute(IGlobalConstants.logout_msg);
 		
+		//退出的信息也要清除
+		
+		httpsession.removeAttribute(IGlobalConstants.uuid);
 		httpsession.removeAttribute(IGlobalConstants.login_user);
 		httpsession.removeAttribute(IGlobalConstants.appid);
 		httpsession.removeAttribute(IGlobalConstants.login_date);
-		httpsession.removeAttribute(IGlobalConstants.POWER_MAP);
+		if (httpsession.getAttribute(IGlobalConstants.POWER_MAP) != null)
+		{
+			httpsession.removeAttribute(IGlobalConstants.POWER_MAP);
+		}
 		httpsession.removeAttribute(IGlobalConstants.remote_address);
 		if (httpsession.getAttribute(IGlobalConstants.login_corp) != null)
 		{

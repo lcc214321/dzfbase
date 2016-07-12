@@ -8,7 +8,6 @@ import java.util.Set;
 import com.dzf.framework.comn.NetObjectInputStream;
 import com.dzf.framework.comn.NetObjectOutputStream;
 import com.dzf.model.pub.DZFSessionVO;
-import com.dzf.pub.session.DZFSession;
 
 public class SessionSerializable extends AbstractSerializable<DZFSessionVO> {
 
@@ -22,32 +21,26 @@ public class SessionSerializable extends AbstractSerializable<DZFSessionVO> {
 //		{
 //			writeObject(nos, sessionvo.getSessions());
 //		}
-		DZFSession[] sessionarray = sessionvo.getSessions();
-		int iDzfMapLen = 0;
-		Set<Integer> hsset = null;
-		writeInt(nos, sessionarray.length);
-		for (DZFSession session : sessionarray)
+		
+		write(nos, sessionvo.getPk_corp());
+		write(nos, sessionvo.getPk_user());
+		write(nos, sessionvo.getDate());
+		write(nos, sessionvo.getRemoteIp());
+		Set<Integer> hsset = sessionvo.getDzfMap();
+		int iDzfMapLen = (hsset == null ? 0 : hsset.size());
+		writeInt(nos, iDzfMapLen);
+		if (iDzfMapLen > 0)
 		{
-			write(nos, session.getPk_corp());
-			write(nos, session.getPk_user());
-			write(nos, session.getDate());
-			write(nos, session.getRemoteIp());
-			hsset = session.getDzfMap();
-			iDzfMapLen = (hsset == null ? 0 : hsset.size());
-			writeInt(nos, iDzfMapLen);
-			if (iDzfMapLen > 0)
+			Iterator<Integer> it = hsset.iterator();
+			while (it.hasNext())
 			{
-				Iterator<Integer> it = hsset.iterator();
-				while (it.hasNext())
-				{
-					writeInt(nos, it.next());
-				}
+				writeInt(nos, it.next());
 			}
-			write(nos, session.getRemoteIp());
-			nos.writeLong(session.getLasttime());
-			write(nos, session.getSessionid());
-			write(nos, session.getAppid());
 		}
+		nos.writeLong(sessionvo.getLasttime());
+		write(nos, sessionvo.getSessionid());
+		write(nos, sessionvo.getAppid());
+		write(nos, sessionvo.getUuid());
 		
 	}
 
@@ -67,35 +60,27 @@ public class SessionSerializable extends AbstractSerializable<DZFSessionVO> {
 		int iDzfMapLen = 0;
 		Set<Integer> hsset = null;
 		
-		int arraylen = (int) nos.readInt();
-		DZFSession[] sessionarray = new DZFSession[arraylen];
-		DZFSession session = null;
-		for (int i = 0; i < arraylen; i++)
-		{
-			session = new DZFSession();
-			session.setPk_corp(readerString(nos, -1));
-			session.setPk_user(readerString(nos, -1));
-			session.setDate(readerString(nos, -1));
-			session.setRemoteIp(readerString(nos, -1));
+		sessionvo.setPk_corp(readerString(nos, -1));
+		sessionvo.setPk_user(readerString(nos, -1));
+		sessionvo.setDate(readerString(nos, -1));
+		sessionvo.setRemoteIp(readerString(nos, -1));
 
-			iDzfMapLen = nos.readInt();
-			
-			if (iDzfMapLen > 0)
+		iDzfMapLen = nos.readInt();
+		
+		if (iDzfMapLen > 0)
+		{
+			hsset = new HashSet<Integer>();
+			for (int j = 0; j < iDzfMapLen; j++)
 			{
-				hsset = new HashSet();
-				for (int j = 0; j < iDzfMapLen; j++)
-				{
-					hsset.add(nos.readInt());
-				}
-				session.setDzfMap(hsset);
+				hsset.add(nos.readInt());
 			}
-			session.setRemoteIp(readerString(nos, -1));
-			session.setLasttime(nos.readLong());
-			session.setSessionid(readerString(nos, -1));
-			session.setAppid(readerString(nos, -1));
-			sessionarray[i] = session;
+			sessionvo.setDzfMap(hsset);
 		}
-		sessionvo.setSessions(sessionarray);
+		sessionvo.setLasttime(nos.readLong());
+		sessionvo.setSessionid(readerString(nos, -1));
+		sessionvo.setAppid(readerString(nos, -1));
+		sessionvo.setUuid(readerString(nos, -1));
+		
 		return sessionvo;
 	}
 

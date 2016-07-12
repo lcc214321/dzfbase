@@ -6,6 +6,8 @@ import java.util.TreeMap;
 
 public interface IGlobalConstants extends IDefaultValue{
 
+	//uuid , 每个客户端的唯一的uuid
+	public final static String uuid = "uuid";
 	//应用类型
 	public final static String appid = "appid"; 
 	//客户端地址

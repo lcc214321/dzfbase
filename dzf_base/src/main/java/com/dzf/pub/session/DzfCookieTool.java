@@ -2,6 +2,7 @@ package com.dzf.pub.session;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -104,7 +105,12 @@ public class DzfCookieTool {
 		String contentPath = ((HttpServletRequest)request).getContextPath() + "/";
 		
 		StringBuffer sb = new StringBuffer();
-		sb.append(request.getRemoteAddr());
+		UUID uuid = UUID.randomUUID();
+	    String strUUID = uuid.toString(); 
+	    
+	    session.setAttribute(IGlobalConstants.uuid, strUUID);
+	    
+		sb.append(strUUID);
 		sb.append(",");
 		sb.append(pk_user);
 		
