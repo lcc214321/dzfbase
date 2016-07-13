@@ -32,7 +32,7 @@ public class DzfSessionRedisSynchronizeService extends TimerTask {
 				continue;
 			}
 			
-			SessionCache.getInstance().addSession(session);
+			SessionCache.getInstance().synchronizeSession(session);
 		}
 
 	}

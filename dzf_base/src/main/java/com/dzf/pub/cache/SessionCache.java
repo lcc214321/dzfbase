@@ -85,14 +85,7 @@ public class SessionCache {
 				}
 			}
 		}
-		else
-		{
-			//redis 掉了，没有信息，加上去
-			dzfSessionListVo = new DZFSessionListVO();
-			listDzfSessionVo = new ArrayList<DZFSessionVO>();
-			listDzfSessionVo.add(newSessionVo);
-			dzfSessionListVo.setListSessionVO(listDzfSessionVo);
-		}
+
 		if (oldSessionVO != null && oldSessionVO.getLasttime() < newSessionVo.getLasttime())
 		{
 			listDzfSessionVo.remove(oldSessionVO);
