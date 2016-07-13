@@ -243,11 +243,8 @@ public class SessionCache {
 				try {
 					//加锁
 					lock.lock();
-
-					jedis.set(key.getBytes(), IOUtils.getBytes(m, new SessionSerializable()));
-					jedis.expire(key.getBytes(), iExpiredSecond);		//失效时间
-					
-
+					//带失效时间
+					jedis.setex(key.getBytes(), iExpiredSecond, IOUtils.getBytes(m, new SessionSerializable()));
 				} catch (Exception e) {
 					log.error("缓存服务器连接未成功。", e);
 				} finally {
