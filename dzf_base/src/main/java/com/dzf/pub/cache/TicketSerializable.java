@@ -39,7 +39,7 @@ public class TicketSerializable extends AbstractSerializable<DZFSessionVO> {
 		nos.writeLong(sessionvo.getLasttime());
 		write(nos, sessionvo.getSessionid());
 		write(nos, sessionvo.getAppid());
-		
+		write(nos, sessionvo.getUuid());
 	}
 
 	@Override
@@ -71,6 +71,7 @@ public class TicketSerializable extends AbstractSerializable<DZFSessionVO> {
 		sessionvo.setLasttime(nos.readLong());
 		sessionvo.setSessionid(readerString(nos, -1));
 		sessionvo.setAppid(readerString(nos, -1));
+		sessionvo.setUuid(readerString(nos, -1));
 			
 		
 		return sessionvo;

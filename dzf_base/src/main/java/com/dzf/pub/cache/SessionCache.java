@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import redis.clients.jedis.Jedis;
 
 import com.dzf.framework.comn.IOUtils;
+import com.dzf.model.pub.DZFSessionListVO;
 import com.dzf.model.pub.DZFSessionVO;
 import com.dzf.pub.IGlobalConstants;
 import com.dzf.pub.StringUtil;
@@ -24,12 +25,12 @@ public class SessionCache {
 	
 	private static SessionCache sc = new SessionCache();
 
-	private static ConcurrentHashMap<String, DZFSessionVO> m_hmSessionByUserID = new ConcurrentHashMap<String, DZFSessionVO>();
-	private static ConcurrentHashMap<String, DZFSessionVO> m_hmSession = new ConcurrentHashMap<String, DZFSessionVO>();
+	private static ConcurrentHashMap<String, DZFSessionListVO> m_hmSessionByUserID = new ConcurrentHashMap<String, DZFSessionListVO>();
+	private static ConcurrentHashMap<String, DZFSessionListVO> m_hmSession = new ConcurrentHashMap<String, DZFSessionListVO>();
 	private Logger log = Logger.getLogger(this.getClass());
 
-	private DZFSessionVO getSessionByRedis(Jedis jedis, final String strUUID) {
-		DZFSessionVO obj = null;
+	private DZFSessionListVO getSessionByRedis(Jedis jedis, final String strUUID) {
+		DZFSessionListVO obj = null;
 		try {
 
 		
@@ -38,78 +39,98 @@ public class SessionCache {
 			if (bs == null) {
 				return null;
 			}
-			obj = (DZFSessionVO) IOUtils.getObject(bs, new SessionSerializable());
+			obj = (DZFSessionListVO) IOUtils.getObject(bs, new SessionSerializable());
 		} catch (Exception e) {
 			log.error("缓存服务器连接未成功。");
 			return null;
 		}
 		return obj;
 	}
-//	public void addSession(HttpSession session)
-//	{
-//		String pk_user = (String)session.getAttribute(IGlobalConstants.login_user);
-//		
-//		if (StringUtil.isEmptyWithTrim(pk_user))
-//		{
-//			return;
-//		}
-//		boolean isOld = false;	//session是否比缓存上的还旧
-//		DZFSession[] sessions = null;
-//		long latestTime = session.getLastAccessedTime();
-//
-//		List<DZFSession> listDzfSession = new ArrayList<DZFSession>();
-//		
-//		String appid = (String)session.getAttribute(IGlobalConstants.appid);
-//
-//		
-//		DZFSessionVO sessionvo = SessionCache.getInstance().get(pk_user);
-//		
-//		if (sessionvo != null)
-//		{
-//			sessions = sessionvo.getSessions();
-//			for (DZFSession s : sessions)
-//			{
-//				//最后操作时间更新
-//				if ((s.getAppid() == null ? "" : s.getAppid()).equals(appid == null ? "" : appid) == false)
-//				{
-//					if (System.currentTimeMillis() - s.getLasttime() < session.getMaxInactiveInterval() * 1000)//超时的也删掉
-//						listDzfSession.add(s);
-//				}
-//				else
-//				{
-//					//即使是相同的app，也要判断新add过来的时间是否是最新的，
-//					if (s.getLasttime() > session.getLastAccessedTime())
-//					{
-//						isOld = true;
-//						break;
-//					}
-//				}
-//				//找所有客户端的最后操作时间（重复登录场景)
-//				if (s.getLasttime() > latestTime)
-//				{
-//					latestTime = s.getLasttime();
-//				}
-//
-//			}
-//			
-//		}
-//		else
-//		{
-//			sessionvo = new DZFSessionVO();
-//		}
-//		
-//		if (isOld)	//拿来更新的session比redis上已被其他服务器更新的旧，不做处理。
-//		{
-//			return;
-//		}
-//		
-//		DZFSession newRedissession = createSession(session);
-//		listDzfSession.add(newRedissession);
-//
-//		sessionvo.setSessions(listDzfSession.toArray(new DZFSession[0]));
-//		
-//		add(pk_user, sessionvo, (int)(session.getMaxInactiveInterval() - (System.currentTimeMillis() - latestTime) / 1000));
-//	}
+	/**
+	 * 同步session， 不同步的话redis 的session可能会掉线 
+	 * 同步是针对redis进行的！！
+	 * @param session
+	 */
+	public void synchronizeSession(HttpSession session)
+	{
+		if (RedisClient.getInstance().getEnabled() == false)
+		{
+			return;
+		}
+		String pk_user = (String)session.getAttribute(IGlobalConstants.login_user);
+		
+		if (StringUtil.isEmptyWithTrim(pk_user))
+		{
+			return;
+		}
+		String uuid = (String)session.getAttribute(IGlobalConstants.uuid);
+		String appid = (String)session.getAttribute(IGlobalConstants.appid);
+		
+		//先同步uuid做key的缓存
+		
+		DZFSessionListVO dzfSessionListVo = getByUUID(uuid);
+		List<DZFSessionVO> listDzfSessionVo = null;
+		
+		DZFSessionVO newSessionVo = DzfSessionTool.createSession(session);
+		DZFSessionVO oldSessionVO = null;
+		if (dzfSessionListVo != null)
+		{
+			listDzfSessionVo = dzfSessionListVo.getListSessionVO();
+			for (DZFSessionVO svo : listDzfSessionVo)
+			{
+				if (svo.getAppid().equals(appid))
+				{
+					oldSessionVO = svo;
+					break;
+				}
+			}
+		}
+		else
+		{
+			//redis 掉了，没有信息，加上去
+			dzfSessionListVo = new DZFSessionListVO();
+			listDzfSessionVo = new ArrayList<DZFSessionVO>();
+			listDzfSessionVo.add(newSessionVo);
+			dzfSessionListVo.setListSessionVO(listDzfSessionVo);
+		}
+		if (oldSessionVO != null && oldSessionVO.getLasttime() < newSessionVo.getLasttime())
+		{
+			listDzfSessionVo.remove(oldSessionVO);
+			listDzfSessionVo.add(newSessionVo);
+		}
+		
+		add(uuid, dzfSessionListVo, session.getMaxInactiveInterval());
+		
+		//更新pk_user做key的缓存
+		
+		oldSessionVO = null;
+		
+		dzfSessionListVo = getByUserID(pk_user);
+		if (dzfSessionListVo != null)
+		{
+			listDzfSessionVo = dzfSessionListVo.getListSessionVO();
+			for (DZFSessionVO svo : listDzfSessionVo)
+			{
+				if (svo.getAppid().equals(appid) && svo.getUuid().equals(uuid))
+				{
+					oldSessionVO = svo;
+					break;
+				}
+			}
+		}
+		
+		if (oldSessionVO != null && oldSessionVO.getLasttime() < newSessionVo.getLasttime())
+		{
+			listDzfSessionVo.remove(oldSessionVO);
+			listDzfSessionVo.add(newSessionVo);
+			
+			String realKey = "dzfsso" + pk_user;
+			add(realKey, dzfSessionListVo, session.getMaxInactiveInterval());
+		}
+		
+		
+		
+	}
 	
 	public void addSession(HttpSession session)
 	{
@@ -123,16 +144,11 @@ public class SessionCache {
 		}
 		
 		DZFSessionVO newRedissessionvo = DzfSessionTool.createSession(session);
-		//expired second
-		int iSecond = session.getMaxInactiveInterval() - (int)(System.currentTimeMillis() - newRedissessionvo.getLasttime()) / 1000;
 		
-		addByUUID(newRedissessionvo, iSecond);
+		addByUUID(newRedissessionvo, session.getMaxInactiveInterval());
 		
-		DZFSessionVO oldResisSessionVO = getByUserID(userid, appid);
-		if (oldResisSessionVO == null || oldResisSessionVO.getLasttime() < newRedissessionvo.getLasttime())
-		{
-			addByUserID(newRedissessionvo, iSecond);
-		}
+		addByUserID(newRedissessionvo, session.getMaxInactiveInterval());
+
 	}
 	
 	private DZFSessionVO createSession(HttpSession session)
@@ -153,148 +169,261 @@ public class SessionCache {
 		
 		return dzfsession;
 	}
-	private void addByUserID(final DZFSessionVO m, final int iExpiredSecond) {
+	/**
+	 * DZFSessionVO 中的数据按照appid分组
+	 * @param m
+	 * @param iExpiredSecond
+	 */
+	private void addByUserID(final DZFSessionVO m, int iExpiredSecond) {
 		final String userid = m.getPk_user();
-		String appid = m.getAppid();
-		final String realKey = appid + userid;
-		if (RedisClient.getInstance().getEnabled() == false)
+		
+		
+		DZFSessionListVO dzfSessionListVo = getByUserID(userid);
+		List<DZFSessionVO> listDzfSessionVO = null;
+		
+		DZFSessionVO oldvo = null;
+		
+		long latesttime = m.getLasttime();
+		if (dzfSessionListVo != null)
 		{
-			m_hmSessionByUserID.put(realKey, m);
+			listDzfSessionVO = dzfSessionListVo.getListSessionVO();
+			listDzfSessionVO = dzfSessionListVo.getListSessionVO();
+			for (DZFSessionVO sessionvo : listDzfSessionVO)
+			{
+				if (sessionvo.getLasttime() > latesttime)
+				{
+					latesttime = sessionvo.getLasttime();
+				}
+				if (sessionvo.getAppid().equals(m.getAppid()))
+				{
+					oldvo = sessionvo;
+					
+				}
+			}
 		}
 		else
 		{
-			RedisClient.getInstance().exec(new IRedisCallback() {
-				@Override
-				public Object exec(Jedis jedis) {
-
-					
-					ReentrantLock lock = SessionLock.getInstance().get(realKey);
-					try {
-						//加锁
-						lock.lock();
-	
-						jedis.set(realKey.getBytes(), IOUtils.getBytes(m, new SessionSerializable()));
-						jedis.expire(realKey, iExpiredSecond);		//失效时间
-						
-	
-					} catch (Exception e) {
-						log.error("缓存服务器连接未成功。", e);
-					} finally {
-						if (lock != null)
-							lock.unlock();
-					}
-					return null;
-				}
-			});
+			dzfSessionListVo = new DZFSessionListVO();
+			listDzfSessionVO = new ArrayList<DZFSessionVO>();
+			dzfSessionListVo.setListSessionVO(listDzfSessionVO);
+		}
+		if (oldvo != null)
+		{
+			listDzfSessionVO.remove(oldvo);
+			listDzfSessionVO.add(m);
+		}
+		else
+		{
+			listDzfSessionVO.add(m);
+		}
+		
+		String realKey = "dzfsso" + userid;
+		
+		if (RedisClient.getInstance().getEnabled() == false)
+		{
+			m_hmSessionByUserID.put(realKey, dzfSessionListVo);
+		}
+		else
+		{
+			 DZFSessionListVO newvo = dzfSessionListVo;
+			
+			int iSecond = iExpiredSecond - (int)(System.currentTimeMillis() - latesttime) / 1000;
+			
+			add(realKey, dzfSessionListVo, iSecond);
 		}
 	}
-	private void addByUUID(final DZFSessionVO m, final int iExpiredSecond) {
+	private void add(final String key, final DZFSessionListVO m, final int iExpiredSecond)
+	{
+		RedisClient.getInstance().exec(new IRedisCallback() {
+			@Override
+			public Object exec(Jedis jedis) {
+
+				
+				ReentrantLock lock = SessionLock.getInstance().get(key);
+				try {
+					//加锁
+					lock.lock();
+
+					jedis.set(key.getBytes(), IOUtils.getBytes(m, new SessionSerializable()));
+					jedis.expire(key.getBytes(), iExpiredSecond);		//失效时间
+					
+
+				} catch (Exception e) {
+					log.error("缓存服务器连接未成功。", e);
+				} finally {
+					if (lock != null)
+						lock.unlock();
+				}
+				return null;
+			}
+		});
+	}
+	/**
+	 * DZFSessionVO 中的值按照appid分组
+	 * @param m
+	 * @param iExpiredSecond
+	 */
+	private void addByUUID(final DZFSessionVO m, int iExpiredSecond) {
 		final String strUUID = m.getUuid();
 		
+		DZFSessionListVO dzfSessionListVo = getByUUID(m.getUuid());
+		List<DZFSessionVO> listDzfSessionVO = null;
+		
+		DZFSessionVO oldvo = null;
+		
+		long latesttime = m.getLasttime();
+		if (dzfSessionListVo != null)
+		{
+			listDzfSessionVO = dzfSessionListVo.getListSessionVO();
+
+			for (DZFSessionVO sessionvo : listDzfSessionVO)
+			{
+				if (sessionvo.getLasttime() > latesttime)
+				{
+					latesttime = sessionvo.getLasttime();
+				}
+				if (sessionvo.getAppid().equals(m.getAppid()))
+				{
+					oldvo = sessionvo;
+					
+				}
+			}
+		}
+		else
+		{
+			dzfSessionListVo = new DZFSessionListVO();
+			listDzfSessionVO = new ArrayList<DZFSessionVO>();
+			dzfSessionListVo.setListSessionVO(listDzfSessionVO);
+		}
+		if (oldvo != null)
+		{
+			if (oldvo.getLasttime() < m.getLasttime())
+			{
+				listDzfSessionVO.remove(oldvo);
+				listDzfSessionVO.add(m);
+			}
+		}
+		else
+		{
+			listDzfSessionVO.add(m);
+		}
+		
 		if (RedisClient.getInstance().getEnabled() == false)
 		{
-			m_hmSession.put(strUUID, m);
+			m_hmSession.put(strUUID, dzfSessionListVo);
+		}
+		else
+		{			
+			int iSecond = iExpiredSecond - (int)(System.currentTimeMillis() - latesttime) / 1000;
+			
+			add(strUUID, dzfSessionListVo, iSecond);
+		}
+	}
+	private void removeByUserID(final String uuid, final String pk_user, int iExpiredSecond) {
+		
+		DZFSessionListVO sessionlistvo = getByUserID(pk_user);
+		final String realKey = "dzfsso" + pk_user;
+		if (sessionlistvo != null)
+		{
+			List<DZFSessionVO> listSessionVO = sessionlistvo.getListSessionVO();
+			List<DZFSessionVO> listDelete = new ArrayList<DZFSessionVO>();
+			for (DZFSessionVO svo : listSessionVO)
+			{
+				if (svo.getUuid().equals(uuid))
+				{
+					listDelete.add(svo);
+				}
+			}
+			for (DZFSessionVO svo : listDelete)
+			{
+				listSessionVO.remove(svo);
+			}
+			if (listSessionVO.size() > 0)
+			{
+				if (RedisClient.getInstance().getEnabled() == false)
+				{
+					m_hmSessionByUserID.remove(realKey);
+				}
+				else
+				{
+					add(realKey, sessionlistvo, iExpiredSecond);
+				}
+			}
+			else
+			{
+				if (RedisClient.getInstance().getEnabled() == false)
+				{
+					m_hmSessionByUserID.remove(realKey);
+				}
+				else
+				{
+					RedisClient.getInstance().exec(new IRedisCallback() {
+						
+						@Override
+						public Object exec(Jedis jedis) {
+							try {
+								jedis.del(realKey.getBytes());
+								
+							} catch (Exception e) {
+			
+								log.error("缓存服务器连接未成功。", e);
+								return null;
+							}
+							return null;
+						}
+					});
+				}
+			}
+		}
+		
+		
+	}
+	public void removeByUUID(final String strUUID, final String pk_user, int iExpiredSecond) {
+
+
+		if (pk_user != null)	//把pk_user登录信息中包含当前uuid的信息全部删除
+		{
+			removeByUserID(strUUID, pk_user, iExpiredSecond);
+		}
+		
+		if (RedisClient.getInstance().getEnabled() == false)
+		{
+			m_hmSession.remove(strUUID);
 		}
 		else
 		{
 			RedisClient.getInstance().exec(new IRedisCallback() {
+	
 				@Override
 				public Object exec(Jedis jedis) {
-				
-					
-					ReentrantLock lock = SessionLock.getInstance().get(strUUID);
 					try {
-						//加锁
-						lock.lock();
-	
-						jedis.set(strUUID.getBytes(), IOUtils.getBytes(m, new SessionSerializable()));
-						jedis.expire(strUUID, iExpiredSecond);		//失效时间
+						jedis.del(strUUID.getBytes());
 						
-	
 					} catch (Exception e) {
+	
 						log.error("缓存服务器连接未成功。", e);
-					} finally {
-						if (lock != null)
-							lock.unlock();
+						return null;
 					}
 					return null;
 				}
 			});
 		}
 	}
-	public void removeByUserID(final String pk_user, final String appid) {
-		
-		DZFSessionVO sessionvo = getByUserID(pk_user, appid);
-		
-		if (sessionvo != null)
-		{
-			final String realKey = appid + pk_user;
-			if (RedisClient.getInstance().getEnabled() == false)
-			{
-				m_hmSessionByUserID.remove(realKey);
-			}
-			else
-			{
-				RedisClient.getInstance().exec(new IRedisCallback() {
-		
-					@Override
-					public Object exec(Jedis jedis) {
-						try {
-							jedis.del(realKey.getBytes());
-							
-						} catch (Exception e) {
-		
-							log.error("缓存服务器连接未成功。", e);
-							return null;
-						}
-						return null;
-					}
-				});
-			}
-		}
-	}
-	public void removeByUUID(final String strUUID) {
-
-		DZFSessionVO sessionvo = getByUUID(strUUID);
-		if (sessionvo != null)
-		{
-			if (RedisClient.getInstance().getEnabled() == false)
-			{
-				m_hmSession.remove(strUUID);
-			}
-			else
-			{
-				RedisClient.getInstance().exec(new IRedisCallback() {
-		
-					@Override
-					public Object exec(Jedis jedis) {
-						try {
-							jedis.del(strUUID.getBytes());
-							
-						} catch (Exception e) {
-		
-							log.error("缓存服务器连接未成功。", e);
-							return null;
-						}
-						return null;
-					}
-				});
-			}
-		}
-	}
-	public DZFSessionVO getByUserID(final String userid, final String appid) {
+	public DZFSessionListVO getByUserID(final String userid) {
 		if (userid == null) {
 			return null;
 		}
-		final String realKey = appid + userid;
-		DZFSessionVO sessionvo = null;
+		DZFSessionListVO sessionListVo = null; 
+		
+		final String realKey = "dzfsso" + userid;
+
 		if (RedisClient.getInstance().getEnabled() == false)
 		{
-			sessionvo = m_hmSessionByUserID.get(realKey);
+			sessionListVo = m_hmSessionByUserID.get(realKey);
 		}
 		else
 		{
-			sessionvo = (DZFSessionVO) RedisClient.getInstance().exec(new IRedisCallback() {
+			sessionListVo = (DZFSessionListVO) RedisClient.getInstance().exec(new IRedisCallback() {
 
 				@Override
 				public Object exec(Jedis jedis) {
@@ -303,12 +432,12 @@ public class SessionCache {
 						return null;
 					}
 
-					DZFSessionVO sessionvo = getSessionByRedis(jedis, realKey);
-					if (sessionvo == null) {
+					DZFSessionListVO sessionlistvo = getSessionByRedis(jedis, realKey);
+					if (sessionlistvo == null) {
 						ReentrantLock lock = SessionLock.getInstance().get(realKey);	//注意，lock的id，与getSessionByRedis 调用的不一样
 						try {
 							lock.lock();
-							sessionvo = getSessionByRedis(jedis, realKey);
+							sessionlistvo = getSessionByRedis(jedis, realKey);
 	
 						} finally {
 							if (lock != null)
@@ -316,25 +445,42 @@ public class SessionCache {
 						}
 					}
 	
-					return sessionvo;
+					return sessionlistvo;
 				}
 			});
 		}
-
-		return sessionvo;
+		return sessionListVo;
 	}
-	public DZFSessionVO getByUUID(final String strUUID) {
+	public DZFSessionVO getByUserID(String userid, String appid) {
+
+		DZFSessionListVO sessionListVo = getByUserID(userid);
+		
+		
+		if (sessionListVo != null)
+		{
+			for (DZFSessionVO svo : sessionListVo.getListSessionVO())
+			{
+				if (svo.getAppid().equals(appid))
+				{
+					return svo;
+				}
+			}
+		}
+		return null;
+	}
+	public DZFSessionListVO getByUUID(final String strUUID) {
 		if (strUUID == null) {
 			return null;
 		}
-		DZFSessionVO sessionvo = null;
+		DZFSessionListVO sessionListVo = null; 
+
 		if (RedisClient.getInstance().getEnabled() == false)
 		{
-			sessionvo = m_hmSession.get(strUUID);
+			sessionListVo = m_hmSession.get(strUUID);
 		}
 		else
 		{
-			sessionvo = (DZFSessionVO) RedisClient.getInstance().exec(new IRedisCallback() {
+			sessionListVo = (DZFSessionListVO) RedisClient.getInstance().exec(new IRedisCallback() {
 
 				@Override
 				public Object exec(Jedis jedis) {
@@ -342,12 +488,12 @@ public class SessionCache {
 					{
 						return null;
 					}
-					DZFSessionVO sessionvo = getSessionByRedis(jedis, strUUID);
-					if (sessionvo == null) {
+					DZFSessionListVO sessionlistvo = getSessionByRedis(jedis, strUUID);
+					if (sessionlistvo == null) {
 						ReentrantLock lock = SessionLock.getInstance().get(strUUID);	//注意，lock的id，与getSessionByRedis 调用的不一样
 						try {
 							lock.lock();
-							sessionvo = getSessionByRedis(jedis, strUUID);
+							sessionlistvo = getSessionByRedis(jedis, strUUID);
 	
 						} finally {
 							if (lock != null)
@@ -355,12 +501,28 @@ public class SessionCache {
 						}
 					}
 	
-					return sessionvo;
+					return sessionlistvo;
 				}
 			});
 		}
+		
+		return sessionListVo;
+	}
+	public DZFSessionVO getByUUID(String strUUID, String appid) {
 
-		return sessionvo;
+		DZFSessionListVO sessionListVo = getByUUID(strUUID);
+
+		if (sessionListVo != null)
+		{
+			for (DZFSessionVO svo : sessionListVo.getListSessionVO())
+			{
+				if (svo.getAppid().equals(appid))
+				{
+					return svo;
+				}
+			}
+		}
+		return null;
 	}
 	private SessionCache() {
 

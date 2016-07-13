@@ -4,8 +4,9 @@ import java.io.Serializable;
 import java.util.Set;
 
 import com.dzf.pub.SuperVO;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-
+@JsonIgnoreProperties(value = {"status","page","rows","sort","order","parent_id","version","children","pkfieldName","parentPKFieldName","tableName","attributeNames","primaryKey"})
 public class DZFSessionVO extends SuperVO {
 
 	private String uuid;

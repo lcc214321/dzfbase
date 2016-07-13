@@ -104,11 +104,15 @@ public class DzfCookieTool {
 		
 		String contentPath = ((HttpServletRequest)request).getContextPath() + "/";
 		
+		String strUUID = (String)session.getAttribute(IGlobalConstants.uuid);
+		if (strUUID == null)
+		{
+			UUID uuid = UUID.randomUUID();
+		    strUUID = uuid.toString(); 
+		    session.setAttribute(IGlobalConstants.uuid, strUUID);
+		}
+		
 		StringBuffer sb = new StringBuffer();
-		UUID uuid = UUID.randomUUID();
-	    String strUUID = uuid.toString(); 
-	    
-	    session.setAttribute(IGlobalConstants.uuid, strUUID);
 	    
 		sb.append(strUUID);
 		sb.append(",");
