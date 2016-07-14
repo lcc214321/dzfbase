@@ -21,14 +21,14 @@ public class BaseTimerCache<K,V> {
 		}
 		System.out.println(0);
 	}
-	private int remain=2000;
+	private int remain=2000;//存在2000秒
 	 public int getRemain() {
 		return remain;
 	}
 	public void setRemain(int remain) {
 		this.remain = remain;
 	}
-	private int FreshTimerIntervalSeconds = 200;//200秒
+	private int FreshTimerIntervalSeconds = 200;//每隔200秒刷新一次。
 	public int getFreshTimerIntervalSeconds() {
 		return FreshTimerIntervalSeconds;
 	}
