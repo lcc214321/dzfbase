@@ -99,4 +99,12 @@ private ConcurrentHashMap<K, TimeVO<K,V>> hm=new ConcurrentHashMap<K, TimeVO<K,V
 		TimeVO<K,V> t=new TimeVO<K, V>(k, v);
 		hm.put(k, t);
 	}
+	
+	public void remove(K k){
+		hm.remove(k);
+	}
+	
+	public boolean containsKey(K k){
+		return hm.containsKey(k);
+	}
 }
