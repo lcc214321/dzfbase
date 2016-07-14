@@ -16,7 +16,7 @@ public abstract class AbstractSerializable<T> implements IDzfSerializable<T> {
 		int len=0;
 		byte[] bs=new byte[0];
 		if(str!=null){
-		 bs=str.getBytes();
+		 bs=str.getBytes("utf-8");
 		 len=bs.length;
 		}
 		nos.writeByte(len);
@@ -108,7 +108,7 @@ public abstract class AbstractSerializable<T> implements IDzfSerializable<T> {
 		byte[] bs = new byte[len];
 		if (len > 0)
 			nos.read(bs);
-		return len > 0 ? new String(bs) : null;
+		return len > 0 ? new String(bs, "utf-8") : null;
 	}
 	/**
 	 * 与writeLongString配对
