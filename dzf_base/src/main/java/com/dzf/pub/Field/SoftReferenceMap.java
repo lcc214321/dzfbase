@@ -17,7 +17,7 @@ public class SoftReferenceMap<K, V>  {
 		l++;
 		}
 		}catch(OutOfMemoryError e){
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
     private static final long serialVersionUID = 1L;

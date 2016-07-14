@@ -30,7 +30,7 @@ public static String Md5(byte[] plainText) {
 //   System.out.println("mdt 16bit: " + buf.toString().substring(8, 24));
 //   System.out.println("md5 32bit: " + buf.toString() );
   } catch (NoSuchAlgorithmException e) {
-   e.printStackTrace();
+   //e.printStackTrace();
   }
   return result;
 }

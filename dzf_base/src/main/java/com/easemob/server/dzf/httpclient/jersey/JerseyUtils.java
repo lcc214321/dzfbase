@@ -122,7 +122,7 @@ public class JerseyUtils {
             objectNode.put("statusCode", response.getStatus());
 
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         return objectNode;
@@ -192,7 +192,7 @@ public class JerseyUtils {
 
             objectNode = inBuilder.post(Entity.entity(multiPart, MediaType.MULTIPART_FORM_DATA), ObjectNode.class);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         return objectNode;
@@ -251,9 +251,9 @@ public class JerseyUtils {
 
                 clientBuilder.sslContext(sslContext).hostnameVerifier(verifier);
             } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             } catch (KeyManagementException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
 

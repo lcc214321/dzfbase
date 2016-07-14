@@ -17,7 +17,7 @@ public class BaseTimerCache<K,V> {
 			Thread.sleep(10000000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		System.out.println(0);
 	}
