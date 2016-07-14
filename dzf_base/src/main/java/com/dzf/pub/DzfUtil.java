@@ -77,7 +77,7 @@ public class DzfUtil {
 				out.write("<option  value="+year+">"+year +"</option>");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 	}
@@ -87,7 +87,7 @@ public class DzfUtil {
 					out.write("<option value="+m+">"+m+"</option>");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 			}
 	}
@@ -99,7 +99,7 @@ public class DzfUtil {
 						}
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						//e.printStackTrace();
 					}
 			}
 			
@@ -118,7 +118,7 @@ public class DzfUtil {
 							}
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
-							e.printStackTrace();
+							//e.printStackTrace();
 						}
 				}
 		}

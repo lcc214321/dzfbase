@@ -13,7 +13,7 @@ public static DataSource getDataSource(String user,String corp){
     try{
     	ds = (DataSource) SpringUtils.getBean("dataSource");
     }catch(Exception e){
-    	//e.printStackTrace();
+    	////e.printStackTrace();
     }
     if(ds == null){
     	ds  = (DataSource) SpringUtils.getBean2("dataSource");

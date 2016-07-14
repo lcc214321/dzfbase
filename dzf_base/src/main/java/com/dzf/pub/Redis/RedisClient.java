@@ -169,7 +169,7 @@ public class RedisClient {
 					jedisPool = new JedisPool(config, jedis_ip, Integer.valueOf(jedis_port), Protocol.DEFAULT_TIMEOUT,
 							jedis_pwd);
 				} catch (Exception e) {
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 				// (final GenericObjectPoolConfig poolConfig, final String host,
 				// int port,

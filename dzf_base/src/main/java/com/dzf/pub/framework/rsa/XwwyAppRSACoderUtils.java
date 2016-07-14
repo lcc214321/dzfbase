@@ -36,7 +36,7 @@ public class XwwyAppRSACoderUtils {
 //			privateKey = RSACoder.getPrivateKey(keyMap); 
 //		} catch (Exception e) {
 //			// TODO Auto-generated catch block
-//			e.printStackTrace();
+//			//e.printStackTrace();
 //		}  
 //        
 //    }
@@ -161,7 +161,7 @@ public class XwwyAppRSACoderUtils {
 //	  		str=str.trim();
 //		} catch (Exception e) {
 //			// TODO Auto-generated catch block
-//			e.printStackTrace();
+//			//e.printStackTrace();
 //		}
 //	
 //	}

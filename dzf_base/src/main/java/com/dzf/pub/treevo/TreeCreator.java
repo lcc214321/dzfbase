@@ -163,7 +163,7 @@ public class TreeCreator {
 			//	root.addChildren(otherNode);
 			//}
 		}catch(Exception e){
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 }

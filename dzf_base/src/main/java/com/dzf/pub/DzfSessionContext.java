@@ -84,7 +84,7 @@ public class DzfSessionContext {
 						loginLogVo.setLoginstatus(3);
 						getUserService().logoutLog(loginLogVo);
 					}catch(Exception e){
-						e.printStackTrace();
+						//e.printStackTrace();
 					}*/
 				}
 			}
@@ -106,7 +106,7 @@ public class DzfSessionContext {
 							loginLogVo.setLoginstatus(2);
 							getUserService().logoutLog(loginLogVo);
 						}catch(Exception e){
-							e.printStackTrace();
+							//e.printStackTrace();
 						}*/
 						
 //						DelSession(myUserMap.get(pk_user));
