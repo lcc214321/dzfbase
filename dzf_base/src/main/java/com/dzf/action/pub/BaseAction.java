@@ -2,7 +2,6 @@ package com.dzf.action.pub;
 
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
@@ -12,9 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.Manager;
-import org.apache.catalina.connector.Request;
-import org.apache.catalina.connector.RequestFacade;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -37,7 +33,6 @@ import com.dzf.pub.cache.UserCache;
 import com.dzf.pub.util.FastjsonFilter;
 import com.dzf.pub.util.JSONProcessor;
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.inject.Context;
 
 /**
  * 基础ACTION,其他ACTION继承此ACTION来获得writeJson和ActionSupport的功能
