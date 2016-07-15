@@ -133,7 +133,7 @@ public class QueryParamVO extends SuperVO {
 	@FieldAlias("ecreatedate")
 	private DZFDate ecreatedate;// 创建日期结束
 	
-	
+	private DZFBoolean sfzxm;
 	
 	
 	public DZFDate getBcreatedate() {
@@ -547,6 +547,14 @@ public class QueryParamVO extends SuperVO {
 
 	public void setIsleaf(DZFBoolean isleaf) {
 		this.isleaf = isleaf;
+	}
+
+	public DZFBoolean getSfzxm() {
+		return sfzxm;
+	}
+
+	public void setSfzxm(DZFBoolean sfzxm) {
+		this.sfzxm = sfzxm;
 	}
 	
 }
