@@ -183,9 +183,10 @@ public class DZFRequestFilter implements Filter {
 								if (sessionUser.equals(pk_user))
 								{
 
+									//!!!--- redis缓存没了不再重建，可能是服务器重启，或者网络断开，或者相同用户在其他机器登录后又退出且ngix又跳转，总之，不能轻易在此给用户回复缓存。
 									//httpsession 重新缓存到redis
-									SessionCache.getInstance().addSession(session);
-
+									//SessionCache.getInstance().addSession(session);
+									
 								}
 								else
 								{
