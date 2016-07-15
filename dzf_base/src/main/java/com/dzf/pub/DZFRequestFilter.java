@@ -158,6 +158,12 @@ public class DZFRequestFilter implements Filter {
 //										DzfSessionContext.getInstance().AddUserSession(session);
 										RSACoderUtils.createToken(session);
 									}
+									else if (sessionUser.equals(pk_user) == false)
+									{
+										//这个分支进入的几率很低，当分布式tomcat集群的jsession重复了，服务器跳转后可能会出现
+										bDeleteCookie = true;
+										bDeleteSession = true;
+									}
 									else
 									{
 										//一切正常的交互，不需做什么工作，向redis服务器同步session信息在定时服务中运行，不能在每次客户端请求都做。
