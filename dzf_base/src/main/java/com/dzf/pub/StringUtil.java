@@ -942,6 +942,7 @@ public class StringUtil
   public static String toString(Object[] arr,int slen,int elen) {
 	  	Object[] os=new Object[elen-slen];
 	  	System.arraycopy(arr, slen, os, 0, elen-slen);
+	  	Arrays.fill(os,"?");
 	    return toString(os, ",");
 	  }
   public static String toString(Object value, String delim) {
