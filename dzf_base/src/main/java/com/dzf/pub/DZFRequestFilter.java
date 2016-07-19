@@ -394,6 +394,22 @@ public class DZFRequestFilter implements Filter {
 				filterChain.doFilter(request, response);
 	        	return;
 			}
+			//扫码登录begin		    
+		    if ((url.endsWith("/css/font/font_1451959379_8626566.eot")) 
+		    		|| (url.endsWith("/css/font/font_1451959379_8626566.svg"))
+		    		|| (url.endsWith("/css/font/font_1451959379_8626566.ttf")) 
+		    		|| (url.endsWith("/css/font/font_1451959379_8626566.woff"))) {
+		        filterChain.doFilter(request, response);
+		        return;
+		    }
+
+			if ((url.endsWith("/app/loginqr!getQRCode.action"))
+					|| (url.endsWith("/app/loginqr!longConnCheck.action"))){
+				filterChain.doFilter(request, response);
+				return;
+			}
+			//扫码登录end
+			
 		    if(session!=null){
 		    	String userid = (String)session.getAttribute(IGlobalConstants.login_user);
 		    	String corp=(String) session.getAttribute(IGlobalConstants.login_corp);
