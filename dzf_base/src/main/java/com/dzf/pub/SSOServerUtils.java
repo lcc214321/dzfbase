@@ -1,9 +1,12 @@
 package com.dzf.pub;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.bouncycastle.util.encoders.UrlBase64;
@@ -21,6 +24,7 @@ public class SSOServerUtils {
 	
 	private static Map<String, DZFSessionVO> TICKET_AND_NAME = new ConcurrentHashMap<String, DZFSessionVO>(); //key：ticket, value :pk_user
 
+	private static Boolean isUsingSSOServer = null;
        
 	public static void putTicket(String ticket, DZFSessionVO dzfsessionvo)
 	{
@@ -89,6 +93,32 @@ public class SSOServerUtils {
     		}
     	}
     }
-
+    public static Boolean useSSOServer()
+    {
+    	if (isUsingSSOServer == null)
+    	{
+	    	String path = new SSOServerUtils().getClass().getClassLoader().getResource("").getPath();
+			
+			
+			String regex = "(WEB-INF)[\\/\\\\]{1}(classes)";
+			Pattern p = Pattern.compile(regex);
+			Matcher m = p.matcher(path);
+			
+			if(m.find()) {
+				
+				path = path.substring(0, m.start());
+			}
+	
+			String os = System.getProperties().getProperty("os.name");
+			if (path.startsWith("/") && os != null && os.toLowerCase().startsWith("win"))
+			{
+				path = path.substring(1);
+			}
+			File f = new File(path + "login.jsp");
+	
+			isUsingSSOServer = (f.exists() == false);
+    	}
+    	return isUsingSSOServer;
+    }
 
 }

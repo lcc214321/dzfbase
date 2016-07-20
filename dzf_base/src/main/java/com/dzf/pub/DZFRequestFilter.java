@@ -230,26 +230,7 @@ public class DZFRequestFilter implements Filter {
 //
 //				if (StringUtil.isEmptyWithTrim(pk_user_session))
 //				{
-//					String path = this.getClass().getClassLoader().getResource("").getPath();
-//		
-//				
-//					String regex = "(WEB-INF)[\\/\\\\]{1}(classes)";
-//					Pattern p = Pattern.compile(regex);
-//					Matcher m = p.matcher(path);
-//					
-//					if(m.find()) {
-//						
-//						path = path.substring(0, m.start());
-//					}
-//	
-//					String os = System.getProperties().getProperty("os.name");
-//					if (path.startsWith("/") && os != null && os.toLowerCase().startsWith("win"))
-//					{
-//						path = path.substring(1);
-//					}
-//					File f = new File(path + "login.jsp");
-//	
-//					if (f.exists() == false)	//没有login.jsp则是通过ssoserver统一登录
+//					if (SSOServerUtils.useSSOServer())	//没有login.jsp则是通过ssoserver统一登录
 //					{
 //						if (StringUtil.isEmptyWithTrim(ticket) == false)
 //						{
@@ -280,12 +261,6 @@ public class DZFRequestFilter implements Filter {
 //
 //								DzfSessionTool.fillValueToHttpSession(ticketobj, session);
 //								
-////								DzfSessionContext.getInstance().AddUserSession(session);
-//								
-////			                	if (DzfSessionContext.getInstance().getSessionByPkUser(pk_user) != null && !DzfSessionContext.getInstance().getSessionByPkUser(pk_user).getId().equals(session.getId())) 
-////			                	{
-////			                		DzfSessionContext.getInstance().DelUserSessionByPkUser(pk_user, false);
-////			                	}
 //								
 //								RSACoderUtils.createToken(session);
 //								//写登录成功信息到客户端
