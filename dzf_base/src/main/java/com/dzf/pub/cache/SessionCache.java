@@ -70,6 +70,7 @@ public class SessionCache {
 		
 		DZFSessionListVO dzfSessionListVo = getByUUID(uuid);
 		List<DZFSessionVO> listDzfSessionVo = null;
+		int iSecond = -1;
 		
 		DZFSessionVO newSessionVo = DzfSessionTool.createSession(session);
 		DZFSessionVO oldSessionVO = null;
@@ -90,9 +91,11 @@ public class SessionCache {
 		{
 			listDzfSessionVo.remove(oldSessionVO);
 			listDzfSessionVo.add(newSessionVo);
+			
+			iSecond = session.getMaxInactiveInterval() - (int)((System.currentTimeMillis() - newSessionVo.getLasttime()) / 1000);
+			add(uuid, dzfSessionListVo, iSecond);
+					
 		}
-		
-		add(uuid, dzfSessionListVo, session.getMaxInactiveInterval());
 		
 		//更新pk_user做key的缓存
 		
@@ -118,7 +121,8 @@ public class SessionCache {
 			listDzfSessionVo.add(newSessionVo);
 			
 			String realKey = "dzfsso" + pk_user;
-			add(realKey, dzfSessionListVo, session.getMaxInactiveInterval());
+			iSecond = session.getMaxInactiveInterval() - (int)((System.currentTimeMillis() - newSessionVo.getLasttime()) / 1000);
+			add(realKey, dzfSessionListVo, iSecond);
 		}
 		
 		
@@ -237,7 +241,15 @@ public class SessionCache {
 					//加锁
 					lock.lock();
 					//带失效时间
-					jedis.setex(key.getBytes(), iExpiredSecond, IOUtils.getBytes(m, new SessionSerializable()));
+					if (iExpiredSecond > 0)
+					{
+						jedis.setex(key.getBytes(), iExpiredSecond, IOUtils.getBytes(m, new SessionSerializable()));
+					}
+					else
+					{
+						//已过期，删掉
+						jedis.del(key.getBytes());
+					}
 				} catch (Exception e) {
 					log.error("缓存服务器连接未成功。", e);
 				} finally {
