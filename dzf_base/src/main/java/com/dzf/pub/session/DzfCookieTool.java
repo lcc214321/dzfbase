@@ -47,6 +47,31 @@ public class DzfCookieTool {
 		}
 		return null;
 	}
+	
+	public static String getUUID_Offline(ServletRequest request) 
+	{
+		String encriptuuid = null;
+		String uuid = null;
+		Cookie[] cookies = ((HttpServletRequest)request).getCookies();
+		try {
+			for (Cookie cookie : cookies) {
+				if ("dzfuid".equals(cookie.getName())) {
+					encriptuuid = cookie.getValue();
+					break;
+				}
+			}
+			if (encriptuuid != null)
+			{
+				uuid = new String(RSACoder.decryptByPrivateKey(UrlBase64.decode(encriptuuid.getBytes()), RsaKeyCache.getInstance().getPrivateKey()));
+			}
+		}
+		catch (Exception e)
+		{
+			Logger log = Logger.getLogger((new DzfCookieTool()).getClass());
+			log.error(e);
+		}
+		return uuid;
+	}
 	/**
 	 * 读取客户端cookie中解密的token信息
 	 * @param request
@@ -137,6 +162,7 @@ public class DzfCookieTool {
 			cookie = new Cookie("dzfcorp", encryptPk_corp);
 			cookie.setPath(contentPath);
 			((HttpServletResponse)response).addCookie(cookie);
+			
 		}
 		catch  (Exception e)
 		{
@@ -144,4 +170,58 @@ public class DzfCookieTool {
 			log.error(e);
 		}
 	}
+	/**
+	 * 写存放uuid的cookie，只有uuid一个值
+	 * @param session
+	 * @param request
+	 * @param response
+	 */
+	public static String writeCookie_UUID(HttpSession session, ServletRequest request, ServletResponse response)
+	{
+
+		String contentPath = ((HttpServletRequest)request).getContextPath() + "/";
+		
+		String strUUID = (String)session.getAttribute(IGlobalConstants.uuid);
+		if (strUUID == null)
+		{
+			UUID uuid = UUID.randomUUID();
+		    strUUID = uuid.toString(); 
+		    session.setAttribute(IGlobalConstants.uuid, strUUID);
+		}
+		
+		try {
+			String encryptToken = new String(UrlBase64.encode(RSACoder.encryptByPublicKey(strUUID.getBytes(), RsaKeyCache.getInstance().getPublicKey())));
+			
+			Cookie cookie = new Cookie("dzfuid", encryptToken);
+			cookie.setPath(contentPath);
+			((HttpServletResponse)response).addCookie(cookie);
+			
+		}
+		catch  (Exception e)
+		{
+			Logger log = Logger.getLogger((new DzfCookieTool()).getClass());
+			log.error(e);
+		}
+		return strUUID;
+	}
+//	/**
+//	 * 删除uuid的cookie 
+//	 * @param request
+//	 * @param response
+//	 */
+//	public static void deleteCookie_UUID(ServletRequest request, ServletResponse response)
+//	{
+//		String contentPath = ((HttpServletRequest)request).getContextPath() + "/";
+//		Cookie[] cookies = ((HttpServletRequest)request).getCookies();
+//		
+//		for (Cookie cookie : cookies) {
+//			if ("dzfuid".equals(cookie.getName())) 
+//			{
+//				cookie.getValue();
+//				cookie.setMaxAge(0);
+//				cookie.setPath(contentPath);
+//				((HttpServletResponse)response).addCookie(cookie);
+//			}
+//		}
+//	}
 }
