@@ -137,6 +137,21 @@ public class DZfcommonTools {
 		}
 		return result;
 	}
+	
+	public static <T extends SuperVO> Map<String, T> hashlizeObjectByPk(List<T> objs, String[] keys) 
+			throws BusinessException {
+		Map<String, T> result = new HashMap<String, T>();
+		if (objs == null || objs.isEmpty())
+			return result;
+		if (keys == null || keys.length == 0)
+			throw new BusinessException("分组字段不能为空。");
+		String key = null;
+		for (int i = 0; i < objs.size(); i++) {
+			key = getCombinesKey(objs.get(i), keys);
+			result.put(key, objs.get(i));
+		}
+		return result;
+	}
 
 	public static String getFirstCode(String childCode,String codeRule) {
 		String firstCode = "";
