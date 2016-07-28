@@ -104,7 +104,7 @@ public class DZFRequestFilter implements Filter {
 			String longurl = req.getRequestURL().toString();
 			
 			String token = DzfCookieTool.getToken(request);
-			String uuid_cookie = DzfCookieTool.getUUID_Offline(req);
+			String uuid_cookie = DzfCookieTool.getUUIDByCookie(req);
 			String ticket = request.getParameter("t");
 			
 

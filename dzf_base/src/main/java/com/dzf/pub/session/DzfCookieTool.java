@@ -48,7 +48,7 @@ public class DzfCookieTool {
 		return null;
 	}
 	
-	public static String getUUID_Offline(ServletRequest request) 
+	public static String getUUIDByCookie(ServletRequest request) 
 	{
 		String encriptuuid = null;
 		String uuid = null;
