@@ -27,6 +27,7 @@ public class SessionCache {
 
 	private static ConcurrentHashMap<String, DZFSessionListVO> m_hmSessionByUserID = new ConcurrentHashMap<String, DZFSessionListVO>();
 	private static ConcurrentHashMap<String, DZFSessionListVO> m_hmSession = new ConcurrentHashMap<String, DZFSessionListVO>();
+	private static ConcurrentHashMap<String, String> m_hmVerify = new ConcurrentHashMap<String, String>();
 	private Logger log = Logger.getLogger(this.getClass());
 
 	private DZFSessionListVO getSessionByRedis(Jedis jedis, final String strUUID) {
@@ -147,7 +148,95 @@ public class SessionCache {
 		addByUserID(newRedissessionvo, session.getMaxInactiveInterval());
 
 	}
+	/**
+	 * 写验证码
+	 * @param uuid
+	 * @param verify
+	 */
+	public void addVerify(final String uuid, final String verify)
+	{
+		final String newKey = "verify" + uuid;
+		
+		if (RedisClient.getInstance().getEnabled() == false)
+		{
+			m_hmVerify.put(newKey, verify);
+		}
+		else
+		{
+			RedisClient.getInstance().exec(new IRedisCallback() {
+				@Override
+				public Object exec(Jedis jedis) {
 	
+					
+					ReentrantLock lock = SessionLock.getInstance().get(newKey);
+					try {
+						//加锁
+						lock.lock();
+						//默认5分钟
+						jedis.setex(newKey.getBytes(), 300, verify.getBytes("utf-8"));
+	
+					} catch (Exception e) {
+						log.error("缓存服务器连接未成功。", e);
+					} finally {
+						if (lock != null)
+							lock.unlock();
+					}
+					return null;
+				}
+			});
+		}
+	}
+	/**
+	 * 用uuid读验证码
+	 * @param uuid
+	 * @return
+	 */
+	public String getVerify(String uuid)
+	{
+		String verify = null;
+		final String newKey = "verify" + uuid;
+		if (RedisClient.getInstance().getEnabled() == false)
+		{
+			verify = m_hmVerify.get(newKey);
+			if (verify != null)
+			{
+				m_hmVerify.remove(newKey);
+			}
+		}
+		else
+		{
+			verify = (String) RedisClient.getInstance().exec(new IRedisCallback() {
+
+				@Override
+				public Object exec(Jedis jedis) {
+					String ret = null;
+					if (jedis == null)	//没有缓存服务器，查不到值
+					{
+						return null;
+					}
+					ReentrantLock lock = SessionLock.getInstance().get(newKey);	
+					try {
+						lock.lock();
+						byte[] bs = jedis.get(newKey.getBytes());
+						if (bs == null) {
+							return null;
+						}
+						jedis.del(newKey.getBytes());
+						ret = new String(bs, "utf-8");
+					} catch (Exception e) {
+						log.error("缓存服务器连接未成功。", e);
+					} finally {
+						if (lock != null)
+							lock.unlock();
+					}
+
+	
+					return ret;
+				}
+			});
+		}
+		return verify;
+	}
 	private DZFSessionVO createSession(HttpSession session)
 	{
 		DZFSessionVO dzfsession = new DZFSessionVO();

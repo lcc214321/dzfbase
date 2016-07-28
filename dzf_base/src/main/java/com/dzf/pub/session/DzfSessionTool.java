@@ -61,7 +61,7 @@ public class DzfSessionTool {
 		
 		//退出的信息也要清除
 		
-		httpsession.removeAttribute(IGlobalConstants.uuid);
+//		httpsession.removeAttribute(IGlobalConstants.uuid);	//uuid永远保留
 		httpsession.removeAttribute(IGlobalConstants.login_user);
 		httpsession.removeAttribute(IGlobalConstants.appid);
 		httpsession.removeAttribute(IGlobalConstants.login_date);

@@ -104,7 +104,7 @@ public class DZFRequestFilter implements Filter {
 			String longurl = req.getRequestURL().toString();
 			
 			String token = DzfCookieTool.getToken(request);
-			
+			String uuid_cookie = DzfCookieTool.getUUID_Offline(req);
 			String ticket = request.getParameter("t");
 			
 
@@ -134,6 +134,14 @@ public class DZFRequestFilter implements Filter {
 					if (token == null)
 					{
 						//可能是登录过程，客户端无cookie
+						if (uuid_cookie == null)
+						{
+							DzfCookieTool.writeCookie_UUID(session, req, res);
+						}
+						else
+						{
+							session.setAttribute(IGlobalConstants.uuid, uuid_cookie); //恢复uuid
+						}
 					}
 					else
 					{
@@ -144,6 +152,8 @@ public class DZFRequestFilter implements Filter {
 							String strUUID = sa[0];
 							pk_user = sa[1];
 							String appid_intoken = sa[2];
+							
+							session.setAttribute(IGlobalConstants.uuid, strUUID);
 	
 							//从redis服务器检查此用户是否有在其它客户端在线，也就是当前用户是否被踢
 							DZFSessionVO sessionvo_ByUserid = SessionCache.getInstance().getByUserID(pk_user, appid);
