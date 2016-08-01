@@ -11,8 +11,8 @@ import redis.clients.jedis.Jedis;
 
 import com.dzf.framework.comn.IOUtils;
 import com.dzf.model.pub.RsaKeyVO;
-import com.dzf.pub.Redis.IRedisCallback;
-import com.dzf.pub.Redis.RedisClient;
+import com.dzf.pub.SessionRedis.IRedisSessionCallback;
+import com.dzf.pub.SessionRedis.SessionRedisClient;
 import com.dzf.pub.framework.rsa.RSACoder;
 import com.dzf.pub.util.RSAUtils;
 
@@ -50,7 +50,7 @@ public class RsaKeyCache {
  */
 	private void putKeyVO(final RsaKeyVO keyvo) {
 
-		RedisClient.getInstance().exec(new IRedisCallback() {
+		SessionRedisClient.getInstance().exec(new IRedisSessionCallback() {
 			@Override
 			public Object exec(Jedis jedis) {
 				try {
@@ -74,7 +74,7 @@ public class RsaKeyCache {
 
 //	public void remove() {
 //
-//		RedisClient.getInstance().exec(new IRedisCallback() {
+//		SessionRedisClient.getInstance().exec(new IRedisSessionCallback() {
 //
 //			@Override
 //			public Object exec(Jedis jedis) {
@@ -93,7 +93,7 @@ public class RsaKeyCache {
 
 	public RsaKeyVO getRsaKeyVO() {
 
-		RsaKeyVO  keyvo = (RsaKeyVO) RedisClient.getInstance().exec(new IRedisCallback() {
+		RsaKeyVO  keyvo = (RsaKeyVO) SessionRedisClient.getInstance().exec(new IRedisSessionCallback() {
 
 			@Override
 			public Object exec(Jedis jedis) {

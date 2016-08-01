@@ -17,8 +17,8 @@ import com.dzf.model.pub.DZFSessionListVO;
 import com.dzf.model.pub.DZFSessionVO;
 import com.dzf.pub.IGlobalConstants;
 import com.dzf.pub.StringUtil;
-import com.dzf.pub.Redis.IRedisCallback;
-import com.dzf.pub.Redis.RedisClient;
+import com.dzf.pub.SessionRedis.IRedisSessionCallback;
+import com.dzf.pub.SessionRedis.SessionRedisClient;
 import com.dzf.pub.session.DzfSessionTool;
 
 public class SessionCache {
@@ -54,7 +54,7 @@ public class SessionCache {
 	 */
 	public void synchronizeSession(HttpSession session)
 	{
-		if (RedisClient.getInstance().getEnabled() == false)
+		if (SessionRedisClient.getInstance().getEnabled() == false)
 		{
 			return;
 		}
@@ -157,13 +157,13 @@ public class SessionCache {
 	{
 		final String newKey = "verify" + uuid;
 		
-		if (RedisClient.getInstance().getEnabled() == false)
+		if (SessionRedisClient.getInstance().getEnabled() == false)
 		{
 			m_hmVerify.put(newKey, verify);
 		}
 		else
 		{
-			RedisClient.getInstance().exec(new IRedisCallback() {
+			SessionRedisClient.getInstance().exec(new IRedisSessionCallback() {
 				@Override
 				public Object exec(Jedis jedis) {
 	
@@ -195,7 +195,7 @@ public class SessionCache {
 	{
 		String verify = null;
 		final String newKey = "verify" + uuid;
-		if (RedisClient.getInstance().getEnabled() == false)
+		if (SessionRedisClient.getInstance().getEnabled() == false)
 		{
 			verify = m_hmVerify.get(newKey);
 			if (verify != null)
@@ -205,7 +205,7 @@ public class SessionCache {
 		}
 		else
 		{
-			verify = (String) RedisClient.getInstance().exec(new IRedisCallback() {
+			verify = (String) SessionRedisClient.getInstance().exec(new IRedisSessionCallback() {
 
 				@Override
 				public Object exec(Jedis jedis) {
@@ -305,7 +305,7 @@ public class SessionCache {
 		
 		String realKey = "dzfsso" + userid;
 		
-		if (RedisClient.getInstance().getEnabled() == false)
+		if (SessionRedisClient.getInstance().getEnabled() == false)
 		{
 			m_hmSessionByUserID.put(realKey, dzfSessionListVo);
 		}
@@ -320,7 +320,7 @@ public class SessionCache {
 	}
 	private void add(final String key, final DZFSessionListVO m, final int iExpiredSecond)
 	{
-		RedisClient.getInstance().exec(new IRedisCallback() {
+		SessionRedisClient.getInstance().exec(new IRedisSessionCallback() {
 			@Override
 			public Object exec(Jedis jedis) {
 
@@ -399,7 +399,7 @@ public class SessionCache {
 			listDzfSessionVO.add(m);
 		}
 		
-		if (RedisClient.getInstance().getEnabled() == false)
+		if (SessionRedisClient.getInstance().getEnabled() == false)
 		{
 			m_hmSession.put(strUUID, dzfSessionListVo);
 		}
@@ -431,7 +431,7 @@ public class SessionCache {
 			}
 			if (listSessionVO.size() > 0)
 			{
-				if (RedisClient.getInstance().getEnabled() == false)
+				if (SessionRedisClient.getInstance().getEnabled() == false)
 				{
 					m_hmSessionByUserID.remove(realKey);
 				}
@@ -442,13 +442,13 @@ public class SessionCache {
 			}
 			else
 			{
-				if (RedisClient.getInstance().getEnabled() == false)
+				if (SessionRedisClient.getInstance().getEnabled() == false)
 				{
 					m_hmSessionByUserID.remove(realKey);
 				}
 				else
 				{
-					RedisClient.getInstance().exec(new IRedisCallback() {
+					SessionRedisClient.getInstance().exec(new IRedisSessionCallback() {
 						
 						@Override
 						public Object exec(Jedis jedis) {
@@ -477,13 +477,13 @@ public class SessionCache {
 			removeByUserID(strUUID, pk_user, iExpiredSecond);
 		}
 		
-		if (RedisClient.getInstance().getEnabled() == false)
+		if (SessionRedisClient.getInstance().getEnabled() == false)
 		{
 			m_hmSession.remove(strUUID);
 		}
 		else
 		{
-			RedisClient.getInstance().exec(new IRedisCallback() {
+			SessionRedisClient.getInstance().exec(new IRedisSessionCallback() {
 	
 				@Override
 				public Object exec(Jedis jedis) {
@@ -508,13 +508,13 @@ public class SessionCache {
 		
 		final String realKey = "dzfsso" + userid;
 
-		if (RedisClient.getInstance().getEnabled() == false)
+		if (SessionRedisClient.getInstance().getEnabled() == false)
 		{
 			sessionListVo = m_hmSessionByUserID.get(realKey);
 		}
 		else
 		{
-			sessionListVo = (DZFSessionListVO) RedisClient.getInstance().exec(new IRedisCallback() {
+			sessionListVo = (DZFSessionListVO) SessionRedisClient.getInstance().exec(new IRedisSessionCallback() {
 
 				@Override
 				public Object exec(Jedis jedis) {
@@ -565,13 +565,13 @@ public class SessionCache {
 		}
 		DZFSessionListVO sessionListVo = null; 
 
-		if (RedisClient.getInstance().getEnabled() == false)
+		if (SessionRedisClient.getInstance().getEnabled() == false)
 		{
 			sessionListVo = m_hmSession.get(strUUID);
 		}
 		else
 		{
-			sessionListVo = (DZFSessionListVO) RedisClient.getInstance().exec(new IRedisCallback() {
+			sessionListVo = (DZFSessionListVO) SessionRedisClient.getInstance().exec(new IRedisSessionCallback() {
 
 				@Override
 				public Object exec(Jedis jedis) {

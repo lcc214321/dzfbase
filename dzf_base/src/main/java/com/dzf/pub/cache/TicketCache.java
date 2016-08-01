@@ -8,8 +8,8 @@ import redis.clients.jedis.Jedis;
 
 import com.dzf.framework.comn.IOUtils;
 import com.dzf.model.pub.DZFSessionVO;
-import com.dzf.pub.Redis.IRedisCallback;
-import com.dzf.pub.Redis.RedisClient;
+import com.dzf.pub.SessionRedis.IRedisSessionCallback;
+import com.dzf.pub.SessionRedis.SessionRedisClient;
 
 public class TicketCache {
 	
@@ -37,7 +37,7 @@ public class TicketCache {
 
 
 	public boolean put(final String ticket, final DZFSessionVO m) {
-		boolean bReturn =(Boolean) RedisClient.getInstance().exec(new IRedisCallback() {
+		boolean bReturn =(Boolean) SessionRedisClient.getInstance().exec(new IRedisSessionCallback() {
 			@Override
 			public Object exec(Jedis jedis) {
 				
@@ -71,7 +71,7 @@ public class TicketCache {
 		if (ticket == null) {
 			return null;
 		}
-		DZFSessionVO sessionvo = (DZFSessionVO) RedisClient.getInstance().exec(new IRedisCallback() {
+		DZFSessionVO sessionvo = (DZFSessionVO) SessionRedisClient.getInstance().exec(new IRedisSessionCallback() {
 
 			@Override
 			public Object exec(Jedis jedis) {
