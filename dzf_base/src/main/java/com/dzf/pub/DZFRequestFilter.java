@@ -64,7 +64,10 @@ public class DZFRequestFilter implements Filter {
 	public void init(FilterConfig filterConfig) throws ServletException {
 		this.filterConfig = filterConfig;
 	}
-
+	private boolean isForbiddenRedirect(String url)
+	{
+		return url.endsWith("sys/xjr_sync!sync.action") || url.endsWith("xwwy_app/busidata!dealData");
+	}
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws 
 	IOException, ServletException {
 			boolean needClearTl = false;
@@ -253,96 +256,98 @@ public class DZFRequestFilter implements Filter {
 				
 			
 				//SSOServer跳转
-				
-				String contextpath = req.getContextPath();
-				
-				String pk_user_session = (String)session.getAttribute(IGlobalConstants.login_user);
-				
-				String qz = request.getParameter("qz");	//提示信息
-
-				if (StringUtil.isEmptyWithTrim(pk_user_session))
+				if (isForbiddenRedirect(longurl) == false)	//小巨人同步接口不能跳转
 				{
-					if (SSOServerUtils.useSSOServer())	//没有login.jsp则是通过ssoserver统一登录
+					String contextpath = req.getContextPath();
+					
+					String pk_user_session = (String)session.getAttribute(IGlobalConstants.login_user);
+					
+					String qz = request.getParameter("qz");	//提示信息
+	
+					if (StringUtil.isEmptyWithTrim(pk_user_session))
 					{
-						if (StringUtil.isEmptyWithTrim(ticket) == false)
+						if (SSOServerUtils.useSSOServer())	//没有login.jsp则是通过ssoserver统一登录
 						{
-							boolean isSuccess = false;
-							DZFSessionVO ticketobj = null;
+							if (StringUtil.isEmptyWithTrim(ticket) == false)
+							{
+								boolean isSuccess = false;
+								DZFSessionVO ticketobj = null;
+								
+								String ssoserver_url = ssoserver + "TicketServlet";
+	          
+				            	Map<String, String> map = new HashMap<String, String>();
+				            	map.put("ticket", ticket);
+				            	
+				                try {
+				                	String ticketobjstr = new HttpClientUtil().doPostEntity(ssoserver_url, map, "utf-8");
+				                	if (StringUtil.isEmptyWithTrim(ticketobjstr) == false) {
+				                		ticketobj = new ObjectMapper().readValue(ticketobjstr, DZFSessionVO.class);
+				                		if (StringUtil.isEmptyWithTrim(ticketobj.getPk_user()) == false)
+				                		{
+				                			isSuccess = true;
+				                		}
+				                	}
+					               
+				                } catch (Exception e) {
+				                	//filter 写不写log？
+				                }
+				                if (isSuccess)
+				                {
+				                	pk_user = ticketobj.getPk_user();
+	
+									DzfSessionTool.fillValueToHttpSession(ticketobj, session);
+									
+									
+									RSACoderUtils.createToken(session);
+									//写登录成功信息到客户端
+									DzfCookieTool.writeCookie(session, request, response);
+									
+									
+									
+									int iIndex = longurl.indexOf(contextpath);
+									res.sendRedirect(longurl.substring(0, iIndex + contextpath.length()) + (qz == null ? "" : "?qz=" + qz));
+	
+				                }
+				                else
+				                {
+				                	errorRetMsg = "无权操作,请联系管理员";
 							
-							String ssoserver_url = ssoserver + "TicketServlet";
-          
-			            	Map<String, String> map = new HashMap<String, String>();
-			            	map.put("ticket", ticket);
-			            	
-			                try {
-			                	String ticketobjstr = new HttpClientUtil().doPostEntity(ssoserver_url, map, "utf-8");
-			                	if (StringUtil.isEmptyWithTrim(ticketobjstr) == false) {
-			                		ticketobj = new ObjectMapper().readValue(ticketobjstr, DZFSessionVO.class);
-			                		if (StringUtil.isEmptyWithTrim(ticketobj.getPk_user()) == false)
-			                		{
-			                			isSuccess = true;
-			                		}
-			                	}
-				               
-			                } catch (Exception e) {
-			                	//filter 写不写log？
-			                }
-			                if (isSuccess)
-			                {
-			                	pk_user = ticketobj.getPk_user();
-
-								DzfSessionTool.fillValueToHttpSession(ticketobj, session);
+									bDeleteCookie = true;	
+									bDeleteSession = true;
+			
+				                }
+							}
+							else
+							{
+								String encoderURL = URLEncoder.encode(longurl, "UTF-8");
+								//没有用户，也没有ticket
+								//跳转至ssoserver用户登录
+								StringBuffer newurl = new StringBuffer();
+								newurl.append(ssoserver);
+								newurl.append(loginjsp);
+								newurl.append("?service=");
+								newurl.append(encoderURL);
+								newurl.append("&appid=");
+								newurl.append(appid);
+								res.sendRedirect(newurl.toString());
 								
-								
-								RSACoderUtils.createToken(session);
-								//写登录成功信息到客户端
-								DzfCookieTool.writeCookie(session, request, response);
-								
-								
-								
-								int iIndex = longurl.indexOf(contextpath);
-								res.sendRedirect(longurl.substring(0, iIndex + contextpath.length()) + (qz == null ? "" : "?qz=" + qz));
-
-			                }
-			                else
-			                {
-			                	errorRetMsg = "无权操作,请联系管理员";
-						
-								bDeleteCookie = true;	
-								bDeleteSession = true;
-		
-			                }
+							}
+							return;
 						}
 						else
 						{
-							String encoderURL = URLEncoder.encode(longurl, "UTF-8");
-							//没有用户，也没有ticket
-							//跳转至ssoserver用户登录
-							StringBuffer newurl = new StringBuffer();
-							newurl.append(ssoserver);
-							newurl.append(loginjsp);
-							newurl.append("?service=");
-							newurl.append(encoderURL);
-							newurl.append("&appid=");
-							newurl.append(appid);
-							res.sendRedirect(newurl.toString());
-							
+							//开发调试过程有login.jsp, 保留原交互
 						}
-						return;
 					}
 					else
 					{
-						//开发调试过程有login.jsp, 保留原交互
-					}
-				}
-				else
-				{
-					//用户已经登陆成功，如果有ticket后缀，则跳转一下，删掉t=xxx长串
-					if (StringUtil.isEmptyWithTrim(ticket) == false)
-					{
-						int iIndex = longurl.indexOf(contextpath);
-						res.sendRedirect(longurl.substring(0, iIndex + contextpath.length()) + (qz == null ? "" : "?qz=" + qz));
-						return;
+						//用户已经登陆成功，如果有ticket后缀，则跳转一下，删掉t=xxx长串
+						if (StringUtil.isEmptyWithTrim(ticket) == false)
+						{
+							int iIndex = longurl.indexOf(contextpath);
+							res.sendRedirect(longurl.substring(0, iIndex + contextpath.length()) + (qz == null ? "" : "?qz=" + qz));
+							return;
+						}
 					}
 				}
 			}
