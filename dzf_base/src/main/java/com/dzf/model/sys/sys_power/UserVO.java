@@ -89,6 +89,10 @@ public class UserVO extends SuperVO {
 	
 	private String skin;
 	private String kjskin;
+	@FieldAlias("departid")
+	private String pk_department;//部门
+	@FieldAlias("depart")
+	private String deptname;
 	
 	
 	public DZFBoolean getIsOwner() {
@@ -339,6 +343,18 @@ public class UserVO extends SuperVO {
 	}
 	public void setKjskin(String kjskin) {
 		this.kjskin = kjskin;
+	}
+	public String getPk_department() {
+		return pk_department;
+	}
+	public void setPk_department(String pk_department) {
+		this.pk_department = pk_department;
+	}
+	public String getDeptname() {
+		return deptname;
+	}
+	public void setDeptname(String deptname) {
+		this.deptname = deptname;
 	}
 	
 }
