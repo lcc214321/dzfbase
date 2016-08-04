@@ -135,4 +135,16 @@ public interface IBillTypeCode {
 	 * 利润结转
 	 */
 	public final static String HP28 = "HP28" ;
+	
+	
+	/**
+	 * 采购单
+	 */
+	public final static String HP70 = "HP70" ;
+	
+	/**
+	 * 销售单
+	 */
+	public final static String HP75 = "HP75" ;
+	
 }
