@@ -259,6 +259,9 @@ public class CorpVO extends SuperVO {
 
 	@FieldAlias("buildic")
 	private DZFBoolean bbuildic;// --启用ic模块--  是否库存管理
+	
+	@FieldAlias("buildicstyle")
+	private Integer ibuildicstyle;//存货核算类型--针对启用进销存
 
 	@FieldAlias("useretail")
 	public DZFBoolean isuseretail; // 是否用于零售
@@ -3094,7 +3097,16 @@ public class CorpVO extends SuperVO {
 	public DZFBoolean getIssmall() {
 		return issmall;
 	}
-	
+
+
+	public Integer getIbuildicstyle() {
+		return ibuildicstyle;
+	}
+
+
+	public void setIbuildicstyle(Integer ibuildicstyle) {
+		this.ibuildicstyle = ibuildicstyle;
+	}
 	
 	
 		
