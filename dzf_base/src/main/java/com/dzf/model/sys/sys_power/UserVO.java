@@ -93,6 +93,7 @@ public class UserVO extends SuperVO {
 	private String pk_department;//部门
 	@FieldAlias("depart")
 	private String deptname;
+	private DZFBoolean islogin;//是否登录过；
 	
 	
 	public DZFBoolean getIsOwner() {
@@ -355,6 +356,12 @@ public class UserVO extends SuperVO {
 	}
 	public void setDeptname(String deptname) {
 		this.deptname = deptname;
+	}
+	public DZFBoolean getIslogin() {
+		return islogin;
+	}
+	public void setIslogin(DZFBoolean islogin) {
+		this.islogin = islogin;
 	}
 	
 }
