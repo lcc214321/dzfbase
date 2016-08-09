@@ -135,6 +135,8 @@ public class QueryParamVO extends SuperVO {
 	
 	private DZFBoolean sfzxm;
 	
+	private DZFBoolean ishowfs;//是否显示报表发生
+	
 	
 	public DZFDate getBcreatedate() {
 		return bcreatedate;
@@ -556,5 +558,14 @@ public class QueryParamVO extends SuperVO {
 	public void setSfzxm(DZFBoolean sfzxm) {
 		this.sfzxm = sfzxm;
 	}
+
+	public DZFBoolean getIshowfs() {
+		return ishowfs;
+	}
+
+	public void setIshowfs(DZFBoolean ishowfs) {
+		this.ishowfs = ishowfs;
+	}
+	
 	
 }
