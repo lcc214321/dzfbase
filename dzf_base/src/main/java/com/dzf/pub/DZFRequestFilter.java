@@ -109,27 +109,31 @@ public class DZFRequestFilter implements Filter {
 			String token = DzfCookieTool.getToken(request);
 			String uuid_cookie = DzfCookieTool.getUUIDByCookie(req);
 			String ticket = request.getParameter("t");
-			
+			String pk_user = null;		
 
 			String errorRetMsg = null;	//错误返回提示信息
 			
 			String appid = null;
+			
+			//检查是否有统一登录服务器配置
+			String[] ssoservercfg = DzfServerProperty.getInstance().getDzfServerCfg();
+			if (ssoservercfg == null)
+			{
+				errorRetMsg = "请配置服务器属性文件dzfserver.properties";
+				return;
+			}
+			String ssoserver = ssoservercfg[0];
+			appid = ssoservercfg[1];
+			String loginjsp = ssoservercfg[2];
+			
 			try 
 			{
 				boolean bDeleteSession = false;
 				boolean bDeleteCookie = false;
 				
-				//检查是否有统一登录服务器配置
-				String[] ssoservercfg = DzfServerProperty.getInstance().getDzfServerCfg();
-				if (ssoservercfg == null)
-				{
-					errorRetMsg = "请配置服务器属性文件dzfserver.properties";
-					return;
-				}
-				String ssoserver = ssoservercfg[0];
-				appid = ssoservercfg[1];
-				String loginjsp = ssoservercfg[2];
-				String pk_user = null;								//从cookie中获得
+				
+
+						//从cookie中获得
 				String sessionUser = (String)session.getAttribute(IGlobalConstants.login_user);
 				
 				if (StringUtil.isEmptyWithTrim(ticket))				//票换用户信息过程不能走下面代码
@@ -301,8 +305,8 @@ public class DZFRequestFilter implements Filter {
 									RSACoderUtils.createToken(session);
 									//写登录成功信息到客户端
 									DzfCookieTool.writeCookie(session, request, response);
-									
-									
+									//UUID更新为ssoserver的值
+									DzfCookieTool.writeCookie_UUID(session, request, response);
 									
 									int iIndex = longurl.indexOf(contextpath);
 									res.sendRedirect(longurl.substring(0, iIndex + contextpath.length()) + (qz == null ? "" : "?qz=" + qz));
@@ -433,7 +437,17 @@ public class DZFRequestFilter implements Filter {
 */		    	
 		    	
 		    	if(! url.endsWith("sm_user!logout.action") &&  ! url.endsWith("register_act!saveRegistered.action") && !url.endsWith("sm_user!updatePwdLogin.action") && ! url.endsWith("forgot_password.jsp") && ! url.endsWith("dz_registered.jsp") && (userid == null || (corp == null && !url.endsWith("/selcomp.jsp") && !url.endsWith("/sys/sm_user!gsSelect.action") && !url.endsWith("/sys/sm_user!gsQuery.action") && !url.endsWith("/sys/sm_user!gsSelectAdmin.action") && !url.endsWith("/sys/sm_user!gsQueryAdmin.action"))) && !url.endsWith("/sys/sm_user!login.action") && !url.endsWith("/sys/sm_user!getLogin.action") && !url.endsWith("/sys/sm_user!loginForFactory.action") &&!url.endsWith("/fct/fct_statistics!query.action")&& !url.endsWith("/sys/sm_user!login2.action") && !url.endsWith("/sys/sm_user!dzfLogin.action") && !url.endsWith("/searchPsw.jsp") && !url.endsWith("/st/searchPsw!getPswBack.action") && !url.endsWith("/st/searchPsw!sandYZcode.action")){
-			    	if(url.endsWith(".action")){
+	    			if (StringUtil.isEmpty(token) == false)
+	    			{
+	    				DzfCookieTool.deleteCookie(request, response);
+	    				
+	    			}
+	    			if (StringUtil.isEmpty(uuid_cookie) == false)
+	    			{
+	    				SessionCache.getInstance().removeByUUID(uuid_cookie, pk_user, session.getMaxInactiveInterval());
+	    			}
+	    			DzfSessionTool.clearSession(session);
+		    		if(url.endsWith(".action")){
 			    		String message = (String)session.getAttribute(IGlobalConstants.logout_msg);
 			    		if(message == null) message = "请先登陆!";
 		    			String json = "{\"msg\": \"" + message + "\",\"rows\": [],\"success\": false,\"total\": 0}";
@@ -443,7 +457,23 @@ public class DZFRequestFilter implements Filter {
 //						req.getRequestDispatcher("/error_kj.jsp").forward(req,res);
 	   				 	return;
 			    	}
-		    		req.getRequestDispatcher("/login.jsp").forward(req,res);
+			    	if (isForbiddenRedirect(longurl) == false && SSOServerUtils.useSSOServer()) {
+			    		String encoderURL = URLEncoder.encode(longurl, "UTF-8");
+						//没有用户，也没有ticket
+						//跳转至ssoserver用户登录
+						StringBuffer newurl = new StringBuffer();
+						newurl.append(ssoserver);
+						newurl.append(loginjsp);
+						newurl.append("?service=");
+						newurl.append(encoderURL);
+						newurl.append("&appid=");
+						newurl.append(appid);
+						res.sendRedirect(newurl.toString());
+			    	}
+			    	else
+			    	{
+			    		req.getRequestDispatcher("/login.jsp").forward(req,res);
+			    	}
    				 	return;
 		    	}
 /*boolean b=false;
