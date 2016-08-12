@@ -23,7 +23,7 @@ public class UserSerializable extends AbstractSerializable<UserVO> {
 		write(nos,svo.getUser_code());
 		write(nos,svo.getAble_time());
 		write(nos,svo.getDisable_time());
-	writeBytes(nos, svo.getLocked_tag(),svo.getBappuser(),svo.getIsmanager(),svo.getKeyuser(),svo.getBdata(),svo.getBaccount());
+	writeBytes(nos, svo.getLocked_tag(),svo.getBappuser(),svo.getIsmanager(),svo.getKeyuser(),svo.getBdata(),svo.getBaccount(),svo.getIslogin());
 	
 	nos.write(svo.getPk_corp().getBytes());
 	write(nos,svo.getPwdparam());
@@ -60,6 +60,7 @@ write(nos, svo.getKjskin());
 	svo.setKeyuser(bs[3]);
 	svo.setBdata(bs[4]);
 	svo.setBaccount(bs[5]);
+	svo.setIslogin(bs[6]);
 	
 	svo.setPk_corp(readerString(nos,6));
 	svo.setPwdparam(readerString(nos, -1));
