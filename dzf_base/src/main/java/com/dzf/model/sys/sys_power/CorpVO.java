@@ -414,6 +414,12 @@ public class CorpVO extends SuperVO {
 	@FieldAlias("kwxjr")
 	private DZFBoolean iskwxjr;//申请科委小巨人基金
 	
+	@FieldAlias("books")
+	private String accbooks;//对应核算账簿
+	
+	@FieldAlias("booksname")
+	private String booksname;//对应核算账簿名称
+	
 	/**
 	 * 使用主键字段进行初始化的构造子。
 	 * 
@@ -3106,6 +3112,26 @@ public class CorpVO extends SuperVO {
 
 	public void setIbuildicstyle(Integer ibuildicstyle) {
 		this.ibuildicstyle = ibuildicstyle;
+	}
+
+
+	public String getAccbooks() {
+		return accbooks;
+	}
+
+
+	public void setAccbooks(String accbooks) {
+		this.accbooks = accbooks;
+	}
+
+
+	public String getBooksname() {
+		return booksname;
+	}
+
+
+	public void setBooksname(String booksname) {
+		this.booksname = booksname;
 	}
 	
 	
