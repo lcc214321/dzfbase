@@ -411,6 +411,12 @@ public class DZFRequestFilter implements Filter {
 				filterChain.doFilter(request, response);
 	        	return;
 			}
+			//易世财税
+			if(url.contains("/services/YscsService"))
+			{
+				filterChain.doFilter(request, response);
+	        	return;
+			}
 			//扫码登录begin		    
 		    if ((url.endsWith("/css/font/font_1451959379_8626566.eot")) 
 		    		|| (url.endsWith("/css/font/font_1451959379_8626566.svg"))
