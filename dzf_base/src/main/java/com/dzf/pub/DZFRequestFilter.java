@@ -66,7 +66,7 @@ public class DZFRequestFilter implements Filter {
 	}
 	private boolean isForbiddenRedirect(String url)
 	{
-		return url.endsWith("sys/xjr_sync!sync.action") || url.endsWith("xwwy_app/busidata!dealData.action");
+		return url.endsWith("sys/xjr_sync!sync.action") || url.endsWith("xwwy_app/busidata!dealData.action") || url.contains("wbx/invoice!inputExpBill.action");
 	}
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws 
 	IOException, ServletException {
