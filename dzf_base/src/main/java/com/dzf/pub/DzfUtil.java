@@ -54,7 +54,7 @@ public class DzfUtil {
 //		ca.add(Calendar.YEAR, +1); //年份增1 
 		Date year = ca.getTime();
 		years.add(sdf.format(year));
-		for(int i = 0;i<10;i++){
+		for(int i = 0;i<20;i++){
 			ca.setTime(new Date());
 			ca.add(Calendar.YEAR, -i); //年份减1 
 			year = ca.getTime();
