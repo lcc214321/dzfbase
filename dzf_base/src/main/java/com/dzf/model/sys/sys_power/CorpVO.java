@@ -95,7 +95,7 @@ public class CorpVO extends SuperVO {
 	public String def8;//////////////---------------------------------授权企业主打印导出
 
 	@FieldAlias("d9")
-	public String def9;
+	public String def9;/////////////-----------------------------------注册资本
 	// public Integer ecotype;
 
 	@FieldAlias("ectype")
