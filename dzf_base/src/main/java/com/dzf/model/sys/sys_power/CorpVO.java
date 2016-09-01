@@ -92,7 +92,7 @@ public class CorpVO extends SuperVO {
 	public String def7;///////////////--------------------------------客户经理名称
 
 	@FieldAlias("d8")
-	public String def8;
+	public String def8;//////////////---------------------------------授权企业主打印导出
 
 	@FieldAlias("d9")
 	public String def9;
