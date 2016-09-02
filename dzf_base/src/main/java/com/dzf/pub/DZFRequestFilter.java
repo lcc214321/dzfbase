@@ -426,8 +426,8 @@ public class DZFRequestFilter implements Filter {
 		        return;
 		    }
 
-			if ((url.endsWith("/app/loginqr!getQRCode.action"))
-					|| (url.endsWith("/app/loginqr!longConnCheck.action"))){
+			if (url.endsWith("/app/loginqr!getQRCode.action") || url.endsWith("/app/loginqr!getQRCode2.action")
+					|| url.endsWith("/app/loginqr!longConnCheck.action") || url.endsWith("/app/loginqr!longConnCheck2.action")){
 				filterChain.doFilter(request, response);
 				return;
 			}
