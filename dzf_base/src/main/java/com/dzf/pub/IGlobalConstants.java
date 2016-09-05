@@ -73,6 +73,7 @@ public interface IGlobalConstants extends IDefaultValue{
     public static String ADMIN_KJ="admin_kj";			//会计管理端
     public static String DZF_FACTORY="dzf_factory";//会计工厂
     public static String DZF_OWNER="dzf_owner";//企业主
+    public static String DZF_WEBSITE="website";//小微无忧购买网站
     
     public static String POWER_MAP="powerMap";
     
