@@ -41,13 +41,13 @@ public class CorpVO extends SuperVO {
 	public String def1;//服务机构
 	// AppSecret
 	@FieldAlias("d10")
-	public String def10;
+	public String def10;//---------经度
 
 	@FieldAlias("d11")
-	public String def11;
+	public String def11;//----------维度
 
 	@FieldAlias("d12")
-	public String def12;
+	public String def12;//---------王钊宁---是否已票通认证完成
 
 	@FieldAlias("d13")
 	public String def13;
