@@ -3,6 +3,7 @@ package com.dzf.framework.comn;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
+import com.dzf.pub.BusinessException;
 import com.dzf.pub.StringUtil;
 import com.dzf.pub.SuperVO;
 import com.dzf.pub.cache.IDzfSerializable;
@@ -86,6 +87,22 @@ public static String[] getObject(byte[] bs) throws Exception{
 	is.close();
 	return strs;
 
+}
+
+public static Object getBytetoObj(byte[] bs)throws Exception{
+	Object obj = null;
+	ByteArrayInputStream bin = new ByteArrayInputStream(bs);
+	NetObjectInputStream is=new NetObjectInputStream(bin);
+	try{
+		obj = is.readObject();
+	}catch(Exception e){
+		throw new Exception("读取流对象错误",e);
+	}finally{
+		if(is!=null){
+			is.close();
+		}
+	}
+	return obj;
 }
 
 }

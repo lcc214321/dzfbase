@@ -50,7 +50,7 @@ public class CorpVO extends SuperVO {
 	public String def12;//---------王钊宁---是否已票通认证完成
 
 	@FieldAlias("d13")
-	public String def13;
+	public String def13;//-----------小薇无优网站，服务主体
 
 	@FieldAlias("d14")
 	public String def14;
