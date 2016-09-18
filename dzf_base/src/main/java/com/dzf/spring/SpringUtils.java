@@ -9,6 +9,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 public class SpringUtils {
+	/**
+	 * 增加SpringContextHolder实现方案
+	 */
 	public static Object getBean(String beanname) {
 		Object obj = null;
 		try {
