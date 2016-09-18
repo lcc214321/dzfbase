@@ -425,6 +425,12 @@ public class DZFRequestFilter implements Filter {
 		        filterChain.doFilter(request, response);
 		        return;
 		    }
+		    //websocket---字体通过
+		    if(url.endsWith("layui/font/iconfont.woff")
+		    		|| url.endsWith("layui/font/iconfont.ttf")){
+		    	 filterChain.doFilter(request, response);
+			     return;
+		    }
 
 			if (url.endsWith("/app/loginqr!getQRCode.action") || url.endsWith("/app/loginqr!getQRCode2.action")
 					|| url.endsWith("/app/loginqr!longConnCheck.action") || url.endsWith("/app/loginqr!longConnCheck2.action")){
