@@ -53,7 +53,7 @@ public class CorpVO extends SuperVO {
 	public String def13;//-----------小薇无优网站，服务主体
 
 	@FieldAlias("d14")
-	public String def14;
+	public String def14;//------------大账房服务商合同协议[贺智鹏]
 
 	@FieldAlias("d15")
 	public String def15;
