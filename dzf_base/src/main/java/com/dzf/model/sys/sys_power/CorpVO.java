@@ -56,7 +56,7 @@ public class CorpVO extends SuperVO {
 	public String def14;//------------大账房服务商合同协议[贺智鹏]
 
 	@FieldAlias("d15")
-	public String def15;
+	public String def15;//------------证件类型[贺智鹏]
 
 	@FieldAlias("d16")
 	public String def16;
