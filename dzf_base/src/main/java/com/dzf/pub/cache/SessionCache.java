@@ -133,9 +133,7 @@ public class SessionCache {
 	public void addSession(HttpSession session)
 	{
 		String strUUID = (String)session.getAttribute(IGlobalConstants.uuid);
-		String appid = (String)session.getAttribute(IGlobalConstants.appid);
-		String userid = (String)session.getAttribute(IGlobalConstants.login_user);
-		
+	
 		if (StringUtil.isEmptyWithTrim(strUUID))
 		{
 			return;
@@ -148,6 +146,26 @@ public class SessionCache {
 		addByUserID(newRedissessionvo, session.getMaxInactiveInterval());
 
 	}
+	/**
+	 * 使用dzfsessionvo加入session信息到redis服务器
+	 * @param dzfsession
+	 * @param iMaxInactiveInterval
+	 */
+	public void addSession(DZFSessionVO dzfsession, int iMaxInactiveInterval)
+	{
+		
+		if (dzfsession == null || StringUtil.isEmptyWithTrim(dzfsession.getUuid()))
+		{
+			return;
+		}
+		
+		
+		addByUUID(dzfsession, iMaxInactiveInterval);
+		
+		addByUserID(dzfsession, iMaxInactiveInterval);
+
+	}
+	
 	/**
 	 * 写验证码
 	 * @param uuid

@@ -109,6 +109,7 @@ public class DZFRequestFilter implements Filter {
 			String token = DzfCookieTool.getToken(request);
 			String uuid_cookie = DzfCookieTool.getUUIDByCookie(req);
 			String ticket = request.getParameter("t");
+			String forceReadRedis = request.getParameter("rds");
 			String pk_user = null;		
 
 			String errorRetMsg = null;	//错误返回提示信息
@@ -185,6 +186,17 @@ public class DZFRequestFilter implements Filter {
 									}
 									else
 									{
+										//是否强制从redis恢复session
+										if (StringUtil.isEmpty(forceReadRedis) == false)
+										{
+											DzfSessionTool.fillValueToHttpSession(sessionvo_ByUserid, session);
+											//重新生成token
+											RSACoderUtils.createToken(session);
+											//新token 更新回redis
+											sessionvo_ByUserid.setToken((String)session.getAttribute(IGlobalConstants.login_token));
+											SessionCache.getInstance().addSession(session);
+											
+										}
 										//一切正常的交互，不需做什么工作，向redis服务器同步session信息在定时服务中运行，不能在每次客户端请求都做。
 									}
 								}
