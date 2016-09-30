@@ -189,12 +189,20 @@ public class DZFRequestFilter implements Filter {
 										//是否强制从redis恢复session
 										if (StringUtil.isEmpty(forceReadRedis) == false)
 										{
-											DzfSessionTool.fillValueToHttpSession(sessionvo_ByUserid, session);
+											DZFSessionVO sessionvo_ByUUID = SessionCache.getInstance().getByUUID(strUUID, appid);
+											
+											if (sessionvo_ByUUID.getPk_user().equals(pk_user) == false)
+											{
+												//把登录的原用户信息从redis服务器清除
+												SessionCache.getInstance().removeByUUID(strUUID, pk_user, appid, session.getMaxInactiveInterval());
+											}
+											DzfSessionTool.fillValueToHttpSession(sessionvo_ByUUID, session);
 											//重新生成token
 											RSACoderUtils.createToken(session);
 											//新token 更新回redis
-											sessionvo_ByUserid.setToken((String)session.getAttribute(IGlobalConstants.login_token));
+											sessionvo_ByUUID.setToken((String)session.getAttribute(IGlobalConstants.login_token));
 											SessionCache.getInstance().addSession(session);
+											DzfCookieTool.writeCookie(session, request, response);
 											
 										}
 										//一切正常的交互，不需做什么工作，向redis服务器同步session信息在定时服务中运行，不能在每次客户端请求都做。
@@ -280,7 +288,7 @@ public class DZFRequestFilter implements Filter {
 					
 					String qz = request.getParameter("qz");	//提示信息
 	
-					if (StringUtil.isEmptyWithTrim(pk_user_session))
+					if (StringUtil.isEmptyWithTrim(pk_user_session) || StringUtil.isEmptyWithTrim(ticket) == false)
 					{
 						if (SSOServerUtils.useSSOServer())	//没有login.jsp则是通过ssoserver统一登录
 						{
@@ -468,7 +476,7 @@ public class DZFRequestFilter implements Filter {
 	    			}
 	    			if (StringUtil.isEmpty(uuid_cookie) == false)
 	    			{
-	    				SessionCache.getInstance().removeByUUID(uuid_cookie, pk_user, session.getMaxInactiveInterval());
+	    				SessionCache.getInstance().removeByUUID(uuid_cookie, pk_user, appid, session.getMaxInactiveInterval());
 	    			}
 	    			DzfSessionTool.clearSession(session);
 		    		if(url.endsWith(".action")){

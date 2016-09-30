@@ -284,23 +284,23 @@ public class SessionCache {
 		
 		DZFSessionListVO dzfSessionListVo = getByUserID(userid);
 		List<DZFSessionVO> listDzfSessionVO = null;
-		
-		DZFSessionVO oldvo = null;
+		List<DZFSessionVO> listNewDzfSessionVO = new ArrayList<DZFSessionVO>();
+		listNewDzfSessionVO.add(m);
 		
 		long latesttime = m.getLasttime();
 		if (dzfSessionListVo != null)
 		{
 			listDzfSessionVO = dzfSessionListVo.getListSessionVO();
-			listDzfSessionVO = dzfSessionListVo.getListSessionVO();
+			
 			for (DZFSessionVO sessionvo : listDzfSessionVO)
 			{
 				if (sessionvo.getLasttime() > latesttime)
 				{
 					latesttime = sessionvo.getLasttime();
 				}
-				if (sessionvo.getAppid().equals(m.getAppid()))
+				if (sessionvo.getAppid().equals(m.getAppid()) == false)
 				{
-					oldvo = sessionvo;
+					listNewDzfSessionVO.add(sessionvo);
 					
 				}
 			}
@@ -308,18 +308,9 @@ public class SessionCache {
 		else
 		{
 			dzfSessionListVo = new DZFSessionListVO();
-			listDzfSessionVO = new ArrayList<DZFSessionVO>();
-			dzfSessionListVo.setListSessionVO(listDzfSessionVO);
 		}
-		if (oldvo != null)
-		{
-			listDzfSessionVO.remove(oldvo);
-			listDzfSessionVO.add(m);
-		}
-		else
-		{
-			listDzfSessionVO.add(m);
-		}
+		dzfSessionListVo.setListSessionVO(listNewDzfSessionVO);
+		
 		
 		String realKey = "dzfsso" + userid;
 		
@@ -329,8 +320,7 @@ public class SessionCache {
 		}
 		else
 		{
-			 DZFSessionListVO newvo = dzfSessionListVo;
-			
+
 			int iSecond = iExpiredSecond - (int)(System.currentTimeMillis() - latesttime) / 1000;
 			
 			add(realKey, dzfSessionListVo, iSecond);
@@ -377,8 +367,8 @@ public class SessionCache {
 		
 		DZFSessionListVO dzfSessionListVo = getByUUID(m.getUuid());
 		List<DZFSessionVO> listDzfSessionVO = null;
-		
-		DZFSessionVO oldvo = null;
+		List<DZFSessionVO> listNewDzfSessionVO = new ArrayList<DZFSessionVO>();
+		listNewDzfSessionVO.add(m);
 		
 		long latesttime = m.getLasttime();
 		if (dzfSessionListVo != null)
@@ -391,32 +381,18 @@ public class SessionCache {
 				{
 					latesttime = sessionvo.getLasttime();
 				}
-				if (sessionvo.getAppid().equals(m.getAppid()))
+				if (sessionvo.getAppid().equals(m.getAppid()) == false)
 				{
-					oldvo = sessionvo;
-					
+					listNewDzfSessionVO.add(sessionvo);
 				}
 			}
 		}
 		else
 		{
 			dzfSessionListVo = new DZFSessionListVO();
-			listDzfSessionVO = new ArrayList<DZFSessionVO>();
-			dzfSessionListVo.setListSessionVO(listDzfSessionVO);
 		}
-		if (oldvo != null)
-		{
-			if (oldvo.getLasttime() < m.getLasttime())
-			{
-				listDzfSessionVO.remove(oldvo);
-				listDzfSessionVO.add(m);
-			}
-		}
-		else
-		{
-			listDzfSessionVO.add(m);
-		}
-		
+		dzfSessionListVo.setListSessionVO(listNewDzfSessionVO);
+	
 		if (SessionRedisClient.getInstance().getEnabled() == false)
 		{
 			m_hmSession.put(strUUID, dzfSessionListVo);
@@ -428,7 +404,7 @@ public class SessionCache {
 			add(strUUID, dzfSessionListVo, iSecond);
 		}
 	}
-	private void removeByUserID(final String uuid, final String pk_user, int iExpiredSecond) {
+	private void removeByUserID(final String uuid, final String pk_user, String appid, int iExpiredSecond) {
 		
 		DZFSessionListVO sessionlistvo = getByUserID(pk_user);
 		final String realKey = "dzfsso" + pk_user;
@@ -438,7 +414,7 @@ public class SessionCache {
 			List<DZFSessionVO> listDelete = new ArrayList<DZFSessionVO>();
 			for (DZFSessionVO svo : listSessionVO)
 			{
-				if (svo.getUuid().equals(uuid))
+				if (svo.getUuid().equals(uuid) && appid.equals(svo.getAppid()))
 				{
 					listDelete.add(svo);
 				}
@@ -449,9 +425,10 @@ public class SessionCache {
 			}
 			if (listSessionVO.size() > 0)
 			{
+				sessionlistvo.setListSessionVO(listSessionVO); 
 				if (SessionRedisClient.getInstance().getEnabled() == false)
 				{
-					m_hmSessionByUserID.remove(realKey);
+					m_hmSessionByUserID.put(realKey, sessionlistvo);
 				}
 				else
 				{
@@ -487,35 +464,68 @@ public class SessionCache {
 		
 		
 	}
-	public void removeByUUID(final String strUUID, final String pk_user, int iExpiredSecond) {
+	public void removeByUUID(final String strUUID, final String pk_user, final String appid, int iExpiredSecond) {
 
 
 		if (pk_user != null)	//把pk_user登录信息中包含当前uuid的信息全部删除
 		{
-			removeByUserID(strUUID, pk_user, iExpiredSecond);
+			removeByUserID(strUUID, pk_user, appid, iExpiredSecond);
+		}
+		
+		DZFSessionListVO sessionlistvo = getByUUID(strUUID);
+		if (sessionlistvo == null)
+		{
+			return;
+		}
+		List<DZFSessionVO> listSessionVO = sessionlistvo.getListSessionVO();
+		List<DZFSessionVO> listDelete = new ArrayList<DZFSessionVO>();
+		for (DZFSessionVO svo : listSessionVO)
+		{
+			if (appid.equals(svo.getAppid()))
+			{
+				listDelete.add(svo);
+			}
+		}
+		for (DZFSessionVO svo : listDelete)
+		{
+			listSessionVO.remove(svo);
 		}
 		
 		if (SessionRedisClient.getInstance().getEnabled() == false)
 		{
-			m_hmSession.remove(strUUID);
+			if (listSessionVO.size() > 0)
+			{
+				m_hmSession.put(strUUID, sessionlistvo);
+			}
+			else
+			{
+				m_hmSession.remove(strUUID);
+			}
 		}
 		else
 		{
-			SessionRedisClient.getInstance().exec(new IRedisSessionCallback() {
-	
-				@Override
-				public Object exec(Jedis jedis) {
-					try {
-						jedis.del(strUUID.getBytes());
-						
-					} catch (Exception e) {
-	
-						log.error("缓存服务器连接未成功。", e);
+			if (listSessionVO.size() > 0)
+			{
+				add(strUUID, sessionlistvo, iExpiredSecond);
+			}
+			else
+			{
+				SessionRedisClient.getInstance().exec(new IRedisSessionCallback() {
+		
+					@Override
+					public Object exec(Jedis jedis) {
+						try {
+							jedis.del(strUUID.getBytes());
+							
+						} catch (Exception e) {
+		
+							log.error("缓存服务器连接未成功。", e);
+							return null;
+						}
 						return null;
 					}
-					return null;
-				}
-			});
+				});
+			}
 		}
 	}
 	public DZFSessionListVO getByUserID(final String userid) {
