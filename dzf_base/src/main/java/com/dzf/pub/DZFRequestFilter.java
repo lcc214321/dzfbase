@@ -365,13 +365,16 @@ public class DZFRequestFilter implements Filter {
 					}
 					else
 					{
+						
 						//用户已经登陆成功，如果有ticket后缀，则跳转一下，删掉t=xxx长串
-						if (StringUtil.isEmptyWithTrim(ticket) == false)
+						//或者 	//服务器中没有login.jsp 是通过ssoserver统一登录，但如果请求中有login.jsp，会报404错误。
+						if (StringUtil.isEmptyWithTrim(ticket) == false || SSOServerUtils.useSSOServer() && longurl.indexOf("/login.jsp") >= 0)
 						{
 							int iIndex = longurl.indexOf(contextpath);
 							res.sendRedirect(longurl.substring(0, iIndex + contextpath.length()) + (qz == null ? "" : "?qz=" + qz));
 							return;
 						}
+						
 					}
 				}
 			}
