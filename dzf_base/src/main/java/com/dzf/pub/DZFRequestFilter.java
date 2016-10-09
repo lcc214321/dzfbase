@@ -58,7 +58,7 @@ public class DZFRequestFilter implements Filter {
 	}
 	private boolean isForbiddenRedirect(String url)
 	{
-		return url.endsWith("sys/xjr_sync!sync.action") || url.endsWith("xwwy_app/busidata!dealData.action") || url.contains("wbx/invoice!inputExpBill.action");
+		return url.endsWith("sys/xjr_sync!sync.action") || url.endsWith("xwwy_app/busidata!dealData.action") || url.contains("wbx/invoice!inputExpBill.action") || url.contains("hessian/voucherService");
 	}
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws 
 	IOException, ServletException {
@@ -432,6 +432,12 @@ public class DZFRequestFilter implements Filter {
 				filterChain.doFilter(request, response);
 	        	return;
 			}
+			//管理平台调用在线会计的凭证保存接口
+			if(url.contains("/hessian")){
+				filterChain.doFilter(request, response);
+	        	return;
+			}
+			
 			//扫码登录begin		    
 		    if ((url.endsWith("/css/font/font_1451959379_8626566.eot")) 
 		    		|| (url.endsWith("/css/font/font_1451959379_8626566.svg"))
