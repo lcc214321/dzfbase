@@ -141,6 +141,18 @@ public class SessionCache {
 		
 		DZFSessionVO newRedissessionvo = DzfSessionTool.createSession(session);
 		
+		//把当前用户在其他客户端登录的信息清除
+		String pk_user = newRedissessionvo.getPk_user();
+		String appid = newRedissessionvo.getAppid();
+		
+		DZFSessionVO oldvo = getByUserID(pk_user, appid);
+		if (oldvo != null)
+		{
+			String oldUUID = oldvo.getUuid();
+			removeByUUID(oldUUID, pk_user, appid, session.getMaxInactiveInterval());
+
+		}
+		
 		addByUUID(newRedissessionvo, session.getMaxInactiveInterval());
 		
 		addByUserID(newRedissessionvo, session.getMaxInactiveInterval());
@@ -159,6 +171,17 @@ public class SessionCache {
 			return;
 		}
 		
+		//把当前用户在其他客户端登录的信息清除
+		String pk_user = dzfsession.getPk_user();
+		String appid = dzfsession.getAppid();
+				
+		DZFSessionVO oldvo = getByUserID(pk_user, appid);
+		if (oldvo != null)
+		{
+			String oldUUID = oldvo.getUuid();
+			removeByUUID(oldUUID, pk_user, appid, iMaxInactiveInterval);
+
+		}
 		
 		addByUUID(dzfsession, iMaxInactiveInterval);
 		
