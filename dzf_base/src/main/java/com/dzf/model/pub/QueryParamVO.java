@@ -137,6 +137,8 @@ public class QueryParamVO extends SuperVO {
 	
 	private DZFBoolean ishowfs;//是否显示报表发生
 	
+	private DZFBoolean isnomonthfs;//本月合计无发生是否显示
+	
 	
 	public DZFDate getBcreatedate() {
 		return bcreatedate;
@@ -565,6 +567,14 @@ public class QueryParamVO extends SuperVO {
 
 	public void setIshowfs(DZFBoolean ishowfs) {
 		this.ishowfs = ishowfs;
+	}
+
+	public DZFBoolean getIsnomonthfs() {
+		return isnomonthfs;
+	}
+
+	public void setIsnomonthfs(DZFBoolean isnomonthfs) {
+		this.isnomonthfs = isnomonthfs;
 	}
 	
 	
