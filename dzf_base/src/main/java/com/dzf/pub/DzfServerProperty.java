@@ -33,7 +33,11 @@ public class DzfServerProperty {
 
 			 prop.load(in);     ///加载属性列表
 			 saReturn = new String[3];
-			 saReturn[0] = prop.getProperty("ssoserver");
+			 saReturn[0] = prop.getProperty("ssoserver").trim();
+			 if (saReturn[0].endsWith("/") == false)
+			 {
+				 saReturn[0] += "/";
+			 }
 			 saReturn[1] = prop.getProperty("appid");
 			 saReturn[2] = prop.getProperty("loginjsp");
 			 
