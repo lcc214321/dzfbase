@@ -47,6 +47,8 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 		write(nos,svo.getIndustry());
 		writeByte(nos,svo.getIbuildicstyle());
 		write(nos,svo.getDef12());//票通是否认证
+		write(nos,svo.getForeignname());//销售代表
+		write(nos,svo.getForeignid());//销售代表PK
 	}
 
 	@Override
@@ -91,6 +93,8 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 		cvo.setIndustry(readerString(nos, -1));	
 		cvo.setIbuildicstyle((int) nos.readByte());
 		cvo.setDef12(readerString(nos, -1));	//票通是否认证
+		cvo.setForeignname(readerString(nos, -1));
+		cvo.setForeignid(readerString(nos, -1));
 		return cvo;
 	}
 	

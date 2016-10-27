@@ -124,6 +124,9 @@ public class CorpVO extends SuperVO {
 
 	@FieldAlias("fname")
 	public String foreignname;//客户经理
+	
+	@FieldAlias("fid")//客户PK
+	public String foreignid;
 
 	@FieldAlias("hflag")
 	public DZFBoolean holdflag;//是否启用资产
@@ -3133,7 +3136,16 @@ public class CorpVO extends SuperVO {
 	public void setBooksname(String booksname) {
 		this.booksname = booksname;
 	}
-	
+
+
+	public String getForeignid() {
+		return foreignid;
+	}
+
+
+	public void setForeignid(String foreignid) {
+		this.foreignid = foreignid;
+	}
 	
 		
 }
