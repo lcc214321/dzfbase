@@ -59,13 +59,13 @@ public class CorpVO extends SuperVO {
 	public String def15;//------------证件类型[贺智鹏]
 
 	@FieldAlias("d16")
-	public String def16;
+	public String def16;//----------- 登录方式 CFCA证书和法人一证通[贺智鹏]
 
 	@FieldAlias("d17")
-	public String def17;
+	public String def17;//-----------停止服务原因[贺智鹏]
 
 	@FieldAlias("d18")
-	public String def18;
+	public String def18;//-----------最后修改人[贺智鹏]
 
 	@FieldAlias("d19")
 	public String def19;
