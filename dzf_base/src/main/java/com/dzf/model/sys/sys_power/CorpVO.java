@@ -423,6 +423,12 @@ public class CorpVO extends SuperVO {
 	@FieldAlias("booksname")
 	private String booksname;//对应核算账簿名称
 	
+	@FieldAlias("cbtax")
+	private DZFDouble citybuildtax; //城建税
+  
+	@FieldAlias("ismantax")
+	private DZFBoolean ismaintainedtax;//是否已维护税率信息
+	
 	/**
 	 * 使用主键字段进行初始化的构造子。
 	 * 
@@ -3146,6 +3152,26 @@ public class CorpVO extends SuperVO {
 	public void setForeignid(String foreignid) {
 		this.foreignid = foreignid;
 	}
+
+
+	public DZFDouble getCitybuildtax() {
+		return citybuildtax;
+	}
+
+
+	public void setCitybuildtax(DZFDouble citybuildtax) {
+		this.citybuildtax = citybuildtax;
+	}
+
+
+	public DZFBoolean getIsmaintainedtax() {
+		return ismaintainedtax;
+	}
+
+
+	public void setIsmaintainedtax(DZFBoolean ismaintainedtax) {
+		this.ismaintainedtax = ismaintainedtax;
+	}
 	
-		
+	
 }
