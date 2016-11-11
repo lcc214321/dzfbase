@@ -3175,6 +3175,16 @@ public class CorpVO extends SuperVO {
 	public void setIsmaintainedtax(DZFBoolean ismaintainedtax) {
 		this.ismaintainedtax = ismaintainedtax;
 	}
+
+
+	public DZFDateTime getLastmodifytime() {
+		return lastmodifytime;
+	}
+
+
+	public void setLastmodifytime(DZFDateTime lastmodifytime) {
+		this.lastmodifytime = lastmodifytime;
+	}
 	
 	
 }
