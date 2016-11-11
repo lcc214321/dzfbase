@@ -429,6 +429,9 @@ public class CorpVO extends SuperVO {
 	@FieldAlias("ismantax")
 	private DZFBoolean ismaintainedtax;//是否已维护税率信息
 	
+	@FieldAlias("lmtime")
+	private DZFDateTime lastmodifytime;  //最后修改时间
+	
 	/**
 	 * 使用主键字段进行初始化的构造子。
 	 * 
