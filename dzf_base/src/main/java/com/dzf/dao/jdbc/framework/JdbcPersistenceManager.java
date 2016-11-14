@@ -750,10 +750,10 @@ public class JdbcPersistenceManager extends PersistenceManager {
 	public Collection retrieveByCorp(Class c, String pkCorp,
 			String[] selectedFields) throws DbException {
 
-		if (pkCorp.equals("0001") || pkCorp.equals("@@@@")) {
+		if (pkCorp.equals("000001") || pkCorp.equals("@@@@@@")) {
 			SQLParameter param = new SQLParameter();
-			param.addParam("0001");
-			param.addParam("@@@@");
+			param.addParam("000001");
+			param.addParam("@@@@@@");
 			return retrieveByClause(c, "pk_corp=? or pk_corp=?",
 					selectedFields, param);
 		} else {
