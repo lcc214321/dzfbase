@@ -95,6 +95,10 @@ public class UserVO extends SuperVO {
 	private String deptname;
 	private DZFBoolean islogin;//是否登录过；
 	
+	private String xsstyle;//1--代表销售管理员2----销售普通用户，，其余的为其它用户，仅会对000001公司
+	private String xsauthor;//是否销售管理权限[1-----代表已分配权限],[2---------没有分配权限]
+	private String mandq;//所管理的地区[地区档案的一级]
+	
 	
 	public DZFBoolean getIsOwner() {
 		return isOwner;
@@ -362,6 +366,24 @@ public class UserVO extends SuperVO {
 	}
 	public void setIslogin(DZFBoolean islogin) {
 		this.islogin = islogin;
+	}
+	public String getXsstyle() {
+		return xsstyle;
+	}
+	public void setXsstyle(String xsstyle) {
+		this.xsstyle = xsstyle;
+	}
+	public String getXsauthor() {
+		return xsauthor;
+	}
+	public void setXsauthor(String xsauthor) {
+		this.xsauthor = xsauthor;
+	}
+	public String getMandq() {
+		return mandq;
+	}
+	public void setMandq(String mandq) {
+		this.mandq = mandq;
 	}
 	
 }
