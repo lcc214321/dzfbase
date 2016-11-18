@@ -32,7 +32,7 @@ public class DzfServerProperty {
 			 in =  this.getClass().getResourceAsStream("/dzfserver.properties");
 
 			 prop.load(in);     ///加载属性列表
-			 saReturn = new String[3];
+			 saReturn = new String[5];
 			 saReturn[0] = prop.getProperty("ssoserver").trim();
 			 if (saReturn[0].endsWith("/") == false)
 			 {
@@ -40,7 +40,8 @@ public class DzfServerProperty {
 			 }
 			 saReturn[1] = prop.getProperty("appid");
 			 saReturn[2] = prop.getProperty("loginjsp");
-			 
+			 saReturn[3] = prop.getProperty("usessoserver");
+			 saReturn[4] = prop.getProperty("forbiddenssoaddress");
 		 }   catch  (IOException e1)  {    
 
 			 //filter写不写日志？

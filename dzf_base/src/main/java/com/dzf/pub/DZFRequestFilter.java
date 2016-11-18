@@ -102,6 +102,7 @@ public class DZFRequestFilter implements Filter {
 			String uuid_cookie = DzfCookieTool.getUUIDByCookie(req);
 			String ticket = request.getParameter("t");
 			String forceReadRedis = request.getParameter("rds");
+			String ssoserverflag = request.getParameter("ssoserver");
 			String pk_user = null;		
 
 			String errorRetMsg = null;	//错误返回提示信息
@@ -118,7 +119,30 @@ public class DZFRequestFilter implements Filter {
 			String ssoserver = ssoservercfg[0];
 			appid = ssoservercfg[1];
 			String loginjsp = ssoservercfg[2];
-			
+			boolean useSSOServer = StringUtil.isEmpty(ssoservercfg[3]) ? false : Boolean.valueOf(ssoservercfg[3]);
+			if (useSSOServer)
+			{
+				if (StringUtil.isEmpty(ssoserverflag) == false && ssoserverflag.toLowerCase().trim().equals("n"))//判断传入参数是否禁止
+				{
+					useSSOServer = false;
+				}
+				if (useSSOServer)	//判断禁用单点服务器域名是否包含当前地址
+				{
+					String forbiddenaddress = ssoservercfg[4];
+					if (StringUtil.isEmptyWithTrim(forbiddenaddress) == false)
+					{
+						String[] addresses = forbiddenaddress.split(",");
+						for (String address : addresses)
+						{
+							if (longurl.contains(address))
+							{
+								useSSOServer = false;
+								break;
+							}
+						}
+					}
+				}
+			}
 
 			if (longurl.contains("loginMac.jsp"))
 			{
@@ -288,7 +312,7 @@ public class DZFRequestFilter implements Filter {
 	
 					if (StringUtil.isEmptyWithTrim(pk_user_session) || StringUtil.isEmptyWithTrim(ticket) == false)
 					{
-						if (SSOServerUtils.useSSOServer())	//没有login.jsp则是通过ssoserver统一登录
+						if (useSSOServer)	//没有login.jsp则是通过ssoserver统一登录
 						{
 							if (StringUtil.isEmptyWithTrim(ticket) == false)
 							{
@@ -366,7 +390,7 @@ public class DZFRequestFilter implements Filter {
 						
 						//用户已经登陆成功，如果有ticket后缀，则跳转一下，删掉t=xxx长串
 						//或者 	//服务器中没有login.jsp 是通过ssoserver统一登录，但如果请求中有login.jsp，会报404错误。
-						if (StringUtil.isEmptyWithTrim(ticket) == false || SSOServerUtils.useSSOServer() && longurl.indexOf("/login.jsp") >= 0)
+						if (StringUtil.isEmptyWithTrim(ticket) == false || useSSOServer && longurl.indexOf("/login.jsp") >= 0)
 						{
 							int iIndex = longurl.indexOf(contextpath);
 							res.sendRedirect(longurl.substring(0, iIndex + contextpath.length()) + (qz == null ? "" : "?qz=" + qz));
@@ -496,7 +520,7 @@ public class DZFRequestFilter implements Filter {
 //						req.getRequestDispatcher("/error_kj.jsp").forward(req,res);
 	   				 	return;
 			    	}
-			    	if (isForbiddenRedirect(longurl) == false && SSOServerUtils.useSSOServer()) {
+			    	if (isForbiddenRedirect(longurl) == false && useSSOServer) {
 			    		String encoderURL = URLEncoder.encode(longurl, "UTF-8");
 						//没有用户，也没有ticket
 						//跳转至ssoserver用户登录
