@@ -119,6 +119,12 @@ public class DZFRequestFilter implements Filter {
 			appid = ssoservercfg[1];
 			String loginjsp = ssoservercfg[2];
 			
+
+			if (longurl.contains("loginMac.jsp"))
+			{
+				loginjsp = "loginMac.jsp";
+			}
+				
 			try 
 			{
 				boolean bDeleteSession = false;
