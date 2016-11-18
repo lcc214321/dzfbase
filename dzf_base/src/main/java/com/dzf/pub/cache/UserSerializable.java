@@ -40,6 +40,7 @@ write(nos,svo.getCrtcorp());
 write(nos,svo.getPhone());
 write(nos, svo.getSkin());
 write(nos, svo.getKjskin());
+write(nos, svo.getXsstyle());
 	
 	
 	}
@@ -78,6 +79,7 @@ write(nos, svo.getKjskin());
 	svo.setPhone(readerString(nos,-1));
 	svo.setSkin(readerString(nos, -1));
 	svo.setKjskin(readerString(nos, -1));
+	svo.setXsstyle(readerString(nos, -1));
 		return svo;
 	}
 	
