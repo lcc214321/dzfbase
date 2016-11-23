@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import com.dzf.model.sys.sys_power.CorpVO;
 import com.dzf.pub.BeanHelper;
 import com.dzf.pub.BusinessException;
 import com.dzf.pub.SuperVO;
@@ -204,6 +205,10 @@ public class DZfcommonTools {
 	
 	public static String getUpgradeKmbm(String oldcode,String oldrule,String newrule){
 		return KmbmUpgrade.getNewCode(oldcode, oldrule, newrule);
+	}
+	
+	public static Map<String,String>getKmUpgradeinfo(CorpVO vo,String[] vos){
+		return KmbmUpgrade.getKmUpgradeinfo(vo, vos);
 	}
 	//保留两位有效数字
 	public static String formatDouble(DZFDouble dv){
