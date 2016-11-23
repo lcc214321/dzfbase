@@ -9,6 +9,7 @@ import org.springframework.core.io.ClassPathResource;
 
 import com.dzf.pub.WiseRunException;
 import com.dzf.pub.DZFWarpException;
+import com.dzf.pub.StringUtil;
 
 
 
@@ -48,6 +49,8 @@ public class CodeUtils1 {
 
 	//这里异常吃掉
 	public static String enCode(String value) throws DZFWarpException{
+		if(StringUtil.isEmpty(value))
+			return value;
 		if(pubkey == null || "".equals(pubkey))
 			readUIParameter();
 		String key = null;
@@ -62,6 +65,8 @@ public class CodeUtils1 {
 
 	//这里异常吃掉
 	public static String deCode(String pvalue) throws DZFWarpException{
+		if(StringUtil.isEmpty(pvalue))
+			return pvalue;
 		if(prikey == null || "".equals(prikey))
 			readUIParameter();
 		String key = null;
@@ -71,6 +76,8 @@ public class CodeUtils1 {
 			LOG.error(pvalue+",解密失败",e);
 			key = pvalue;
 		}
+		if(StringUtil.isEmpty(key))
+			key = pvalue;
 		return key;
 	}
 }
