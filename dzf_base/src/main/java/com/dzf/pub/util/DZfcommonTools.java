@@ -201,6 +201,10 @@ public class DZfcommonTools {
 		}
 		return codes;
 	}
+	
+	public static String getUpgradeKmbm(String oldcode,String oldrule,String newrule){
+		return KmbmUpgrade.getNewCode(oldcode, oldrule, newrule);
+	}
 	//保留两位有效数字
 	public static String formatDouble(DZFDouble dv){
 		if(dv == null || dv.doubleValue() == 0)
