@@ -432,6 +432,12 @@ public class CorpVO extends SuperVO {
 	@FieldAlias("lmtime")
 	private DZFDateTime lastmodifytime;  //最后修改时间
 	
+	@FieldAlias("induscode")
+	private String industrycode;  //一键报税行业代码
+	
+	@FieldAlias("taxconmatpe")
+	private String taxcontrmachtype;  //税控器具类型
+	
 	/**
 	 * 使用主键字段进行初始化的构造子。
 	 * 
@@ -3184,6 +3190,26 @@ public class CorpVO extends SuperVO {
 
 	public void setLastmodifytime(DZFDateTime lastmodifytime) {
 		this.lastmodifytime = lastmodifytime;
+	}
+
+
+	public String getIndustrycode() {
+		return industrycode;
+	}
+
+
+	public void setIndustrycode(String industrycode) {
+		this.industrycode = industrycode;
+	}
+
+
+	public String getTaxcontrmachtype() {
+		return taxcontrmachtype;
+	}
+
+
+	public void setTaxcontrmachtype(String taxcontrmachtype) {
+		this.taxcontrmachtype = taxcontrmachtype;
 	}
 	
 	
