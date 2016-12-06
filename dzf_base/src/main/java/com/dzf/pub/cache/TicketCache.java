@@ -51,7 +51,7 @@ public class TicketCache {
 					lock.lock();
 					
 					jedis.set(ticket.getBytes(), IOUtils.getBytes(m, new TicketSerializable()));
-					jedis.expire(ticket, 10);		//失效时间, 10秒
+					jedis.expire(ticket, 20);		//失效时间, 20秒 原来是10秒，20161206修改
 					return true;
 				} catch (Exception e) {
 					log.error("缓存服务器连接未成功。", e);
