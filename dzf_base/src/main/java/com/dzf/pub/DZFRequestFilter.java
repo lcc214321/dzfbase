@@ -236,6 +236,16 @@ public class DZFRequestFilter implements Filter {
 									bDeleteCookie = true;
 									bDeleteSession = true;
 									session.setAttribute(IGlobalConstants.logout_msg,"被其它用户强制退出！");
+
+									if (session.getAttribute(IGlobalConstants.login_user) != null)
+									{
+										DzfSessionTool.clearSession(session);
+									}
+									DzfCookieTool.deleteCookie(request, response);
+
+									res.sendRedirect(req.getContextPath() + "/login.jsp");
+									return;
+
 								}
 							}
 							else if (StringUtil.isEmptyWithTrim(sessionUser) == false)
@@ -270,8 +280,7 @@ public class DZFRequestFilter implements Filter {
 								}
 								else
 								{
-									res.sendRedirect(req.getContextPath()+"/login.jsp"); 
-//									req.getRequestDispatcher("/login.jsp").forward(req,res);
+									res.sendRedirect(req.getContextPath() + "/login.jsp"); 
 								}
 								return;
 								
@@ -350,8 +359,9 @@ public class DZFRequestFilter implements Filter {
 									//UUID更新为ssoserver的值
 									DzfCookieTool.writeCookie_UUID(session, request, response);
 									
-									int iIndex = longurl.indexOf(contextpath);
-									res.sendRedirect(longurl.substring(0, iIndex + contextpath.length()) + (qz == null ? "" : "?qz=" + qz));
+									res.sendRedirect(longurl + (qz == null ? "" : "?qz=" + qz));
+
+									return;
 	
 				                }
 				                else
@@ -365,6 +375,9 @@ public class DZFRequestFilter implements Filter {
 							}
 							else
 							{
+								longurl = (longurl.startsWith("https://") || req.getServerPort() == 443 ? "https://" : "http://") 
+										+ req.getServerName() + (req.getServerPort() == 80 || req.getServerPort() == 443 ? "" : ":" + String.valueOf(req.getServerPort())) 
+										+ (StringUtil.isEmptyWithTrim(contextpath) ? "/login.jsp" : contextpath.trim() + "/login.jsp");
 								String encoderURL = URLEncoder.encode(longurl, "UTF-8");
 								//没有用户，也没有ticket
 								//跳转至ssoserver用户登录
@@ -392,8 +405,8 @@ public class DZFRequestFilter implements Filter {
 						//或者 	//服务器中没有login.jsp 是通过ssoserver统一登录，但如果请求中有login.jsp，会报404错误。
 						if (StringUtil.isEmptyWithTrim(ticket) == false || useSSOServer && longurl.indexOf("/login.jsp") >= 0)
 						{
-							int iIndex = longurl.indexOf(contextpath);
-							res.sendRedirect(longurl.substring(0, iIndex + contextpath.length()) + (qz == null ? "" : "?qz=" + qz));
+
+							res.sendRedirect(req.getContextPath() + "/" + (qz == null ? "" : "?qz=" + qz));
 							return;
 						}
 						
@@ -521,6 +534,11 @@ public class DZFRequestFilter implements Filter {
 	   				 	return;
 			    	}
 			    	if (isForbiddenRedirect(longurl) == false && useSSOServer) {
+			    		String contextpath = req.getContextPath();
+			    		longurl = (longurl.startsWith("https://") || req.getServerPort() == 443 ? "https://" : "http://") 
+			    					+ req.getServerName() 
+			    					+ (req.getServerPort() == 80 || req.getServerPort() == 443 ? "" : ":" + String.valueOf(req.getServerPort())) 
+			    					+ (StringUtil.isEmptyWithTrim(contextpath) ? "/login.jsp" : contextpath.trim() + "/login.jsp");
 			    		String encoderURL = URLEncoder.encode(longurl, "UTF-8");
 						//没有用户，也没有ticket
 						//跳转至ssoserver用户登录
@@ -535,7 +553,7 @@ public class DZFRequestFilter implements Filter {
 			    	}
 			    	else
 			    	{
-			    		req.getRequestDispatcher("/login.jsp").forward(req,res);
+			    		req.getRequestDispatcher(req.getContextPath() + "/login.jsp").forward(req,res);
 			    	}
    				 	return;
 		    	}
