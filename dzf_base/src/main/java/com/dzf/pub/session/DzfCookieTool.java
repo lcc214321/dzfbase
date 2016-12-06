@@ -34,9 +34,12 @@ public class DzfCookieTool {
 	{
 		Cookie[] cookies = ((HttpServletRequest)request).getCookies();
 		try {
-			for (Cookie cookie : cookies) {
-				if ("dzfsso".equals(cookie.getName())) {
-					return cookie.getValue();
+			if (cookies != null && cookies.length > 0)
+			{
+				for (Cookie cookie : cookies) {
+					if ("dzfsso".equals(cookie.getName())) {
+						return cookie.getValue();
+					}
 				}
 			}
 		}
@@ -54,15 +57,18 @@ public class DzfCookieTool {
 		String uuid = null;
 		Cookie[] cookies = ((HttpServletRequest)request).getCookies();
 		try {
-			for (Cookie cookie : cookies) {
-				if ("dzfuid".equals(cookie.getName())) {
-					encriptuuid = cookie.getValue();
-					break;
-				}
-			}
-			if (encriptuuid != null)
+			if (cookies != null && cookies.length > 0)
 			{
-				uuid = new String(RSACoder.decryptByPrivateKey(UrlBase64.decode(encriptuuid.getBytes()), RsaKeyCache.getInstance().getPrivateKey()));
+				for (Cookie cookie : cookies) {
+					if ("dzfuid".equals(cookie.getName())) {
+						encriptuuid = cookie.getValue();
+						break;
+					}
+				}
+				if (encriptuuid != null)
+				{
+					uuid = new String(RSACoder.decryptByPrivateKey(UrlBase64.decode(encriptuuid.getBytes()), RsaKeyCache.getInstance().getPrivateKey()));
+				}
 			}
 		}
 		catch (Exception e)
@@ -99,20 +105,22 @@ public class DzfCookieTool {
 	{
 		String contentPath = ((HttpServletRequest)request).getContextPath() + "/";
 		Cookie[] cookies = ((HttpServletRequest)request).getCookies();
-		
-		for (Cookie cookie : cookies) {
-			if ("dzfsso".equals(cookie.getName())) 
-			{
-				cookie.getValue();
-				cookie.setMaxAge(0);
-				cookie.setPath(contentPath);
-				((HttpServletResponse)response).addCookie(cookie);
+		if (cookies != null && cookies.length > 0)
+		{
+			for (Cookie cookie : cookies) {
+				if ("dzfsso".equals(cookie.getName())) 
+				{
+					cookie.getValue();
+					cookie.setMaxAge(0);
+					cookie.setPath(contentPath);
+					((HttpServletResponse)response).addCookie(cookie);
+				}
+				else if ("dzfcorp".equals(cookie.getName())) {
+					cookie.setMaxAge(0);
+					cookie.setPath(contentPath);
+					((HttpServletResponse)response).addCookie(cookie);
+				} 
 			}
-			else if ("dzfcorp".equals(cookie.getName())) {
-				cookie.setMaxAge(0);
-				cookie.setPath(contentPath);
-				((HttpServletResponse)response).addCookie(cookie);
-			} 
 		}
 	}
 	/**
