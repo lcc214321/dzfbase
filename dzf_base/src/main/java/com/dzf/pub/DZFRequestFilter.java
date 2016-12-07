@@ -553,7 +553,7 @@ public class DZFRequestFilter implements Filter {
 			    	}
 			    	else
 			    	{
-			    		req.getRequestDispatcher(req.getContextPath() + "/login.jsp").forward(req,res);
+			    		req.getRequestDispatcher("/login.jsp").forward(req,res);
 			    	}
    				 	return;
 		    	}
