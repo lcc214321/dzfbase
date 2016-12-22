@@ -81,4 +81,7 @@ public interface IGlobalConstants extends IDefaultValue{
     
     
     public static String zxkfroleid="00e9iq00ANYADMINISZHZXKF";//在线客服角色主键
+    
+    public static String openId="openId";
+    public static String formal_user="formal_user";
 }
