@@ -41,7 +41,7 @@ public class CorpVO extends SuperVO {
 	public String def1;//服务机构
 	// AppSecret
 	@FieldAlias("d10")
-	public String def10;//---------经度
+	public String def10;//---------经度----------------如果小企业的话，存的是微报销的随机id.
 
 	@FieldAlias("d11")
 	public String def11;//----------维度
