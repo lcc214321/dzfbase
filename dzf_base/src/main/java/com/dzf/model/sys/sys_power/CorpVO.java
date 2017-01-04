@@ -44,7 +44,7 @@ public class CorpVO extends SuperVO {
 	public String def10;//---------经度----------------如果小企业的话，存的是微报销的随机id.
 
 	@FieldAlias("d11")
-	public String def11;//----------维度
+	public String def11;//----------维度----------------如果小企业的话，存的是激活码
 
 	@FieldAlias("d12")
 	public String def12;//---------王钊宁---是否已票通认证完成
