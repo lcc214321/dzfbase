@@ -30,6 +30,12 @@ public class DzfUtil {
 	public static String MASTERSECRET="7b358c5272bd6b10efbd9c90";
 	public static String JPUSHAPPKEY="2e0353fb2e531954a5f2406c";
 	
+	/**
+	 * 极光推送KEY,小薇无忧APP平台
+	 */
+	public static String MASTERSECRET_ADMIN="18a11e9a0bc4af66343f0b7b";
+	public static String JPUSHAPPKEY_ADMIN="d39f5f9c5d2e1221b11bf88c";
+	
 	public static Set<String> month = new LinkedHashSet<String>();
 	static{
 		 month.add("01");
