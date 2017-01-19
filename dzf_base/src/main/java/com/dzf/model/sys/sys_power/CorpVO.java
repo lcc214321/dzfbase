@@ -397,6 +397,9 @@ public class CorpVO extends SuperVO {
 	private String pk_source;//来源主键
 	
 	private String text;
+	
+	@FieldAlias("pyfc")
+	private String pyfirstcomb;//客户名称首字母(王钊宁的客户模糊查询)
 
 	private String accountcoderule;
 	
@@ -3030,6 +3033,15 @@ public class CorpVO extends SuperVO {
 	public void setText(String text) {
 		this.text = text;
 	}
+
+	public String getPyfirstcomb() {
+		return pyfirstcomb;
+	}
+
+	public void setPyfirstcomb(String pyfirstcomb) {
+		this.pyfirstcomb = pyfirstcomb;
+	}
+
 
 	public DZFDate getDscodedate() {
 		return dscodedate;
