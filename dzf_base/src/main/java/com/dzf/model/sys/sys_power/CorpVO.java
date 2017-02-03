@@ -441,6 +441,39 @@ public class CorpVO extends SuperVO {
 	@FieldAlias("taxconmatpe")
 	private String taxcontrmachtype;  //税控器具类型
 	
+	@FieldAlias("dkfp")
+	private DZFBoolean isdkfp;//代开发票
+	
+	@FieldAlias("dbbx")
+	private DZFBoolean isdbbx;//代办保险
+	
+	@FieldAlias("sxrq")
+	private Integer isxrq;//一般纳税人生效日期
+	
+	@FieldAlias("rdsj")
+	private DZFDate drdsj;//认定时间
+	
+	@FieldAlias("ywskp")
+	private DZFBoolean isywskp;//有无税控盘
+	
+	@FieldAlias("fwgs")
+	private Integer ifwgs;//房屋归属
+	
+	@FieldAlias("sdsbsjg")
+	private Integer isdsbsjg;//所得税报送机关(0-国税局、1-地税局)
+	
+	@FieldAlias("kjzc")
+	private Integer ikjzc;//会计政策(0-企业会计准则、1-小企业会计准则、2-企业会计制度、3-事业单位会计准则、4-民间非营利组织会计制度)
+	
+	@FieldAlias("rzsj")
+	private DZFDate drzsj;//认证时间
+	
+	@FieldAlias("schlnd")
+	private String vschlnd;//首次获利年度
+	
+	@FieldAlias("yhzc")
+	private String vyhzc;//公司可享受的优惠政策
+	
 	/**
 	 * 使用主键字段进行初始化的构造子。
 	 * 
@@ -3154,75 +3187,148 @@ public class CorpVO extends SuperVO {
 		this.accbooks = accbooks;
 	}
 
-
 	public String getBooksname() {
 		return booksname;
 	}
-
 
 	public void setBooksname(String booksname) {
 		this.booksname = booksname;
 	}
 
-
 	public String getForeignid() {
 		return foreignid;
 	}
-
 
 	public void setForeignid(String foreignid) {
 		this.foreignid = foreignid;
 	}
 
-
 	public DZFDouble getCitybuildtax() {
 		return citybuildtax;
 	}
-
 
 	public void setCitybuildtax(DZFDouble citybuildtax) {
 		this.citybuildtax = citybuildtax;
 	}
 
-
 	public DZFBoolean getIsmaintainedtax() {
 		return ismaintainedtax;
 	}
-
 
 	public void setIsmaintainedtax(DZFBoolean ismaintainedtax) {
 		this.ismaintainedtax = ismaintainedtax;
 	}
 
-
 	public DZFDateTime getLastmodifytime() {
 		return lastmodifytime;
 	}
-
 
 	public void setLastmodifytime(DZFDateTime lastmodifytime) {
 		this.lastmodifytime = lastmodifytime;
 	}
 
-
 	public String getIndustrycode() {
 		return industrycode;
 	}
-
 
 	public void setIndustrycode(String industrycode) {
 		this.industrycode = industrycode;
 	}
 
-
 	public String getTaxcontrmachtype() {
 		return taxcontrmachtype;
 	}
 
-
 	public void setTaxcontrmachtype(String taxcontrmachtype) {
 		this.taxcontrmachtype = taxcontrmachtype;
 	}
-	
+
+	public DZFBoolean getIsdkfp() {
+		return isdkfp;
+	}
+
+	public void setIsdkfp(DZFBoolean isdkfp) {
+		this.isdkfp = isdkfp;
+	}
+
+	public DZFBoolean getIsdbbx() {
+		return isdbbx;
+	}
+
+	public void setIsdbbx(DZFBoolean isdbbx) {
+		this.isdbbx = isdbbx;
+	}
+
+	public Integer getIsxrq() {
+		return isxrq;
+	}
+
+	public void setIsxrq(Integer isxrq) {
+		this.isxrq = isxrq;
+	}
+
+	public DZFDate getDrdsj() {
+		return drdsj;
+	}
+
+	public void setDrdsj(DZFDate drdsj) {
+		this.drdsj = drdsj;
+	}
+
+	public DZFBoolean getIsywskp() {
+		return isywskp;
+	}
+
+	public void setIsywskp(DZFBoolean isywskp) {
+		this.isywskp = isywskp;
+	}
+
+	public Integer getIfwgs() {
+		return ifwgs;
+	}
+
+	public void setIfwgs(Integer ifwgs) {
+		this.ifwgs = ifwgs;
+	}
+
+	public Integer getIsdsbsjg() {
+		return isdsbsjg;
+	}
+
+	public void setIsdsbsjg(Integer isdsbsjg) {
+		this.isdsbsjg = isdsbsjg;
+	}
+
+	public Integer getIkjzc() {
+		return ikjzc;
+	}
+
+	public void setIkjzc(Integer ikjzc) {
+		this.ikjzc = ikjzc;
+	}
+
+	public DZFDate getDrzsj() {
+		return drzsj;
+	}
+
+	public void setDrzsj(DZFDate drzsj) {
+		this.drzsj = drzsj;
+	}
+
+	public String getVschlnd() {
+		return vschlnd;
+	}
+
+	public void setVschlnd(String vschlnd) {
+		this.vschlnd = vschlnd;
+	}
+
+	public String getVyhzc() {
+		return vyhzc;
+	}
+
+	public void setVyhzc(String vyhzc) {
+		this.vyhzc = vyhzc;
+	}
 	
 }
