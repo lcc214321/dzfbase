@@ -1,7 +1,5 @@
 package com.dzf.pub.session;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.ServletRequest;
@@ -14,9 +12,9 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.bouncycastle.util.encoders.UrlBase64;
 
-import com.dzf.framework.rsa.DES;
 import com.dzf.framework.rsa.Encode;
 import com.dzf.pub.IGlobalConstants;
+import com.dzf.pub.StringUtil;
 import com.dzf.pub.cache.RsaKeyCache;
 import com.dzf.pub.framework.rsa.RSACoder;
 
@@ -135,6 +133,8 @@ public class DzfCookieTool {
 		
 		String appid = (String)session.getAttribute(IGlobalConstants.appid);
 		
+		String clientid = (String)session.getAttribute(IGlobalConstants.clientid);
+		
 		String contentPath = ((HttpServletRequest)request).getContextPath() + "/";
 		
 		String strUUID = (String)session.getAttribute(IGlobalConstants.uuid);
@@ -153,6 +153,10 @@ public class DzfCookieTool {
 		
 		sb.append(",");
 		sb.append(appid);
+		if(!StringUtil.isEmpty(clientid)){
+			sb.append(",");
+			sb.append(clientid);
+		}
 
 		try {
 			String encryptToken = new String(UrlBase64.encode(RSACoder.encryptByPublicKey(sb.toString().getBytes(), RsaKeyCache.getInstance().getPublicKey())));

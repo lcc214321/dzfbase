@@ -28,6 +28,7 @@ public class DzfSessionTool {
 		session.setSessionid(httpsession.getId());
 		session.setToken((String)httpsession.getAttribute(IGlobalConstants.login_token));
 		session.setXwwy_sessionid((String)httpsession.getAttribute("xwwy_sessionid"));
+		session.setClientid((String)httpsession.getAttribute(IGlobalConstants.clientid));
 		return session;
 		
 	}
@@ -55,6 +56,9 @@ public class DzfSessionTool {
 		{
 			httpsession.setAttribute("xwwy_sessionid", dzfsession.getXwwy_sessionid());
 		}
+		if(!StringUtil.isEmpty(dzfsession.getClientid())){
+			httpsession.setAttribute(IGlobalConstants.clientid, dzfsession.getClientid());
+		}
 	}
 	public static void clearSession(HttpSession httpsession)
 	{
@@ -81,6 +85,10 @@ public class DzfSessionTool {
 		if (httpsession.getAttribute("xwwy_sessionid") != null)
 		{
 			httpsession.removeAttribute("xwwy_sessionid");
+		}
+		if (httpsession.getAttribute(IGlobalConstants.clientid) != null)
+		{
+			httpsession.removeAttribute(IGlobalConstants.clientid);
 		}
 		DzfSessionContext.getInstance().DelSession(httpsession);
 		

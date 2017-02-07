@@ -93,6 +93,12 @@ public class DZFRequestFilter implements Filter {
 				String exponent=new String(Hex.encodeHex(publicKey.getPublicExponent().toByteArray()));
 				session.setAttribute("MODULUS",modulus);
 				session.setAttribute("EXPONENT",exponent);
+				
+				//zpm--------------------------------------------client增加开始
+				/*if("java".equals(req.getParameter("clientid"))){
+					session.setAttribute("rand", "abcd");
+				}*/
+				//zpm---------------------------------------------client增加结束
 			}
 			
 			//session修改开始		
@@ -185,8 +191,21 @@ public class DZFRequestFilter implements Filter {
 							
 							session.setAttribute(IGlobalConstants.uuid, strUUID);
 	
+
 							//从redis服务器检查此用户是否有在其它客户端在线，也就是当前用户是否被踢
-							DZFSessionVO sessionvo_ByUserid = SessionCache.getInstance().getByUserID(pk_user, appid);
+							//zpm增加clientid
+							DZFSessionVO sessionvo_ByUserid = null;
+							String clientui = req.getParameter("clientid");
+							if(StringUtil.isEmpty(clientui)){
+								sessionvo_ByUserid = SessionCache.getInstance().getByUserID(pk_user, appid);
+							}else{
+								sessionvo_ByUserid = SessionCache.getInstance().getByUserID(pk_user, appid,clientui);
+							}
+							 
+							if(sa.length==4){//即含有clientid
+								String clientid = sa[3];
+								sessionvo_ByUserid = SessionCache.getInstance().getByUserID(pk_user, appid,clientid);
+							}
 							
 							if (sessionvo_ByUserid != null)
 							{

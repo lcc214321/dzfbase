@@ -1,6 +1,5 @@
 package com.dzf.model.pub;
 
-import java.io.Serializable;
 import java.util.Set;
 
 import com.dzf.pub.SuperVO;
@@ -18,6 +17,8 @@ public class DZFSessionVO extends SuperVO {
 	private String remoteIp;
 	private long lasttime;	
 	private String appid;
+	//增加clientid---来源(浏览器、c#客户端、java客户端等)，如果clientid为null或者空串，则为浏览器，别的为C#和java
+	private String clientid;
 	
 	//小微无忧
 	private String xwwy_sessionid;
@@ -107,6 +108,12 @@ public class DZFSessionVO extends SuperVO {
 	}
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
+	}
+	public String getClientid() {
+		return clientid;
+	}
+	public void setClientid(String clientid) {
+		this.clientid = clientid;
 	}
 
 }

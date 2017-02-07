@@ -130,6 +130,36 @@ public class SessionCache {
 		
 	}
 	
+	public void addSession(HttpSession session,String clientui)
+	{
+		String strUUID = (String)session.getAttribute(IGlobalConstants.uuid);
+	
+		if (StringUtil.isEmptyWithTrim(strUUID))
+		{
+			return;
+		}
+		
+		DZFSessionVO newRedissessionvo = DzfSessionTool.createSession(session);
+		
+		//把当前用户在其他客户端登录的信息清除
+		String pk_user = newRedissessionvo.getPk_user();
+		String appid = newRedissessionvo.getAppid();
+		String clientid = newRedissessionvo.getClientid();
+		
+		DZFSessionVO oldvo = getByUserID(pk_user, appid,clientid);
+		if (oldvo != null)
+		{
+			String oldUUID = oldvo.getUuid();
+			removeByUUID(oldUUID, pk_user, appid, session.getMaxInactiveInterval());
+
+		}
+		
+		addByUUID(newRedissessionvo, session.getMaxInactiveInterval());
+		
+		addByUserID(newRedissessionvo, session.getMaxInactiveInterval());
+
+	}
+	
 	public void addSession(HttpSession session)
 	{
 		String strUUID = (String)session.getAttribute(IGlobalConstants.uuid);
@@ -602,14 +632,35 @@ public class SessionCache {
 		{
 			for (DZFSessionVO svo : sessionListVo.getListSessionVO())
 			{
-				if (svo.getAppid().equals(appid))
+				if(StringUtil.isEmpty(svo.getClientid())){
+					if (svo.getAppid().equals(appid))
+					{
+						return svo;
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	public DZFSessionVO getByUserID(String userid, String appid,String clientid) {
+
+		DZFSessionListVO sessionListVo = getByUserID(userid);
+		
+		
+		if (sessionListVo != null)
+		{
+			for (DZFSessionVO svo : sessionListVo.getListSessionVO())
+			{
+				if (svo.getAppid().equals(appid) && clientid.equals(svo.getClientid()))
 				{
 					return svo;
 				}
 			}
 		}
 		return null;
-	}
+	} 
+	
 	public DZFSessionListVO getByUUID(final String strUUID) {
 		if (strUUID == null) {
 			return null;

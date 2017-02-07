@@ -21,6 +21,9 @@ public interface IGlobalConstants extends IDefaultValue{
 	//登录公司session
 	public final static String login_corp = "login_corp";
 	
+	//访问的客户端
+	public final static String clientid = "clientid";
+	
 //	用户登陆失败次数，锁定
 	public final static int lock_fail_login	= 6;
 	
