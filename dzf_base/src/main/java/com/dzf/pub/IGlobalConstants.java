@@ -95,4 +95,6 @@ public interface IGlobalConstants extends IDefaultValue {
 
 	public static String openId = "openId";
 	public static String formal_user = "formal_user";
+	
+	public static int saoma_three = 3;//发票扫码一日只允许扫3次。
 }
