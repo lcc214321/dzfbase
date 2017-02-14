@@ -94,11 +94,6 @@ public class DZFRequestFilter implements Filter {
 				session.setAttribute("MODULUS",modulus);
 				session.setAttribute("EXPONENT",exponent);
 				
-				//zpm--------------------------------------------client增加开始
-				/*if("java".equals(req.getParameter("clientid"))){
-					session.setAttribute("rand", "abcd");
-				}*/
-				//zpm---------------------------------------------client增加结束
 			}
 			
 			//session修改开始		
@@ -110,7 +105,7 @@ public class DZFRequestFilter implements Filter {
 			String forceReadRedis = request.getParameter("rds");
 			String ssoserverflag = request.getParameter("ssoserver");
 			String pk_user = null;		
-
+			String clientid = null;
 			String errorRetMsg = null;	//错误返回提示信息
 			
 			String appid = null;
@@ -191,21 +186,14 @@ public class DZFRequestFilter implements Filter {
 							
 							session.setAttribute(IGlobalConstants.uuid, strUUID);
 	
-
-							//从redis服务器检查此用户是否有在其它客户端在线，也就是当前用户是否被踢
-							//zpm增加clientid
-							DZFSessionVO sessionvo_ByUserid = null;
-							String clientui = req.getParameter("clientid");
-							if(StringUtil.isEmpty(clientui)){
-								sessionvo_ByUserid = SessionCache.getInstance().getByUserID(pk_user, appid);
-							}else{
-								sessionvo_ByUserid = SessionCache.getInstance().getByUserID(pk_user, appid,clientui);
-							}
-							 
 							if(sa.length==4){//即含有clientid
-								String clientid = sa[3];
-								sessionvo_ByUserid = SessionCache.getInstance().getByUserID(pk_user, appid,clientid);
+								clientid = sa[3];
 							}
+							//从redis服务器检查此用户是否有在其它客户端在线，也就是当前用户是否被踢
+							DZFSessionVO sessionvo_ByUserid = null;
+							sessionvo_ByUserid = SessionCache.getInstance().getByUserID(pk_user, appid,clientid);
+							 
+
 							
 							if (sessionvo_ByUserid != null)
 							{
@@ -235,7 +223,7 @@ public class DZFRequestFilter implements Filter {
 											if (sessionvo_ByUUID.getPk_user().equals(pk_user) == false)
 											{
 												//把登录的原用户信息从redis服务器清除
-												SessionCache.getInstance().removeByUUID(strUUID, pk_user, appid, session.getMaxInactiveInterval());
+												SessionCache.getInstance().removeByUUID(strUUID, pk_user, appid, session.getMaxInactiveInterval(),clientid);
 											}
 											DzfSessionTool.fillValueToHttpSession(sessionvo_ByUUID, session);
 											//重新生成token
@@ -545,7 +533,7 @@ public class DZFRequestFilter implements Filter {
 	    			}
 	    			if (StringUtil.isEmpty(uuid_cookie) == false)
 	    			{
-	    				SessionCache.getInstance().removeByUUID(uuid_cookie, pk_user, appid, session.getMaxInactiveInterval());
+	    				SessionCache.getInstance().removeByUUID(uuid_cookie, pk_user, appid, session.getMaxInactiveInterval(),clientid);
 	    			}
 	    			DzfSessionTool.clearSession(session);
 		    		if(url.endsWith(".action")){

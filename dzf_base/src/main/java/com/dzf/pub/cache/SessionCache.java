@@ -59,6 +59,7 @@ public class SessionCache {
 			return;
 		}
 		String pk_user = (String)session.getAttribute(IGlobalConstants.login_user);
+		String clientid = (String)session.getAttribute(IGlobalConstants.clientid);
 		
 		if (StringUtil.isEmptyWithTrim(pk_user))
 		{
@@ -102,7 +103,7 @@ public class SessionCache {
 		
 		oldSessionVO = null;
 		
-		dzfSessionListVo = getByUserID(pk_user);
+		dzfSessionListVo = getByUserIDsessionlistvo(pk_user,clientid);
 		if (dzfSessionListVo != null)
 		{
 			listDzfSessionVo = dzfSessionListVo.getListSessionVO();
@@ -121,7 +122,7 @@ public class SessionCache {
 			listDzfSessionVo.remove(oldSessionVO);
 			listDzfSessionVo.add(newSessionVo);
 			
-			String realKey = "dzfsso" + pk_user;
+			String realKey = getsessionkeyid(pk_user, clientid);
 			iSecond = session.getMaxInactiveInterval() - (int)((System.currentTimeMillis() - newSessionVo.getLasttime()) / 1000);
 			add(realKey, dzfSessionListVo, iSecond);
 		}
@@ -150,7 +151,7 @@ public class SessionCache {
 		if (oldvo != null)
 		{
 			String oldUUID = oldvo.getUuid();
-			removeByUUID(oldUUID, pk_user, appid, session.getMaxInactiveInterval());
+			removeByUUID(oldUUID, pk_user, appid, session.getMaxInactiveInterval(),clientid);
 
 		}
 		
@@ -174,12 +175,13 @@ public class SessionCache {
 		//把当前用户在其他客户端登录的信息清除
 		String pk_user = newRedissessionvo.getPk_user();
 		String appid = newRedissessionvo.getAppid();
+		String clientid = newRedissessionvo.getClientid();
 		
-		DZFSessionVO oldvo = getByUserID(pk_user, appid);
+		DZFSessionVO oldvo = getByUserID(pk_user, appid,clientid);
 		if (oldvo != null)
 		{
 			String oldUUID = oldvo.getUuid();
-			removeByUUID(oldUUID, pk_user, appid, session.getMaxInactiveInterval());
+			removeByUUID(oldUUID, pk_user, appid, session.getMaxInactiveInterval(),clientid);
 
 		}
 		
@@ -204,12 +206,13 @@ public class SessionCache {
 		//把当前用户在其他客户端登录的信息清除
 		String pk_user = dzfsession.getPk_user();
 		String appid = dzfsession.getAppid();
+		String clientid = dzfsession.getClientid();
 				
-		DZFSessionVO oldvo = getByUserID(pk_user, appid);
+		DZFSessionVO oldvo = getByUserID(pk_user, appid,clientid);
 		if (oldvo != null)
 		{
 			String oldUUID = oldvo.getUuid();
-			removeByUUID(oldUUID, pk_user, appid, iMaxInactiveInterval);
+			removeByUUID(oldUUID, pk_user, appid, iMaxInactiveInterval,clientid);
 
 		}
 		
@@ -333,9 +336,10 @@ public class SessionCache {
 	 */
 	private void addByUserID(final DZFSessionVO m, int iExpiredSecond) {
 		final String userid = m.getPk_user();
+		final String clientid = m.getClientid();
 		
 		
-		DZFSessionListVO dzfSessionListVo = getByUserID(userid);
+		DZFSessionListVO dzfSessionListVo = getByUserIDsessionlistvo(userid,clientid);
 		List<DZFSessionVO> listDzfSessionVO = null;
 		List<DZFSessionVO> listNewDzfSessionVO = new ArrayList<DZFSessionVO>();
 		listNewDzfSessionVO.add(m);
@@ -365,7 +369,7 @@ public class SessionCache {
 		dzfSessionListVo.setListSessionVO(listNewDzfSessionVO);
 		
 		
-		String realKey = "dzfsso" + userid;
+		String realKey = getsessionkeyid(userid, clientid);
 		
 		if (SessionRedisClient.getInstance().getEnabled() == false)
 		{
@@ -457,10 +461,10 @@ public class SessionCache {
 			add(strUUID, dzfSessionListVo, iSecond);
 		}
 	}
-	private void removeByUserID(final String uuid, final String pk_user, String appid, int iExpiredSecond) {
+	private void removeByUserID(final String uuid, final String pk_user, String appid, int iExpiredSecond,String clientid) {
 		
-		DZFSessionListVO sessionlistvo = getByUserID(pk_user);
-		final String realKey = "dzfsso" + pk_user;
+		DZFSessionListVO sessionlistvo = getByUserIDsessionlistvo(pk_user,clientid);
+		final String realKey = getsessionkeyid(pk_user, clientid);
 		if (sessionlistvo != null)
 		{
 			List<DZFSessionVO> listSessionVO = sessionlistvo.getListSessionVO();
@@ -517,12 +521,12 @@ public class SessionCache {
 		
 		
 	}
-	public void removeByUUID(final String strUUID, final String pk_user, final String appid, int iExpiredSecond) {
+	public void removeByUUID(final String strUUID, final String pk_user, final String appid, int iExpiredSecond,String clientid) {
 
 
 		if (pk_user != null)	//把pk_user登录信息中包含当前uuid的信息全部删除
 		{
-			removeByUserID(strUUID, pk_user, appid, iExpiredSecond);
+			removeByUserID(strUUID, pk_user, appid, iExpiredSecond,clientid);
 		}
 		
 		DZFSessionListVO sessionlistvo = getByUUID(strUUID);
@@ -581,13 +585,23 @@ public class SessionCache {
 			}
 		}
 	}
-	public DZFSessionListVO getByUserID(final String userid) {
+	
+	private String getsessionkeyid(String userid,String clientid){
+		String realKey ="";
+		if(StringUtil.isEmpty(clientid)){
+			realKey = "dzfsso" + userid;
+		}else{
+			realKey = "dzfsso" + userid+clientid;
+		}
+		return realKey;
+	}
+	public DZFSessionListVO getByUserIDsessionlistvo(final String userid,final String clientid) {
 		if (userid == null) {
 			return null;
 		}
 		DZFSessionListVO sessionListVo = null; 
 		
-		final String realKey = "dzfsso" + userid;
+		final String realKey = getsessionkeyid(userid,clientid);
 
 		if (SessionRedisClient.getInstance().getEnabled() == false)
 		{
@@ -623,39 +637,47 @@ public class SessionCache {
 		}
 		return sessionListVo;
 	}
-	public DZFSessionVO getByUserID(String userid, String appid) {
+//	public DZFSessionVO getByUserID(String userid, String appid) {
+//
+//		DZFSessionListVO sessionListVo = getByUserIDsessionlistvo(userid,null);
+//		
+//		
+//		if (sessionListVo != null)
+//		{
+//			for (DZFSessionVO svo : sessionListVo.getListSessionVO())
+//			{
+//				if(StringUtil.isEmpty(svo.getClientid())){
+//					if (svo.getAppid().equals(appid))
+//					{
+//						return svo;
+//					}
+//				}
+//			}
+//		}
+//		return null;
+//	}
+	
+	public DZFSessionVO getByUserID(String userid, String appid,String clientid) {
 
-		DZFSessionListVO sessionListVo = getByUserID(userid);
+		DZFSessionListVO sessionListVo = getByUserIDsessionlistvo(userid,clientid);
 		
 		
 		if (sessionListVo != null)
 		{
 			for (DZFSessionVO svo : sessionListVo.getListSessionVO())
 			{
-				if(StringUtil.isEmpty(svo.getClientid())){
+				if(StringUtil.isEmpty(clientid)){
 					if (svo.getAppid().equals(appid))
 					{
 						return svo;
 					}
+				}else{
+					if (svo.getAppid().equals(appid) && clientid.equals(svo.getClientid()))
+					{
+						return svo;
+					}
 				}
-			}
-		}
-		return null;
-	}
-	
-	public DZFSessionVO getByUserID(String userid, String appid,String clientid) {
-
-		DZFSessionListVO sessionListVo = getByUserID(userid);
-		
-		
-		if (sessionListVo != null)
-		{
-			for (DZFSessionVO svo : sessionListVo.getListSessionVO())
-			{
-				if (svo.getAppid().equals(appid) && clientid.equals(svo.getClientid()))
-				{
-					return svo;
-				}
+				
 			}
 		}
 		return null;

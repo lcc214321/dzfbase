@@ -45,6 +45,7 @@ public class SessionSerializable extends AbstractSerializable<DZFSessionListVO> 
 			write(nos, sessionvo.getSessionid());
 			write(nos, sessionvo.getAppid());
 			write(nos, sessionvo.getUuid());
+			write(nos, sessionvo.getClientid());
 		}
 	}
 
@@ -82,6 +83,7 @@ public class SessionSerializable extends AbstractSerializable<DZFSessionListVO> 
 			sessionvo.setSessionid(readerString(nos, -1));
 			sessionvo.setAppid(readerString(nos, -1));
 			sessionvo.setUuid(readerString(nos, -1));
+			sessionvo.setClientid(readerString(nos, -1));
 			listSessionVO.add(sessionvo);
 		}
 		sessionListVO.setListSessionVO(listSessionVO);
