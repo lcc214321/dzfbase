@@ -482,6 +482,11 @@ public class DZFRequestFilter implements Filter {
 				filterChain.doFilter(request, response);
 	        	return;
 			}
+			//山东天南星
+			if(url.contains("/tnx/service")){
+				filterChain.doFilter(request, response);
+	        	return;
+			}
 			//管理平台调用在线会计的凭证保存接口
 			if(url.contains("/hessian")){
 				filterChain.doFilter(request, response);
