@@ -50,6 +50,7 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 		write(nos,svo.getForeignname());//销售代表
 		write(nos,svo.getForeignid());//销售代表PK
 		write(nos,svo.getAccountcoderule());//科目编码规则
+		write(nos,svo.getVyhzc());//优惠政策
 	}
 
 	@Override
@@ -97,6 +98,7 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 		cvo.setForeignname(readerString(nos, -1));
 		cvo.setForeignid(readerString(nos, -1));
 		cvo.setAccountcoderule(readerString(nos, -1));
+		cvo.setVyhzc(readerString(nos, -1));//优惠政策
 		return cvo;
 	}
 	
