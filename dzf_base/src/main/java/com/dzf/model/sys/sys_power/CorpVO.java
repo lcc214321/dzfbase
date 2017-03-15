@@ -474,6 +474,8 @@ public class CorpVO extends SuperVO {
 	@FieldAlias("yhzc")
 	private String vyhzc;//公司可享受的优惠政策
 	
+	
+	private String accountProgress;//做账进度
 	/**
 	 * 使用主键字段进行初始化的构造子。
 	 * 
@@ -3329,6 +3331,16 @@ public class CorpVO extends SuperVO {
 
 	public void setVyhzc(String vyhzc) {
 		this.vyhzc = vyhzc;
+	}
+
+
+	public String getAccountProgress() {
+		return accountProgress;
+	}
+
+
+	public void setAccountProgress(String accountProgress) {
+		this.accountProgress = accountProgress;
 	}
 	
 }
