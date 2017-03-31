@@ -1,7 +1,5 @@
 package com.dzf.pub;
 
-import java.io.Serializable;
-
 import org.apache.log4j.Logger;
 
 
