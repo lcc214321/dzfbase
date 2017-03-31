@@ -1,5 +1,7 @@
 package com.dzf.pub;
 
+import java.io.Serializable;
+
 import org.apache.log4j.Logger;
 
 
@@ -12,7 +14,7 @@ public class BusinessException extends DZFWarpException {
 	
 	static final long serialVersionUID = -35466L;
 	
-	Logger logger = Logger.getLogger(this.getClass());
+	static Logger logger = Logger.getLogger(BusinessException.class);
 
     private String hint;
 
