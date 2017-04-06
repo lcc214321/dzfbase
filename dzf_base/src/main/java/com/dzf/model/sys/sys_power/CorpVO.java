@@ -476,6 +476,16 @@ public class CorpVO extends SuperVO {
 	
 	
 	private String accountProgress;//做账进度
+	
+	@FieldAlias("bday")
+	public Integer rembday;// 提醒开始日期
+	
+	@FieldAlias("eday")
+	public Integer remeday;// 提醒截止日期
+	
+	@FieldAlias("beday")
+	public String rembeday;// 提醒开始-截止日期
+	
 	/**
 	 * 使用主键字段进行初始化的构造子。
 	 * 
@@ -485,6 +495,36 @@ public class CorpVO extends SuperVO {
 	}
 	
 	
+	public Integer getRembday() {
+		return rembday;
+	}
+
+
+	public void setRembday(Integer rembday) {
+		this.rembday = rembday;
+	}
+
+
+	public Integer getRemeday() {
+		return remeday;
+	}
+
+
+	public void setRemeday(Integer remeday) {
+		this.remeday = remeday;
+	}
+
+
+	public String getRembeday() {
+		return rembeday;
+	}
+
+
+	public void setRembeday(String rembeday) {
+		this.rembeday = rembeday;
+	}
+
+
 	public Integer getTaxreporttype() {
 		return taxreporttype;
 	}

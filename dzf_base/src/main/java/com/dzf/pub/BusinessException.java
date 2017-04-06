@@ -12,7 +12,7 @@ public class BusinessException extends DZFWarpException {
 	
 	static final long serialVersionUID = -35466L;
 	
-	Logger logger = Logger.getLogger(this.getClass());
+	static Logger logger = Logger.getLogger(BusinessException.class);
 
     private String hint;
 
