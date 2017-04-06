@@ -80,7 +80,7 @@ public class CorpVO extends SuperVO {
 	public String def3;//联系方式
 
 	@FieldAlias("d4")
-	public String def4;
+	public String def4;////图片处理流程id
 
 	@FieldAlias("d5")
 	public String def5;/////临时公司id
