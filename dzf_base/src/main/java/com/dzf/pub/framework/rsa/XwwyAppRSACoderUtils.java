@@ -1,18 +1,17 @@
 package com.dzf.pub.framework.rsa;
 
 import java.util.HashSet;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import com.dzf.framework.comn.IOUtils;
 import com.dzf.pub.BusinessException;
-import com.dzf.pub.WiseRunException;
-import com.dzf.pub.cache.RsaKeyCache;
 import com.dzf.pub.DZFWarpException;
 import com.dzf.pub.IGlobalConstants;
 import com.dzf.pub.MD516;
 import com.dzf.pub.StringUtil;
+import com.dzf.pub.WiseRunException;
+import com.dzf.pub.cache.RsaKeyCache;
 
 /**
  * 小微无优APP专用
@@ -147,7 +146,7 @@ public class XwwyAppRSACoderUtils {
 		//str=new String();
 		 str=MD516.Md5(IOUtils.getBytes(new String[]{userid,corp,str,xwwysessionid}));//new String(IOUtils.getBytes(set)));
 		
-		return IOUtils.getBytes(new String[]{str,hs.getId()});
+		return IOUtils.getBytes(new String[]{str});
 	}
 //	public static void test(){
 //		StringBuffer sb=new StringBuffer();
