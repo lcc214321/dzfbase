@@ -54,6 +54,7 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 		//
 		write(nos,svo.getDrzsj());//认证日期
 		write(nos,svo.getVschlnd());//首次获利年度
+		write(nos,svo.getDef19());//税负预警
 
 	}
 
@@ -106,6 +107,7 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 		
 		cvo.setDrzsj(reader(nos));//认证日期
 		cvo.setVschlnd(readerString(nos, -1));//首次获利年度
+		cvo.setDef19(readerString(nos, -1));//税负预警
 
 		return cvo;
 	}
