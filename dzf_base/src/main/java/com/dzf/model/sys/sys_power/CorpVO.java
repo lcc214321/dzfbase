@@ -68,7 +68,7 @@ public class CorpVO extends SuperVO {
 	public String def18;//-----------最后修改人[贺智鹏]
 
 	@FieldAlias("d19")
-	public String def19;
+	public String def19;//----------税负预警，null  为1% 
 
 	@FieldAlias("d2")
 	public String def2;//服务热线
