@@ -264,7 +264,7 @@ public class CorpVO extends SuperVO {
 	private DZFBoolean bbuildic;// --启用ic模块--  是否库存管理
 	
 	@FieldAlias("buildicstyle")
-	private Integer ibuildicstyle;//存货核算类型--针对启用进销存
+	private Integer ibuildicstyle;//存货核算类型--针对启用进销存[ 0或者空为老模式库存。 ] [ 1为新模式库存。 ]
 
 	@FieldAlias("useretail")
 	public DZFBoolean isuseretail; // 是否用于零售
