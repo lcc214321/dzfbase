@@ -248,7 +248,7 @@ public class SingleObjectBO {
 					SuperVO svo1 = (SuperVO) cs[1].newInstance();
 					buffer = new StringBuffer();
 					buffer.append(svo1.getParentPKFieldName());
-					buffer.append("=? ");
+					buffer.append("=? and nvl(dr,0) = 0 ");
 					SQLParameter sp = new SQLParameter();
 					sp.addParam(pkid);
 					cl = dao.retrieveByClause(cs[1], buffer.toString(), sp);
