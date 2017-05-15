@@ -81,6 +81,10 @@ public class CorpVO extends SuperVO {
 
 	@FieldAlias("d4")
 	public String def4;////图片处理流程id
+	
+	public DZFBoolean isneedocr;//是否智能识别，供展示用
+	public DZFBoolean isneedappro;//是否需要审核，供展示用
+	public String djshfs;//审核方式，供展示用
 
 	@FieldAlias("d5")
 	public String def5;/////临时公司id
@@ -3381,6 +3385,36 @@ public class CorpVO extends SuperVO {
 
 	public void setAccountProgress(String accountProgress) {
 		this.accountProgress = accountProgress;
+	}
+
+
+	public DZFBoolean getIsneedocr() {
+		return isneedocr;
+	}
+
+
+	public void setIsneedocr(DZFBoolean isneedocr) {
+		this.isneedocr = isneedocr;
+	}
+
+
+	public DZFBoolean getIsneedappro() {
+		return isneedappro;
+	}
+
+
+	public void setIsneedappro(DZFBoolean isneedappro) {
+		this.isneedappro = isneedappro;
+	}
+
+
+	public String getDjshfs() {
+		return djshfs;
+	}
+
+
+	public void setDjshfs(String djshfs) {
+		this.djshfs = djshfs;
 	}
 	
 }
