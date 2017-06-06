@@ -47,7 +47,7 @@ public class CorpVO extends SuperVO {
 	public String def11;//----------维度----------------如果小企业的话，存的是激活码
 
 	@FieldAlias("d12")
-	public String def12;//---------王钊宁---是否已票通认证完成
+	public String def12;//---------王钊宁---是否已票通认证完成，如果是代账公司，存企业识别号
 
 	@FieldAlias("d13")
 	public String def13;//-----------小薇无优网站，服务主体
@@ -96,7 +96,7 @@ public class CorpVO extends SuperVO {
 	public String def7;///////////////--------------------------------客户经理名称
 
 	@FieldAlias("d8")
-	public String def8;//////////////---------------------------------授权企业主打印导出
+	public String def8;//////////////----------授权企业主打印导出 。如果是代账公司，存官方网址
 
 	@FieldAlias("d9")
 	public String def9;/////////////-----------------------------------注册资本
