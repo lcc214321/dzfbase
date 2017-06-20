@@ -181,6 +181,16 @@ public class DateUtils {
 	public static long getPreviousMonth(long date) {
 		return incrementMonth(date, -1);
 	}
+	
+	//取前一年的日期，即参数：2017-03，结果为2016-03
+	public static String getPreviousYearPeriod(String period){
+		DZFDate date=new DZFDate(period+"-01");
+		long l=getPreviousYear(date.toDate().getTime());
+		date=new DZFDate(l);
+		String str=date.toString();
+		return str.substring(0, 7);
+	}
+	
 	public static String getPreviousPeriod(String period) {
 		DZFDate date=new DZFDate(period+"-01");
 		long l=getPreviousMonth(date.toDate().getTime());
