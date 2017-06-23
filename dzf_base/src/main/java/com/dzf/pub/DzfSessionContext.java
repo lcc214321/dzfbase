@@ -57,18 +57,31 @@ public class DzfSessionContext {
 
 //  session失效
 	public synchronized void DelSession(HttpSession session) {
-		if (session != null) {
+		//这里存在问题。如果这个session过了有效期，那么session.getAttribute(IGlobalConstants.login_user)
+		//会报java.lang.IllegalStateException: getAttribute: Session already invalidated，错误。
+		//因此根据session取值，需判断该session是否有效。
+		//一般用户前台注销时，传回后台会调用session.invalidate();方法。因此这里存在map中的session就失效了，就不能getAttribute了。
+		////
+		//这里这样修改的原因是:com.dzf.pub.DzfSessionListener在方法中sessionDestroyed中已经调用了DelSession(session)，
+		//其它地方调用，则需判断一下当前sessiona是否有效即可。但HttpSession是一个接口，无法调用判断是否失效方法，因此这里通过
+		//捕获异常得到
+		//if(session.isValid()) ----StandardSession
+		//return;
+		try{
 			String pk_user = (String)session.getAttribute(IGlobalConstants.login_user);
 			if(pk_user != null){
 				DelUserSession(session);
 			}
-			mymap.remove(session.getId());  
+			mymap.remove(session.getId());
+		}catch(IllegalStateException e){//此异常吃掉
+			log.error("当前session已经失效！",e);
 		}
+
 	}
 
 //	session失效清除用户
 	public synchronized void DelUserSession(HttpSession session) {
-		if (session != null) {
+		try{
 			String pk_user = (String)session.getAttribute(IGlobalConstants.login_user);
 			if(pk_user != null){
 				if(myUserMap.get(pk_user) != null){
@@ -88,6 +101,8 @@ public class DzfSessionContext {
 					}*/
 				}
 			}
+		}catch(IllegalStateException e){//此异常吃掉
+			log.error("当前session已经失效！",e);
 		}
 	}
 
@@ -142,9 +157,4 @@ public class DzfSessionContext {
 	public synchronized ConcurrentHashMap<String, HttpSession> getMymap() {
 		return mymap;
 	}
-
-
-
-
-
 }
