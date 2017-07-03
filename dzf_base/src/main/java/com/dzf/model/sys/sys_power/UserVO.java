@@ -99,7 +99,29 @@ public class UserVO extends SuperVO {
 	private String xsauthor;//是否销售管理权限[1-----代表已分配权限],[2---------没有分配权限]
 	private String mandq;//所管理的地区[地区档案的一级]
 	
+	//一下三个字段企业主PC端微信登录用，不存数据库
+	private String imagepath;//用户头像
+	private String pk_oauth2;
+	private String nickname;//微信QQ登录名
 	
+	public String getImagepath() {
+		return imagepath;
+	}
+	public void setImagepath(String imagepath) {
+		this.imagepath = imagepath;
+	}
+	public String getPk_oauth2() {
+		return pk_oauth2;
+	}
+	public void setPk_oauth2(String pk_oauth2) {
+		this.pk_oauth2 = pk_oauth2;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 	public DZFBoolean getIsOwner() {
 		return isOwner;
 	}
