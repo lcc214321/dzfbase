@@ -57,6 +57,7 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 		write(nos,svo.getDef19());//税负预警
 
 		write(nos, svo.getDef4());//单据图片处理方式
+		writeByte(nos, svo.getVprovince());//省
 	}
 
 	@Override
@@ -111,7 +112,7 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 		cvo.setDef19(readerString(nos, -1));//税负预警
 		
 		cvo.setDef4(readerString(nos, -1));
-
+		cvo.setVprovince((int) nos.readByte());//省
 		return cvo;
 	}
 	
