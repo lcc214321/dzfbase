@@ -7,7 +7,7 @@ import com.dzf.pub.lang.DZFDate;
 import com.dzf.pub.lang.DZFDateTime;
 import com.dzf.pub.lang.DZFDouble;
 
-public class CorpVO extends SuperVO {
+public class CorpVO<T extends SuperVO<T>> extends SuperVO {
 	private static final long serialVersionUID = -7255675917825048433L;
 
 	@FieldAlias("bdate")
@@ -490,6 +490,17 @@ public class CorpVO extends SuperVO {
 	@FieldAlias("beday")
 	public String rembeday;// 提醒开始-截止日期
 	
+	@FieldAlias("formal")
+	private DZFBoolean isformal;//是否正式客户
+	
+	private T[] corpRoleVos;//角色信息
+	
+	private T[] corpCredenVos;//证件信息
+	
+	private T[] corpDocVos;//附件信息
+	
+	private T[] corpTaxInfoVos;//税率信息
+	
 	/**
 	 * 使用主键字段进行初始化的构造子。
 	 * 
@@ -499,7 +510,17 @@ public class CorpVO extends SuperVO {
 	}
 	
 	
-	public Integer getRembday() {
+	
+	public DZFBoolean getIsformal() {
+        return isformal;
+    }
+
+    public void setIsformal(DZFBoolean isformal) {
+        this.isformal = isformal;
+    }
+
+
+    public Integer getRembday() {
 		return rembday;
 	}
 
@@ -3407,14 +3428,60 @@ public class CorpVO extends SuperVO {
 		this.isneedappro = isneedappro;
 	}
 
-
 	public String getDjshfs() {
 		return djshfs;
 	}
 
-
 	public void setDjshfs(String djshfs) {
 		this.djshfs = djshfs;
 	}
-	
+
+
+
+    public T[] getCorpRoleVos() {
+        return corpRoleVos;
+    }
+
+
+
+    public void setCorpRoleVos(T[] corpRoleVos) {
+        this.corpRoleVos = corpRoleVos;
+    }
+
+
+
+    public T[] getCorpCredenVos() {
+        return corpCredenVos;
+    }
+
+
+
+    public void setCorpCredenVos(T[] corpCredenVos) {
+        this.corpCredenVos = corpCredenVos;
+    }
+
+
+
+    public T[] getCorpDocVos() {
+        return corpDocVos;
+    }
+
+
+
+    public void setCorpDocVos(T[] corpDocVos) {
+        this.corpDocVos = corpDocVos;
+    }
+
+
+
+    public T[] getCorpTaxInfoVos() {
+        return corpTaxInfoVos;
+    }
+
+
+
+    public void setCorpTaxInfoVos(T[] corpTaxInfoVos) {
+        this.corpTaxInfoVos = corpTaxInfoVos;
+    }
+
 }
