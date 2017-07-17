@@ -48,8 +48,8 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 		write(nos,svo.getIndustry());
 		writeByte(nos,svo.getIbuildicstyle());
 		write(nos,svo.getDef12());//票通是否认证
-		write(nos,svo.getForeignname());//销售代表
-		write(nos,svo.getForeignid());//销售代表PK
+		write(nos,svo.getForeignname());//销售代表，存的是汉字
+		write(nos,svo.getForeignid());//代理商pk
 		write(nos,svo.getAccountcoderule());//科目编码规则
 		write(nos,svo.getVyhzc());//优惠政策
 		//
