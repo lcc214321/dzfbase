@@ -129,7 +129,7 @@ public class CorpVO<T extends SuperVO<T>> extends SuperVO {
 	@FieldAlias("fname")
 	public String foreignname;//销售代表
 	
-	@FieldAlias("fid")//pk暂没有用
+	@FieldAlias("fid")//---------使用他当代理商id，存代理商档案的id
 	public String foreignid;
 
 	@FieldAlias("hflag")
