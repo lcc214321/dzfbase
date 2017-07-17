@@ -90,10 +90,10 @@ public class CorpVO<T extends SuperVO<T>> extends SuperVO {
 	public String def5;/////临时公司id
 
 	@FieldAlias("d6")
-	public String def6;///////////////------------------------------销售代表主键
+	public String def6;///////////////------------------------------【我的客户，服务信息里】，客户经理id，取自sm_user表，配对使用
 
 	@FieldAlias("d7")
-	public String def7;///////////////--------------------------------客户经理名称
+	public String def7;///////////////--------------------------------【我的客户，服务信息里】，客户经理名称，取自sm_user表，配对使用
 
 	@FieldAlias("d8")
 	public String def8;//////////////----------授权企业主打印导出 。如果是代账公司，存官方网址
@@ -127,9 +127,9 @@ public class CorpVO<T extends SuperVO<T>> extends SuperVO {
 	public String fax2;
 
 	@FieldAlias("fname")
-	public String foreignname;//客户经理
+	public String foreignname;//销售代表
 	
-	@FieldAlias("fid")//客户PK
+	@FieldAlias("fid")//pk暂没有用
 	public String foreignid;
 
 	@FieldAlias("hflag")
