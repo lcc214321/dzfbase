@@ -131,6 +131,8 @@ public class CorpVO<T extends SuperVO<T>> extends SuperVO {
 	
 	@FieldAlias("fid")//---------使用他当代理商id，存代理商档案的id
 	public String foreignid;
+	
+	public String dlsname;//代理商名称，不存库
 
 	@FieldAlias("hflag")
 	public DZFBoolean holdflag;//是否启用资产
@@ -3397,6 +3399,18 @@ public class CorpVO<T extends SuperVO<T>> extends SuperVO {
 	public void setVyhzc(String vyhzc) {
 		this.vyhzc = vyhzc;
 	}
+
+
+	public String getDlsname() {
+		return dlsname;
+	}
+
+
+
+	public void setDlsname(String dlsname) {
+		this.dlsname = dlsname;
+	}
+
 
 
 	public String getAccountProgress() {
