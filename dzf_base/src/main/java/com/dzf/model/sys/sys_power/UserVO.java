@@ -98,8 +98,10 @@ public class UserVO extends SuperVO {
     private String pk_oauth2;
     private String nickname;// 微信QQ登录名
 
+    @FieldAlias("emid")
     private String pk_employee;// 员工ID
 
+    @FieldAlias("em")
     private String emname;// 员工姓名
     
     private String emcode;// 员工编码
