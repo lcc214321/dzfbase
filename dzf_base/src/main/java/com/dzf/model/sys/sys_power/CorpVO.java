@@ -503,7 +503,37 @@ public class CorpVO<T extends SuperVO<T>> extends SuperVO {
 	
 	private T[] corpTaxInfoVos;//税率信息
 	
-	/**
+	@FieldAlias("syntime")
+    public String vsyntime;//同步时间
+    
+    @FieldAlias("keyid")
+    public String keyid;//一证通ID
+	
+	public String getVsyntime() {
+        return vsyntime;
+    }
+
+
+
+    public void setVsyntime(String vsyntime) {
+        this.vsyntime = vsyntime;
+    }
+
+
+
+    public String getKeyid() {
+        return keyid;
+    }
+
+
+
+    public void setKeyid(String keyid) {
+        this.keyid = keyid;
+    }
+
+
+
+    /**
 	 * 使用主键字段进行初始化的构造子。
 	 * 
 	 * 创建日期：(2001-5-16)
