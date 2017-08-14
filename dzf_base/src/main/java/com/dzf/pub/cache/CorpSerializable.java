@@ -59,6 +59,7 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 
 		write(nos, svo.getDef4());//单据图片处理方式
 		writeByte(nos, svo.getVprovince());//省
+		writeByte(nos, svo.getIcostforwardstyle());//成本结转类型
 	}
 
 	@Override
@@ -114,6 +115,7 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 		
 		cvo.setDef4(readerString(nos, -1));
 		cvo.setVprovince((int) nos.readByte());//省
+		cvo.setIcostforwardstyle((int) nos.readByte());//成本结转类型
 		return cvo;
 	}
 	
