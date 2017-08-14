@@ -508,8 +508,20 @@ public class CorpVO<T extends SuperVO<T>> extends SuperVO {
     
     @FieldAlias("keyid")
     public String keyid;//一证通ID
-	
-	public String getVsyntime() {
+    
+    public String keyname;//纳税人名称
+    
+	public String getKeyname() {
+        return keyname;
+    }
+
+    public void setKeyname(String keyname) {
+        this.keyname = keyname;
+    }
+
+
+
+    public String getVsyntime() {
         return vsyntime;
     }
 
