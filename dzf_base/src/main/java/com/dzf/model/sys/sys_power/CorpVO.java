@@ -502,14 +502,6 @@ public class CorpVO<T extends SuperVO<T>> extends SuperVO {
 	private T[] corpDocVos;//附件信息
 	
 	private T[] corpTaxInfoVos;//税率信息
-	
-	@FieldAlias("syntime")
-    public String vsyntime;//同步时间
-    
-    @FieldAlias("keyid")
-    public String keyid;//一证通ID
-    
-    public String keyname;//纳税人名称
     
     @FieldAlias("taxercode")
     public String vtaxofficercode;//人员编码
@@ -610,40 +602,6 @@ public class CorpVO<T extends SuperVO<T>> extends SuperVO {
     public void setVtradecode(String vtradecode) {
         this.vtradecode = vtradecode;
     }
-
-    public String getKeyname() {
-        return keyname;
-    }
-
-    public void setKeyname(String keyname) {
-        this.keyname = keyname;
-    }
-
-
-
-    public String getVsyntime() {
-        return vsyntime;
-    }
-
-
-
-    public void setVsyntime(String vsyntime) {
-        this.vsyntime = vsyntime;
-    }
-
-
-
-    public String getKeyid() {
-        return keyid;
-    }
-
-
-
-    public void setKeyid(String keyid) {
-        this.keyid = keyid;
-    }
-
-
 
     /**
 	 * 使用主键字段进行初始化的构造子。
