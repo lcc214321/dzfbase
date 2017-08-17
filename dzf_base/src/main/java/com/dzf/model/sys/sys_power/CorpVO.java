@@ -536,6 +536,17 @@ public class CorpVO<T extends SuperVO<T>> extends SuperVO {
     private String approve_user_name;
     private DZFDateTime approve_time;
 
+    @FieldAlias("isfactory")
+	public DZFBoolean isfactory;//是否会计工厂
+    
+	public DZFBoolean getIsfactory() {
+		return isfactory;
+	}
+
+	public void setIsfactory(DZFBoolean isfactory) {
+		this.isfactory = isfactory;
+	}
+	
     public DZFBoolean getIschannel() {
         return ischannel;
     }
