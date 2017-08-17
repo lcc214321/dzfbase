@@ -26,7 +26,7 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 //		write(nos,svo.getIsdatacorp());
 //		write(nos,svo.getIscurr());
 		
-		writeBytes(nos, dzfb,svo.getHoldflag(),svo.getIshasaccount(),svo.getIsseal(),svo.getIsaccountcorp(),svo.getIsdatacorp(),svo.getIscurr());
+		writeBytes(nos, dzfb,svo.getHoldflag(),svo.getIshasaccount(),svo.getIsseal(),svo.getIsaccountcorp(),svo.getIsdatacorp(),svo.getIscurr(),svo.getIschannel());
 		
 		write(nos,svo.getIcbegindate());////库存启用日期
 		nos.write(svo.getPk_corp().toString().getBytes());
@@ -74,6 +74,7 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 	cvo.setIsaccountcorp(bs[4]);	
 	cvo.setIsdatacorp(bs[5]);
 	cvo.setIscurr(bs[6]);
+	cvo.setIschannel(bs[7]);
 //		cvo.setBbuildic(readerDZFBoolean(nos));
 //		cvo.setHoldflag(readerDZFBoolean(nos));
 //	cvo.setIshasaccount(readerDZFBoolean(nos));
