@@ -511,7 +511,107 @@ public class CorpVO<T extends SuperVO<T>> extends SuperVO {
     
     public String keyname;//纳税人名称
     
-	public String getKeyname() {
+    @FieldAlias("taxercode")
+    public String vtaxofficercode;//人员编码
+    
+    @FieldAlias("taxerid")
+    public String vtaxofficer;//办税人员id
+    
+    @FieldAlias("taxer")
+    public String vtaxofficernm;//办税人员名称
+    
+    @FieldAlias("corprhone")
+    public String vcorporatephone;//法人电话
+    
+    @FieldAlias("comptype")
+    public Integer icompanytype;//公司类型  1：有限公司；2：个人独资企业；3：合伙企业；
+    
+    @FieldAlias("buscope")
+    public String vbusinescope;//经营范围
+    
+    @FieldAlias("approdate")
+    public DZFDate dapprovaldate;//核准日期（发证日期）
+    
+    @FieldAlias("regans")
+    public String vregistorgans;//登记机关
+    
+    @FieldAlias("tradecode")
+    public String vtradecode;//国家标准行业编码
+
+    
+	public String getVtaxofficercode() {
+        return vtaxofficercode;
+    }
+
+    public void setVtaxofficercode(String vtaxofficercode) {
+        this.vtaxofficercode = vtaxofficercode;
+    }
+
+    public String getVtaxofficer() {
+        return vtaxofficer;
+    }
+
+    public void setVtaxofficer(String vtaxofficer) {
+        this.vtaxofficer = vtaxofficer;
+    }
+
+    public String getVtaxofficernm() {
+        return vtaxofficernm;
+    }
+
+    public void setVtaxofficernm(String vtaxofficernm) {
+        this.vtaxofficernm = vtaxofficernm;
+    }
+
+    public String getVcorporatephone() {
+        return vcorporatephone;
+    }
+
+    public void setVcorporatephone(String vcorporatephone) {
+        this.vcorporatephone = vcorporatephone;
+    }
+
+    public Integer getIcompanytype() {
+        return icompanytype;
+    }
+
+    public void setIcompanytype(Integer icompanytype) {
+        this.icompanytype = icompanytype;
+    }
+
+    public String getVbusinescope() {
+        return vbusinescope;
+    }
+
+    public void setVbusinescope(String vbusinescope) {
+        this.vbusinescope = vbusinescope;
+    }
+
+    public DZFDate getDapprovaldate() {
+        return dapprovaldate;
+    }
+
+    public void setDapprovaldate(DZFDate dapprovaldate) {
+        this.dapprovaldate = dapprovaldate;
+    }
+
+    public String getVregistorgans() {
+        return vregistorgans;
+    }
+
+    public void setVregistorgans(String vregistorgans) {
+        this.vregistorgans = vregistorgans;
+    }
+
+    public String getVtradecode() {
+        return vtradecode;
+    }
+
+    public void setVtradecode(String vtradecode) {
+        this.vtradecode = vtradecode;
+    }
+
+    public String getKeyname() {
         return keyname;
     }
 
