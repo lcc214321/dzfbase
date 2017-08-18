@@ -58,7 +58,14 @@ public class DZFRequestFilter implements Filter {
 	}
 	private boolean isForbiddenRedirect(String url)
 	{
-		return url.endsWith("sys/xjr_sync!sync.action") || url.endsWith("xwwy_app/busidata!dealData.action") || url.endsWith("xwwy_app/upload!uploadFile.action") || url.contains("wbx/invoice!inputExpBill.action") || url.contains("hessian/voucherService") || url.contains("/services/YscsService")|| url.contains("hessian/riscservice")|| url.contains("hessian/cwgyInfoService" )|| url.contains("hessian/filtransService");
+		return url.endsWith("sys/xjr_sync!sync.action") || url.endsWith("xwwy_app/busidata!dealData.action") 
+				|| url.endsWith("xwwy_app/upload!uploadFile.action") || url.contains("wbx/invoice!inputExpBill.action")
+				|| url.contains("hessian/voucherService") || url.contains("/services/YscsService")
+				|| url.contains("hessian/riscservice")
+				|| url.contains("hessian/cwgyInfoService" )
+				|| url.contains("hessian/filtransService")
+				|| url.endsWith("/taxrpt/taxDeclarAction!updateDeclareStatusJs.action")//江苏报税，回写状态接口。
+				;
 	}
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws 
 	IOException, ServletException {
