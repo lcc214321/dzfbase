@@ -539,7 +539,18 @@ public class CorpVO<T extends SuperVO<T>> extends SuperVO {
     @FieldAlias("isfactory")
 	public DZFBoolean isfactory;//是否会计工厂
     
-	public DZFBoolean getIsfactory() {
+    @FieldAlias("statusnm")
+    private String statusname;//客户状态
+    
+	public String getStatusname() {
+        return statusname;
+    }
+
+    public void setStatusname(String statusname) {
+        this.statusname = statusname;
+    }
+
+    public DZFBoolean getIsfactory() {
 		return isfactory;
 	}
 
