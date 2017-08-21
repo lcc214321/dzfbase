@@ -505,6 +505,11 @@ public class DZFRequestFilter implements Filter {
 	        	return;
 			}
 
+			//江苏报税，回写状态接口。------
+			if(url.endsWith("/taxrpt/taxDeclarAction!updateDeclareStatusJs.action")){
+				filterChain.doFilter(request, response);
+	        	return;
+			}
 			
 			//扫码登录begin		    
 		    if ((url.endsWith("/css/font/font_1451959379_8626566.eot")) 
