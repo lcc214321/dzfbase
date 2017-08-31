@@ -106,6 +106,16 @@ public class UserVO extends SuperVO {
     
     private String emcode;// 员工编码
     
+    private DZFDate dpwddate;//密码策略时间
+    
+    public DZFDate getDpwddate() {
+        return dpwddate;
+    }
+
+    public void setDpwddate(DZFDate dpwddate) {
+        this.dpwddate = dpwddate;
+    }
+
     public String getEmcode() {
         return emcode;
     }
