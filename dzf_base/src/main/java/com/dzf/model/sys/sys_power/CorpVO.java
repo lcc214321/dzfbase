@@ -501,6 +501,8 @@ public class CorpVO<T extends SuperVO<T>> extends SuperVO {
     private T[] corpDocVos;// 附件信息
 
     private T[] corpTaxInfoVos;// 税率信息
+    
+    private T[] corpSholderVos;// 股东信息
 
     @FieldAlias("taxercode")
     private String vtaxofficercode;// 人员编码
@@ -3621,6 +3623,14 @@ public class CorpVO<T extends SuperVO<T>> extends SuperVO {
 
     public void setCorpTaxInfoVos(T[] corpTaxInfoVos) {
         this.corpTaxInfoVos = corpTaxInfoVos;
+    }
+
+    public T[] getCorpSholderVos() {
+        return corpSholderVos;
+    }
+
+    public void setCorpSholderVos(T[] corpSholderVos) {
+        this.corpSholderVos = corpSholderVos;
     }
 
 }
