@@ -275,35 +275,35 @@ public class SingleObjectBO {
 		}
 		return false;
 	}
-public boolean lock(SuperVO svo) throws DAOException{
-	boolean b=false;
-	try {
-		BaseDAO dao = new BaseDAO(dataSource);
-
-		
-		StringBuffer buffer = null;
-	
-			
-			buffer = new StringBuffer();
-			buffer.append("update ").append(svo.getTableName());
-			buffer.append(" set version=").append(svo.getVersion()+1);
-			buffer.append(" where ");
-			
-			buffer.append(svo.getPKFieldName());
-			buffer.append("=? ");
-			buffer.append(" and version=? ");
-			SQLParameter sp = new SQLParameter();
-			sp.addParam(svo.getPrimaryKey());
-			sp.addParam(svo.getVersion());
-			int num=dao.executeUpdate(buffer.toString(), sp);
-	b=num>0;
-	} catch (Exception e) {
-		throw new DAOException(e);
-	} finally {
-
-	}
-	return b;
-}
+//public boolean lock(SuperVO svo) throws DAOException{
+//	boolean b=false;
+//	try {
+//		BaseDAO dao = new BaseDAO(dataSource);
+//
+//		
+//		StringBuffer buffer = null;
+//	
+//			
+//			buffer = new StringBuffer();
+//			buffer.append("update ").append(svo.getTableName());
+//			buffer.append(" set version=").append(svo.getVersion()+1);
+//			buffer.append(" where ");
+//			
+//			buffer.append(svo.getPKFieldName());
+//			buffer.append("=? ");
+//			buffer.append(" and version=? ");
+//			SQLParameter sp = new SQLParameter();
+//			sp.addParam(svo.getPrimaryKey());
+//			sp.addParam(svo.getVersion());
+//			int num=dao.executeUpdate(buffer.toString(), sp);
+//	b=num>0;
+//	} catch (Exception e) {
+//		throw new DAOException(e);
+//	} finally {
+//
+//	}
+//	return b;
+//}
 
 private SuperVO insertVO(String corp, SuperVO svo){
 	int len = 0;

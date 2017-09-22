@@ -19,7 +19,7 @@ public abstract class SuperVO<T extends SuperVO<T>> extends CircularlyAccessible
 	protected String sort;// 排序字段
 	protected String order = "asc";// asc/desc
 	private String parent_id = "";// 父节点
-	private Integer version = 0;
+//	private Integer version = 0;
 	private static transient Map<Class<? extends SuperVO>, String[]> map = new HashMap();
 	private static transient ReentrantReadWriteLock rwl = new ReentrantReadWriteLock();
 	private T[] children;
@@ -249,13 +249,13 @@ public abstract class SuperVO<T extends SuperVO<T>> extends CircularlyAccessible
 		return true;
 	}
 
-	public Integer getVersion() {
-		return version;
-	}
-
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
+//	public Integer getVersion() {
+//		return version;
+//	}
+//
+//	public void setVersion(Integer version) {
+//		this.version = version;
+//	}
 
 	private boolean isAttributeEquals(Object attrOld, Object attrNew) {
 		if (attrOld == attrNew) {

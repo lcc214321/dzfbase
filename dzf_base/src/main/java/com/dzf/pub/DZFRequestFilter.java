@@ -479,7 +479,8 @@ public class DZFRequestFilter implements Filter {
 	        	return;
 			}
 			//增加中服直接登录
-			if(url.endsWith("/sys/auto_user!autologin.action") || url.endsWith("/zonefulogin.jsp") || url.endsWith("/bindzflogin.jsp")){
+			if(url.endsWith("/sys/sm_user!autologin.action") || url.endsWith("/zonefulogin.jsp") 
+					|| url.endsWith("/error_kj.jsp")){
 				filterChain.doFilter(request, response);
 	        	return;
 			}
