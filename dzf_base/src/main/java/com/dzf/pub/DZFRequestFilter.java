@@ -64,6 +64,7 @@ public class DZFRequestFilter implements Filter {
 				|| url.contains("hessian/riscservice")
 				|| url.contains("hessian/cwgyInfoService" )
 				|| url.contains("hessian/filtransService")
+				|| url.endsWith("/zonefulogin.jsp")//中服接口
 				|| url.endsWith("/taxrpt/taxDeclarAction!updateDeclareStatusJs.action")//江苏报税，回写状态接口。
 				;
 	}
