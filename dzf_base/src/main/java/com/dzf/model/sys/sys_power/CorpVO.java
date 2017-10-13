@@ -541,10 +541,21 @@ public class CorpVO<T extends SuperVO<T>> extends SuperVO {
     @FieldAlias("isfactory")
 	public DZFBoolean isfactory;//是否会计工厂
     
+    @FieldAlias("copid")
+    private String coperatorid; // 录入人
+    
     @FieldAlias("statusnm")
     private String statusname;//客户状态
     
-	public String getStatusname() {
+	public String getCoperatorid() {
+        return coperatorid;
+    }
+
+    public void setCoperatorid(String coperatorid) {
+        this.coperatorid = coperatorid;
+    }
+
+    public String getStatusname() {
         return statusname;
     }
 
