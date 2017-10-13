@@ -547,6 +547,16 @@ public class CorpVO<T extends SuperVO<T>> extends SuperVO {
     @FieldAlias("statusnm")
     private String statusname;//客户状态
     
+    private Integer custtype;//客户类型
+    
+	public Integer getCusttype() {
+		return custtype;
+	}
+
+	public void setCusttype(Integer custtype) {
+		this.custtype = custtype;
+	}
+
 	public String getCoperatorid() {
         return coperatorid;
     }
