@@ -1,6 +1,7 @@
 package com.dzf.pub.lang;
 
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 
 import com.alibaba.fastjson.parser.DefaultJSONParser;
 import com.alibaba.fastjson.parser.deserializer.ObjectDeserializer;
@@ -11,9 +12,19 @@ public class DZFDoubleDeserializer implements ObjectDeserializer{
 	
 	@Override
     public <T> T deserialze(DefaultJSONParser parser, Type clazz, Object fieldName) {
-        
-        String name = (String) parser.parse();
-        
+		String name = null;
+		Object o = parser.parse();
+		if(o instanceof String){
+			name = (String) o;
+		}else if(o instanceof BigDecimal){
+			BigDecimal big=	(BigDecimal) o;
+			if(big == null){
+				return null;
+			}
+			return (T) new DZFDouble(big) ;
+		}
+         
+
         if (name == null) {
             return null;
         }
