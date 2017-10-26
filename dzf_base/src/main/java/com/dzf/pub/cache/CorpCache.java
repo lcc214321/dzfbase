@@ -31,7 +31,7 @@ byte[] bs=	jedis.get(corp.getBytes());
 		}
 		obj= (CorpVO) IOUtils.getObject(bs, new CorpSerializable());
 	} catch (Exception e) {
-		log.error("缓存服务器连接未成功。");
+		log.error("缓存服务器连接未成功。",e);
 		return null;
 	}
 	return obj;
@@ -43,7 +43,7 @@ public void add(final String key,final CorpVO m){
 			try {
 				jedis.set(key.getBytes(),IOUtils.getBytes(m, new CorpSerializable()));
 			} catch (Exception e) {
-				log.error("缓存服务器连接未成功。");
+				log.error("缓存服务器连接未成功。",e);
 			}
 			return null;
 		}
@@ -78,7 +78,7 @@ RedisClient.getInstance().exec(new IRedisCallback() {
 				jedis.del(corp.getBytes());//set(corp.getBytes(),IOUtils.getBytes(cvo1, new CorpSerializable()));
 			} catch (Exception e) {
 //				throw new BusinessException(e);
-				log.error("缓存服务器连接未成功。");
+				log.error("缓存服务器连接未成功。",e);
 				return null;
 			}
 			return null;
@@ -109,7 +109,7 @@ public CorpVO get(final String userid,final String corp){
 				try {
 					jedis.set(corp.getBytes(),IOUtils.getBytes(cvo, new CorpSerializable()));
 				} catch (Exception e) {
-					log.error("缓存服务器连接未成功。");
+					log.error("缓存服务器连接未成功。",e);
 				}
 
 					}
