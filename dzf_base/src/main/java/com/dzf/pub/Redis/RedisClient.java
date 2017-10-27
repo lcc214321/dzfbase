@@ -1,5 +1,6 @@
 package com.dzf.pub.Redis;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -27,17 +28,44 @@ public class RedisClient {
 
 	// 新增启用参数
 	private boolean isEnabled = true;
+	private String jedis_ip;
+	private String jedis_port;
+	private String jedis_pwd;
 	public boolean getEnabled()
 	{
 		return isEnabled;
 	}
 	private RedisClient() {
-		// initialPool();
-		// initialShardedPool();
-		// shardedJedis = shardedJedisPool.getResource();
-		// jedis = jedisPool.getResource();
-		// jedis.auth("123456");
-
+		initData();
+	}
+	
+	public void initData(){
+		Properties prop = new Properties();
+		InputStream in = null;
+		try {
+			// 读取属性文件jedis_config.properties
+			in =  this.getClass().getResourceAsStream("/jedis_config.properties");
+			prop.load(in); /// 加载属性列表
+			jedis_ip = prop.getProperty("jedis_ip");
+			jedis_port = prop.getProperty("jedis_port");
+			jedis_pwd = prop.getProperty("jedis_pwd");
+			
+            //新增启用参数
+            String enabled = prop.getProperty("jedis_enabled");
+            if (StringUtil.isEmptyWithTrim(enabled) == false && "false".equals(enabled)) {
+            	isEnabled = false;
+            }
+			
+		} catch (Exception e) {
+			log.error(e);
+		} finally{
+			if(in != null){
+				try {
+					in.close();
+				} catch (IOException e) {
+				}
+			}
+		}
 	}
 
 	/**
@@ -160,38 +188,9 @@ public class RedisClient {
 		        config.setMaxWaitMillis(1000);
 				
 				config.setTestOnBorrow(false);
-				Properties prop = new Properties();
-				try {
-					// 读取属性文件jedis_config.properties
-					InputStream in = this.getClass().getResourceAsStream("/jedis_config.properties");
-					prop.load(in); /// 加载属性列表
-					String jedis_ip = prop.getProperty("jedis_ip");
-					String jedis_port = prop.getProperty("jedis_port");
-					String jedis_pwd = prop.getProperty("jedis_pwd");
-					
-		            //新增启用参数
-		            String enabled = prop.getProperty("jedis_enabled");
-		            if (StringUtil.isEmptyWithTrim(enabled) == false && "false".equals(enabled))
-		            {
-		            	isEnabled = false;
-		            }
-		            
-					// Iterator<String>
-					// it=prop.stringPropertyNames().iterator();
-					// while(it.hasNext()){
-					// String key=it.next();
-					// }
-					in.close();
-					jedisPool = new JedisPool(config, jedis_ip, Integer.valueOf(jedis_port), Protocol.DEFAULT_TIMEOUT,
-							jedis_pwd);
-				} catch (Exception e) {
-					//e.printStackTrace();
-				}
-				// (final GenericObjectPoolConfig poolConfig, final String host,
-				// int port,
-				// int timeout, final String password)
-				// jedisPool = new
-				// JedisPool(config,"172.16.2.142",6379,Protocol.DEFAULT_TIMEOUT,"123456");
+				
+				
+				jedisPool = new JedisPool(config, jedis_ip, Integer.valueOf(jedis_port), Protocol.DEFAULT_TIMEOUT,jedis_pwd);
 			}
 		}
 		return jedisPool;
