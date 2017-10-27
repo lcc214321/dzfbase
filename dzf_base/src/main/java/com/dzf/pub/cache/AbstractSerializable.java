@@ -51,7 +51,6 @@ public abstract class AbstractSerializable<T> implements IDzfSerializable<T> {
 		nos.writeByte(v);
 	}
 	protected void writeBytes(NetObjectOutputStream nos,DZFBoolean...b) throws IOException{
-		//存储7个布尔值
 		int len=b==null?0:b.length;
 		StringBuffer sb=new StringBuffer(len+1);
 		DZFBoolean db=null;
@@ -60,10 +59,11 @@ public abstract class AbstractSerializable<T> implements IDzfSerializable<T> {
 			db=b[i];
 			sb.append(db!=null&&db.booleanValue()?1:0);
 		}
-		 int bb= Integer.valueOf(sb.toString(),2);
+		 long bb= Long.parseLong(sb.toString(),2);//二进制转10进制
+		 nos.writeLong(bb);
 	    //   String hex = Integer.toBinaryString(bb);
-		 byte bc=(byte)bb;
-		nos.writeByte(bc);
+		// byte bc=(byte)bb;
+		//nos.writeByte(bc);///byte的取值范围为-128~127
 		//nos.writeInt(v);
 	}
 
@@ -86,12 +86,10 @@ public abstract class AbstractSerializable<T> implements IDzfSerializable<T> {
 	
 }
 	protected DZFBoolean[] readerDZFBooleans(NetObjectInputStream nos) throws IOException{
-		int z = nos.readByte()&0xff;
-		//z |= 256;
-		
-		String str = Integer.toBinaryString(z);
+		long l1 = nos.readLong();		
+		String str = Long.toBinaryString(l1);//10进制转2进制度
 		char[] cs=str.toCharArray();
-		z=str==null?0:str.length();
+		int z=str==null?0:str.length();
 		DZFBoolean[] bs=new DZFBoolean[z-1];
 		for (int i = 1; i < z; i++) {
 			bs[i-1]=(cs[i]=='1')?DZFBoolean.TRUE:DZFBoolean.FALSE;

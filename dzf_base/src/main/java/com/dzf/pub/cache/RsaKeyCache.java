@@ -38,7 +38,7 @@ public class RsaKeyCache {
 			}
 			keyvo = (RsaKeyVO) IOUtils.getObject(bs, new RsaKeySerializable());
 		} catch (Exception e) {
-			log.error("缓存服务器连接未成功。");
+			log.error("从缓存服务器获取数据出错！",e);
 			return null;
 		}
 		return keyvo;
@@ -53,6 +53,9 @@ public class RsaKeyCache {
 		SessionRedisClient.getInstance().exec(new IRedisSessionCallback() {
 			@Override
 			public Object exec(Jedis jedis) {
+				 if(jedis == null){
+					 return null;
+				 }
 				try {
 					
 					//！！！！暂时删除，调试用！！！！！！！！！！！！
@@ -65,7 +68,7 @@ public class RsaKeyCache {
 					//setnx : 当且仅当 key 不存在 时设置
 					jedis.setnx(key.getBytes(), IOUtils.getBytes(keyvo, new RsaKeySerializable()));
 				} catch (Exception e) {
-					log.error("缓存服务器连接未成功。");
+					log.error("从缓存服务器获取数据出错！",e);
 				}
 				return null;
 			}
@@ -83,7 +86,7 @@ public class RsaKeyCache {
 //
 //				} catch (Exception e) {
 //
-//					log.error("缓存服务器连接未成功。");
+//					log.error("从缓存服务器获取数据出错！",e);
 //					return null;
 //				}
 //				return null;
@@ -97,6 +100,9 @@ public class RsaKeyCache {
 
 			@Override
 			public Object exec(Jedis jedis) {
+				 if(jedis == null){
+					 return null;
+				 }
 				RsaKeyVO keyvo = getRsaKeysByRedis(jedis);
 				if (keyvo == null) {
 					ReentrantLock lock = RsaKeyLock.getInstance().get(key);

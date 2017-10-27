@@ -29,7 +29,7 @@ public class TicketCache {
 			sessionvo = (DZFSessionVO) IOUtils.getObject(bs, new TicketSerializable());
 			
 		} catch (Exception e) {
-			log.error("缓存服务器连接未成功。");
+			log.error("从缓存服务器获取数据出错！",e);
 			return null;
 		}
 		return sessionvo;
@@ -54,7 +54,7 @@ public class TicketCache {
 					jedis.expire(ticket, 120);		//失效时间, 120秒，原来改过20秒，还是超时 最初是10秒，20161206修改
 					return true;
 				} catch (Exception e) {
-					log.error("缓存服务器连接未成功。", e);
+					log.error("从缓存服务器获取数据出错！", e);
 				} finally {
 					if (lock != null)
 						lock.unlock();

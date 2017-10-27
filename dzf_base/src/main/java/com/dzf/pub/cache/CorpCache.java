@@ -31,7 +31,7 @@ byte[] bs=	jedis.get(corp.getBytes());
 		}
 		obj= (CorpVO) IOUtils.getObject(bs, new CorpSerializable());
 	} catch (Exception e) {
-		log.error("缓存服务器连接未成功。",e);
+		log.error("从缓存服务器获取数据出错！",e);
 		return null;
 	}
 	return obj;
@@ -40,10 +40,13 @@ public void add(final String key,final CorpVO m){
 	RedisClient.getInstance().exec(new IRedisCallback() {
 		@Override
 		public Object exec(Jedis jedis) {
+			if(jedis == null){
+				return null;
+			}
 			try {
 				jedis.set(key.getBytes(),IOUtils.getBytes(m, new CorpSerializable()));
 			} catch (Exception e) {
-				log.error("缓存服务器连接未成功。",e);
+				log.error("从缓存服务器获取数据出错！",e);
 			}
 			return null;
 		}
@@ -74,11 +77,14 @@ RedisClient.getInstance().exec(new IRedisCallback() {
 		
 		@Override
 		public Object exec(Jedis jedis) {
+			if(jedis == null){
+				return null;
+			}
 			try {
 				jedis.del(corp.getBytes());//set(corp.getBytes(),IOUtils.getBytes(cvo1, new CorpSerializable()));
 			} catch (Exception e) {
 //				throw new BusinessException(e);
-				log.error("缓存服务器连接未成功。",e);
+				log.error("从缓存服务器获取数据出错！",e);
 				return null;
 			}
 			return null;
@@ -89,40 +95,38 @@ public CorpVO get(final String userid,final String corp){
 	if(corp == null){
 		return null;
 	}
-	 CorpVO cvo=(CorpVO) RedisClient.getInstance().exec(new IRedisCallback() {
-		
-		@Override
-		public Object exec(Jedis jedis) {
-			if(jedis==null){
-				return getCorpVO(userid,corp);
-
-			}
-			 CorpVO cvo= getCorpVOByRedis(jedis,userid,corp);
-				if(cvo==null){
+	CorpVO cvo=(CorpVO) RedisClient.getInstance().exec(new IRedisCallback() {
+				@Override
+				public Object exec(Jedis jedis) {
+					if(jedis == null){
+						return null;
+					}
+					CorpVO cvo= null;
+//				 	CorpVO cvo= getCorpVOByRedis(jedis,userid,corp);
 					ReentrantLock lock=CorpLock.getInstance().get(corp);//	LockUtils.getInstance().getNextID(corp);
 					lock.lock();
 					try{
-					cvo= getCorpVOByRedis(jedis,userid,corp);
-					if(cvo==null){
-				cvo=getCorpVO(userid,corp);
-				if(cvo == null)	return null;
-				try {
-					jedis.set(corp.getBytes(),IOUtils.getBytes(cvo, new CorpSerializable()));
-				} catch (Exception e) {
-					log.error("缓存服务器连接未成功。",e);
-				}
-
+						cvo= getCorpVOByRedis(jedis,userid,corp);
+						if(cvo==null){
+							cvo=getCorpVO(userid,corp);
+							if(cvo!=null){
+								try {
+									jedis.set(corp.getBytes(),IOUtils.getBytes(cvo, new CorpSerializable()));
+								} catch (Exception e) {
+									log.error("从缓存服务器获取数据出错！",e);
+								}
+							}
+						}
+					}finally{
+						lock.unlock();
 					}
-			}finally{
-				lock.unlock();
-			}
+					return cvo;
 				}
-			
-		
-		return cvo;
-	}
-		 });
-		 return cvo;
+		});
+	 if(cvo == null){
+		 cvo =  getCorpVO(userid,corp);
+	 }
+	 return cvo;
 }
 public CorpVO get(String userid,String corp,boolean isforce){
 	return get(userid,corp);

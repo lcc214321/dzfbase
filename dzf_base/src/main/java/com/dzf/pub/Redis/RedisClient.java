@@ -3,6 +3,8 @@ package com.dzf.pub.Redis;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
+
 import com.dzf.pub.StringUtil;
 
 import redis.clients.jedis.Jedis;
@@ -10,6 +12,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.Protocol;
 import redis.clients.jedis.Transaction;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 
 public class RedisClient {
 
@@ -18,6 +21,9 @@ public class RedisClient {
 	// private ShardedJedis shardedJedis;//切片额客户端连接
 	// private ShardedJedisPool shardedJedisPool;//切片连接池
 	private static RedisClient rclient;
+	
+	private Logger log = Logger.getLogger(this.getClass());
+
 
 	// 新增启用参数
 	private boolean isEnabled = true;
@@ -87,37 +93,39 @@ public class RedisClient {
 		// jedis.disconnect();
 	}
 
-	public Object exec(IRedisCallback ircb) {
-		// RedisClient rc=this;
-		// Jedis jedis=getJedisPool().getResource();
-		Jedis jedis = null;
+	private Object execData(Jedis jedis,IRedisCallback ircb){
 		Object obj = null;
-
-		try {
-			//增加启用判断
-			if (isEnabled == false)
-			{
-				obj = ircb.exec(null);
-			}
-			else
-			{
-				jedis = getJedisPool().getResource();
+		try{
+			if(jedis != null){
 				obj = ircb.exec(jedis);
 			}
-		} catch (Exception e) {
-			if (jedis == null) {
-				try {
-					obj = ircb.exec(null);
-					return obj;
-				} catch (Exception ee) {
-
-				}
-			}
-		} finally {
+		}catch(Exception e){
+			log.error("Jedis获取数据报错",e);;
+		}finally {
 			if (jedis != null) {
-				// jedis.disconnect();
 				jedis.close();
 			}
+		}
+		return obj;
+	}
+	
+	public Object exec(IRedisCallback ircb) {
+		Object obj = null;
+		if (isEnabled == false){
+			//obj = execData(null,ircb);
+			obj = null;
+		}else{
+			Jedis jedis = null;
+			try{
+				jedis = getJedisPool().getResource();
+			}catch(JedisConnectionException e){
+				log.error("获取Jedis连接失败",e);
+				jedis = null;
+			}catch(Exception e){
+				log.error("获取Jedis连接出错，未连接redis服务器",e);
+				jedis = null;
+			}
+			obj = execData(jedis,ircb);
 		}
 		return obj;
 	}
@@ -141,8 +149,16 @@ public class RedisClient {
 				// 池基本配置
 				JedisPoolConfig config = new JedisPoolConfig();
 				// config.setMaxActive(20);
-				config.setMaxIdle(5);
-				config.setMaxWaitMillis(100000l);
+//				config.setMaxIdle(5);
+//				config.setMaxWaitMillis(100000l);
+				
+				//设置最大连接数
+		        config.setMaxTotal(200);
+		        //设置最大空闲数
+		        config.setMaxIdle(20);
+		        //设置超时时间
+		        config.setMaxWaitMillis(1000);
+				
 				config.setTestOnBorrow(false);
 				Properties prop = new Properties();
 				try {

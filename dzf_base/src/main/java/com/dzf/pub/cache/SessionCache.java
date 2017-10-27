@@ -42,7 +42,7 @@ public class SessionCache {
 			}
 			obj = (DZFSessionListVO) IOUtils.getObject(bs, new SessionSerializable());
 		} catch (Exception e) {
-			log.error("缓存服务器连接未成功。");
+			log.error("从缓存服务器获取数据出错！",e);
 			return null;
 		}
 		return obj;
@@ -241,7 +241,9 @@ public class SessionCache {
 				@Override
 				public Object exec(Jedis jedis) {
 	
-					
+					 if(jedis == null){
+						 return null;
+					 }
 					ReentrantLock lock = SessionLock.getInstance().get(newKey);
 					try {
 						//加锁
@@ -250,7 +252,7 @@ public class SessionCache {
 						jedis.setex(newKey.getBytes(), 300, verify.getBytes("utf-8"));
 	
 					} catch (Exception e) {
-						log.error("缓存服务器连接未成功。", e);
+						log.error("从缓存服务器获取数据出错！", e);
 					} finally {
 						if (lock != null)
 							lock.unlock();
@@ -298,7 +300,7 @@ public class SessionCache {
 						jedis.del(newKey.getBytes());
 						ret = new String(bs, "utf-8");
 					} catch (Exception e) {
-						log.error("缓存服务器连接未成功。", e);
+						log.error("从缓存服务器获取数据出错！", e);
 					} finally {
 						if (lock != null)
 							lock.unlock();
@@ -389,7 +391,9 @@ public class SessionCache {
 			@Override
 			public Object exec(Jedis jedis) {
 
-				
+				 if(jedis == null){
+					 return null;
+				 }
 				ReentrantLock lock = SessionLock.getInstance().get(key);
 				try {
 					//加锁
@@ -405,7 +409,7 @@ public class SessionCache {
 						jedis.del(key.getBytes());
 					}
 				} catch (Exception e) {
-					log.error("缓存服务器连接未成功。", e);
+					log.error("从缓存服务器获取数据出错！", e);
 				} finally {
 					if (lock != null)
 						lock.unlock();
@@ -504,12 +508,15 @@ public class SessionCache {
 						
 						@Override
 						public Object exec(Jedis jedis) {
+							 if(jedis == null){
+								 return null;
+							 }
 							try {
 								jedis.del(realKey.getBytes());
 								
 							} catch (Exception e) {
 			
-								log.error("缓存服务器连接未成功。", e);
+								log.error("从缓存服务器获取数据出错！", e);
 								return null;
 							}
 							return null;
@@ -571,12 +578,15 @@ public class SessionCache {
 		
 					@Override
 					public Object exec(Jedis jedis) {
+						 if(jedis == null){
+							 return null;
+						 }
 						try {
 							jedis.del(strUUID.getBytes());
 							
 						} catch (Exception e) {
 		
-							log.error("缓存服务器连接未成功。", e);
+							log.error("从缓存服务器获取数据出错！", e);
 							return null;
 						}
 						return null;

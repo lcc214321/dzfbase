@@ -40,7 +40,7 @@ public class UserCache {
 				log.info("用户名admingly"+str);
 			}
 		} catch (Exception e) {
-			log.error("缓存服务器连接未成功。");
+			log.error("从缓存服务器获取数据出错！",e);
 			return null;
 		}
 		return obj;
@@ -66,10 +66,13 @@ public class UserCache {
 			
 			@Override
 			public Object exec(Jedis jedis) {
+				if(jedis == null){
+					return null;
+				}
 				try {
 					jedis.set(key.getBytes(),IOUtils.getBytes(m, new UserSerializable()));
 				} catch (Exception e) {
-					log.error("缓存服务器连接未成功。");
+					log.error("从缓存服务器获取数据出错！",e);
 				}
 				return null;
 			}
@@ -83,13 +86,12 @@ public class UserCache {
 
 			@Override
 			public Object exec(Jedis jedis) {
-				UserVO cvo = null;
-				if (jedis == null) {
-					cvo = getUserVO(userid, corp);
-					return cvo;
+				if(jedis == null){
+					return null;
 				}
-				cvo = getUserVOByRedis(jedis, userid, corp);
-				if (cvo == null) {
+				UserVO cvo = null;
+//				cvo = getUserVOByRedis(jedis, userid, corp);
+//				if (cvo == null) {
 					ReentrantLock lock = UserLock.getInstance().get(userid);// LockUtils.getInstance().getNextID(corp);
 					lock.lock();
 
@@ -98,25 +100,27 @@ public class UserCache {
 						cvo = getUserVOByRedis(jedis, userid, corp);
 						if (cvo == null) {
 							cvo = getUserVO(userid, corp);
-							if (cvo == null)
-								return null;
-							try {
-
-								jedis.set(userid.getBytes(), IOUtils.getBytes(cvo, new UserSerializable()));
-							} catch (Exception e) {
-								log.error("缓存服务器连接未成功。");
+							if(cvo !=null){
+								try {
+									jedis.set(userid.getBytes(), IOUtils.getBytes(cvo, new UserSerializable()));
+								} catch (Exception e) {
+									log.error("从缓存服务器获取数据出错！",e);
+								}
 							}
-
 						}
 					} finally {
 						if (lock != null)
 							lock.unlock();
 					}
-				}
+//				}
 
 				return cvo;
 			}
 		});
+		
+		if (cvo == null) {
+			cvo = getUserVO(userid, corp);
+		}
 		return cvo;
 	}
 //	public UserVO get(final String userid,final String corp){
@@ -140,7 +144,7 @@ public class UserCache {
 //					}
 //				} catch (Exception e) {
 //
-//					log.error("缓存服务器连接未成功。");
+//					log.error("从缓存服务器获取数据出错！",e);
 //				}
 //				return obj;
 //			}
@@ -170,7 +174,7 @@ public class UserCache {
 //					jedis.set(userid.getBytes(),IOUtils.getBytes(cvo1, new UserSerializable()));
 //				} catch (Exception e) {
 //
-//					log.error("缓存服务器连接未成功。");
+//					log.error("从缓存服务器获取数据出错！",e);
 //				}
 //				return null;
 //			}
@@ -187,11 +191,14 @@ public class UserCache {
 			
 			@Override
 			public Object exec(Jedis jedis) {
+				if(jedis == null){
+					return null;
+				}
 				try {
 					jedis.del(userid.getBytes());//set(corp.getBytes(),IOUtils.getBytes(cvo1, new CorpSerializable()));
 				} catch (Exception e) {
 
-					log.error("缓存服务器连接未成功。");
+					log.error("从缓存服务器获取数据出错！",e);
 				}
 				return null;
 			}
