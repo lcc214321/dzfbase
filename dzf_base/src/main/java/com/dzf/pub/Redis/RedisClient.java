@@ -42,8 +42,10 @@ public class RedisClient {
 	private RedisClient() {
 		initData();
 		//注册心跳
-		JedisPool pool = getJedisPool();
-		beat(pool);
+		if(isEnabled){
+			JedisPool pool = getJedisPool();
+			beat(pool);
+		}
 	}
 	
 	public void beat(final JedisPool pool) {
@@ -51,9 +53,11 @@ public class RedisClient {
 		TimerTask task = new TimerTask() {
 			@Override
 			public void run() {
+				log.info("HeartBeatRedis  心跳检测开始 ");
 				Jedis jedis = null;
 				try{
 					jedis = pool.getResource();
+					log.info("HeartBeatRedis  心跳检测正常 ");
 				}catch(JedisConnectionException e){
 					log.error("心跳检测，获取Jedis连接失败",e);
 				}catch(Exception e){
