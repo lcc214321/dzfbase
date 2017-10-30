@@ -75,24 +75,6 @@ public class RsaKeyCache {
 		});
 	}
 
-//	public void remove() {
-//
-//		SessionRedisClient.getInstance().exec(new IRedisSessionCallback() {
-//
-//			@Override
-//			public Object exec(Jedis jedis) {
-//				try {
-//					jedis.del(key.getBytes());
-//
-//				} catch (Exception e) {
-//
-//					log.error("从缓存服务器获取数据出错！",e);
-//					return null;
-//				}
-//				return null;
-//			}
-//		});
-//	}
 
 	public RsaKeyVO getRsaKeyVO() {
 
