@@ -3,6 +3,8 @@ package com.dzf.pub.SessionRedis;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.log4j.Logger;
 
@@ -24,6 +26,7 @@ public class SessionRedisClient {
 	private static SessionRedisClient rclient;
 	
 	private Logger log = Logger.getLogger(this.getClass());
+	public static int minute = 1000 * 60 * 2;//2分钟
 
 
 	// 新增启用参数
@@ -37,7 +40,37 @@ public class SessionRedisClient {
 	}
 	private SessionRedisClient() {
 		initData();
+		//注册心跳
+		JedisPool pool = getJedisPool();
+		beat(pool);
 	}
+	
+	
+	public void beat(final JedisPool pool) {
+		log.info("HeartBeatSessionJedis  心跳检测 ");
+		TimerTask task = new TimerTask() {
+			@Override
+			public void run() {
+				Jedis jedis = null;
+				try{
+					jedis = pool.getResource();
+				}catch(JedisConnectionException e){
+					log.error("心跳检测，获取SessionJedis连接失败",e);
+				}catch(Exception e){
+					log.error("心跳检测，获取SessionJedis连接出错，未连接redis服务器",e);
+				}finally{
+					if(jedis!=null){
+						jedis.close();
+					}else{
+						isEnabled = false;
+					}
+				}
+			}
+		};
+		Timer timer = new Timer();
+		timer.schedule(task, minute, minute);
+	}
+	
 	public void initData(){
 		Properties prop = new Properties();
 		InputStream in = null;
