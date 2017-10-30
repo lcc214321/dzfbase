@@ -49,7 +49,7 @@ public class RedisClient {
 	}
 	
 	public void beat(final JedisPool pool) {
-		log.info("HeartBeatRedis  心跳检测 ");
+		log.info("HeartBeatRedis  心跳检测注册 ");
 		TimerTask task = new TimerTask() {
 			@Override
 			public void run() {
