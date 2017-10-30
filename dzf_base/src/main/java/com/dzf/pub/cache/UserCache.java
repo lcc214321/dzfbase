@@ -123,67 +123,7 @@ public class UserCache {
 		}
 		return cvo;
 	}
-//	public UserVO get(final String userid,final String corp){
-//		
-//		UserVO cvo=(UserVO) RedisClient.getInstance().exec(new IRedisCallback() {
-//			
-//			@Override
-//			public Object exec(Jedis jedis) {
-//			byte[] bs=	jedis.get(userid.getBytes());
-//			if(bs==null)return null;
-//			Object obj=null;
-//				try {
-//					obj= IOUtils.getObject(bs, new UserSerializable());
-//					if(obj != null){
-//						
-//						UserVO svo = (UserVO) obj;
-//						if(svo.getUser_code().equals("admingly")){
-//							String str=Base64Util.encrypt(bs);
-//							log.info("用户名admingly"+str);
-//						}
-//					}
-//				} catch (Exception e) {
-//
-//					log.error("从缓存服务器获取数据出错！",e);
-//				}
-//				return obj;
-//			}
-//		});
-//		//CorpVO cvo= map.get(corp);
-//		if(cvo==null){
-//			synchronized(UserCache.class){
-//				if(cvo==null){
-//		DataSource ds=DataSourceFactory.getDataSource(userid, corp);
-//		SingleObjectBO sob=new SingleObjectBO(ds);
-//		cvo=	(UserVO) sob.queryVOByID(userid, UserVO.class);
-//		if (cvo != null) {
-//			try {
-//				cvo.setUser_name(CodeUtils1.deCode(cvo.getUser_name()));
-//			} catch (Exception e) {
-//				log.error("解密用户名失败！cvo.getUser_name()为"+cvo.getUser_name()+"，不能解密",e);
-//			}
-//		}
-//		final UserVO cvo1=cvo;
-//		RedisClient.getInstance().exec(new IRedisCallback() {
-//			
-//			@Override
-//			public Object exec(Jedis jedis) {
-//				try {
-//					if(cvo1 == null)
-//						return null;
-//					jedis.set(userid.getBytes(),IOUtils.getBytes(cvo1, new UserSerializable()));
-//				} catch (Exception e) {
-//
-//					log.error("从缓存服务器获取数据出错！",e);
-//				}
-//				return null;
-//			}
-//		});
-//				}
-//			}
-//		}
-//		return cvo;
-//	}
+
 				
 	public void remove(final String userid){
 		//map.remove(corp);
