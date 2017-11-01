@@ -6,13 +6,7 @@ import java.io.InputStream;
 
 import com.dzf.framework.rsa.DES;
 
-/**
- * 
- * @author �ι���
- *
- * Date: 2006-4-1
- * Time: 19:08:53
- */
+
 public class FastDESInputStream extends InputStream  {
 
     private DES des = null;
@@ -45,7 +39,7 @@ public class FastDESInputStream extends InputStream  {
                         len += readLen;
                     if (readLen == -1) {
                         if (len != 0)
-                            throw new EOFException("�ļ�ĩβ");
+                            throw new EOFException("read error");
                         else
                             return -1;
                     }

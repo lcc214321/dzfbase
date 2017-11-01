@@ -5,10 +5,7 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
-/**
- *
- * Զ��Ӧ�õ��õĽ��
- */
+
 public class Result implements Externalizable {
     private static final long serialVersionUID = 4962549387294200993L;
 

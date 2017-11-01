@@ -14,12 +14,7 @@ import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
 
-/**
- * @author �ι���
- *
- * Date: 2006-3-30
- * Time: 11:00:35
- */
+
 public class NetObjectInputStream extends ObjectInputStream {
 
 	private int bufferSize;
@@ -111,7 +106,7 @@ public class NetObjectInputStream extends ObjectInputStream {
 				||bs[1] != NetStreamConstants.NC_STREAM_HEADER[1]
 					||bs[2] != NetStreamConstants.NC_STREAM_HEADER[2]
 					) {
-				throw new IOException("不扶持的数据流");
+				throw new IOException("IOException error");
 			}
 
 			int header = input.read();

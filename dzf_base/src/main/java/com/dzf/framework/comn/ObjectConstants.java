@@ -1,11 +1,6 @@
 package com.dzf.framework.comn;
 
-/**
- * 
- * @author �ι���
- *
- * Date: 2008-5-9
- */
+
 public interface ObjectConstants {
 
 	byte UF_BOOLEAN = (byte) 0xf1;

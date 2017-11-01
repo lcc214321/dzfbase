@@ -1,9 +1,3 @@
-/*
- * User: �ι��� 
- *
- * Date: 2006-4-1
- * Time: 14:03:51
- */
 package com.dzf.framework.comn;
 
 import java.io.IOException;
@@ -12,15 +6,6 @@ import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 
 
-
-
-/**
- * 
- * @author �ι���
- *
- * Date: 2006-4-1
- * Time: 14:04:28
- */
 public class FastDeflaterOutputStream extends DeflaterOutputStream {
 
     private int count;

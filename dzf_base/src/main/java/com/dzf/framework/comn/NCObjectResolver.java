@@ -7,12 +7,7 @@ import com.dzf.pub.lang.DZFDouble;
 
 
 
-/**
- * 
- * @author �ι���
- *
- * Date: 2008-5-9
- */
+
 public class NCObjectResolver implements ObjectResolver {
 
     public Object resolveObject(Object obj) {

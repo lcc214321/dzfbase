@@ -9,12 +9,6 @@ import java.util.zip.DeflaterOutputStream;
 
 
 
-/**
- * 
- * @author �ι���
- * 
- * Date: 2006-3-30 Time: 10:56:28
- */
 public class NetObjectOutputStream extends ObjectOutputStream {
 
 	private NCOutputStream ncOut;

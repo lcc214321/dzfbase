@@ -1,22 +1,10 @@
-/*
- * User: �ι��� 
- *
- * Date: 2006-4-1
- * Time: 13:55:15
- */
 package com.dzf.framework.comn;
 
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * 
- * @author �ι���
- *
- * Date: 2006-4-1
- * Time: 13:55:39
- */
+
 public class CountInputStream extends FilterInputStream {
 
     long count;

@@ -41,19 +41,21 @@ public class OutStreamAction extends BaseAppAction{
 		
 		HttpServletResponse hr=getResponse();
 		ServletOutputStream os=null;
+		NetObjectOutputStream nis= null;
 		try {
 			os=hr.getOutputStream();
-			NetObjectOutputStream nis=new NetObjectOutputStream(os);
+			nis = new NetObjectOutputStream(os);
 			nis.writeObject(obj);
 			nis.flush();
-			nis.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			throw new WiseRunException(e);
 		}finally{
-			if(os!=null)
 				try {
-					os.close();
+					if(nis!=null)
+						nis.close();
+					if(os!=null)
+						os.close();
 				} catch (IOException e) {
 					throw new WiseRunException(e);
 				}

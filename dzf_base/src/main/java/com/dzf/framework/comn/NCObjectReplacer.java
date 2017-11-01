@@ -7,12 +7,7 @@ import com.dzf.pub.lang.DZFDate;
 import com.dzf.pub.lang.DZFDateTime;
 import com.dzf.pub.lang.DZFDouble;
 
-/**
- * 
- * @author �ι���
- *
- * Date: 2008-5-9
- */
+
 public class NCObjectReplacer implements ObjectReplacer {
 
     private HashMap<Long, byte[]> dttimeSet = new HashMap<Long, byte[]>();

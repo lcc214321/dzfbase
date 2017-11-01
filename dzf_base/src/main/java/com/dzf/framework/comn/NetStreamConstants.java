@@ -2,11 +2,7 @@ package com.dzf.framework.comn;
 
 import com.dzf.framework.rsa.DES;
 
-/**
- * @author �ι���
- * 
- * Date: 2006-3-30 Time: 19:13:52
- */
+
 public class NetStreamConstants {
 
 	//public static final int NC_STREAM_MAGIC = 0x897172;

@@ -5,15 +5,7 @@ import java.io.OutputStream;
 
 import com.dzf.framework.rsa.DES;
 
-/**
- * 
- * @author �ι���
- *
- * Date: 2006-4-1
- * Time: 18:12:23
- * 
- * 100 0 ��ʾһ��������
- */
+
 public class FastDESOutputStream extends OutputStream  {
     private DES des = null;
 
