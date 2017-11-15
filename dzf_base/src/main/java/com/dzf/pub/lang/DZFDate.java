@@ -66,7 +66,7 @@ public final class DZFDate implements java.io.Serializable, Comparable {
 			value = internalParse(strDate);
 		} else {
 			if (strDate == null || strDate.trim().length() != 10) {
-				throw new IllegalArgumentException("invalid UFDate:" + strDate);
+				throw new IllegalArgumentException("invalid DZFDate:" + strDate);
 			}
 			value = strDate.trim();
 		}
@@ -398,15 +398,19 @@ public final class DZFDate implements java.io.Serializable, Comparable {
 	private static String internalParse(String sDate) {
 
 		if (sDate == null)
-			throw new IllegalArgumentException("invalid UFDate: " + sDate);
+			throw new IllegalArgumentException("invalid DZFDate: " + sDate);
 
 		sDate = sDate.trim();
 		String[] tokens = new String[3];
 
 		StringTokenizer st = new StringTokenizer(sDate, "-/.");
 
+		if(st.countTokens() ==1 && sDate.length() ==8){
+			sDate = sDate.substring(0,4)+"-"+sDate.substring(4,6)+"-"+sDate.substring(6,8);
+			st = new StringTokenizer(sDate, "-/.");
+		}
 		if (st.countTokens() != 3) {
-			throw new IllegalArgumentException("invalid UFDate: " + sDate);
+			throw new IllegalArgumentException("invalid DZFDate: " + sDate);
 		}
 
 		int i = 0;
@@ -418,7 +422,7 @@ public final class DZFDate implements java.io.Serializable, Comparable {
 			int year = Integer.parseInt(tokens[0]);
 			int month = Integer.parseInt(tokens[1]);
 			if (month < 1 || month > 12)
-				throw new IllegalArgumentException("invalid UFDate: " + sDate);
+				throw new IllegalArgumentException("invalid DZFDate: " + sDate);
 			int day = Integer.parseInt(tokens[2]);
 
 			int MONTH_LENGTH[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30,
@@ -429,7 +433,7 @@ public final class DZFDate implements java.io.Serializable, Comparable {
 					: MONTH_LENGTH[month - 1];
 
 			if (day < 1 || day > daymax)
-				throw new IllegalArgumentException("invalid ufdate: " + sDate);
+				throw new IllegalArgumentException("invalid DZFDate: " + sDate);
 
 			String strYear = tokens[0];
 			for (int j = strYear.length(); j < 4; j++) {
@@ -451,7 +455,7 @@ public final class DZFDate implements java.io.Serializable, Comparable {
 			if (thr instanceof IllegalArgumentException) {
 				throw (IllegalArgumentException) thr;
 			} else {
-				throw new IllegalArgumentException("invalid ufdate: " + sDate);
+				throw new IllegalArgumentException("invalid DZFDate: " + sDate);
 			}
 		}
 
