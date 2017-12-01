@@ -64,6 +64,7 @@ public class DZFRequestFilter implements Filter {
 				|| url.contains("hessian/riscservice")
 				|| url.contains("hessian/cwgyInfoService" )
 				|| url.contains("hessian/filtransService")
+				|| url.contains("/cqtc/service")//重庆一键报税
 				|| url.endsWith("/zonefulogin.jsp")//中服接口，不走单点
 				|| url.endsWith("/js/jquery.min.js")//中服接口，不走单点
 				|| url.endsWith("/taxrpt/taxDeclarAction!updateDeclareStatusJs.action")//江苏报税，回写状态接口。
@@ -496,6 +497,11 @@ public class DZFRequestFilter implements Filter {
 			if(url.contains("/tnx/service")){
 				filterChain.doFilter(request, response);
 	        	return;
+			}
+			//重庆
+			if(url.contains("/cqtc/service")){
+		        filterChain.doFilter(request, response);
+		        return;	
 			}
 			//管理平台调用在线会计的凭证保存接口
 			if(url.contains("/hessian")){
