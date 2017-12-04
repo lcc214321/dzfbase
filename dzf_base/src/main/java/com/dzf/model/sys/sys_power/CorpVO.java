@@ -549,6 +549,8 @@ public class CorpVO<T extends SuperVO<T>> extends SuperVO {
     
     private Integer custtype;//客户类型
     
+    private String accountProgressDate;//彬杰，默认登录日期 调整 默认做账进度年月
+    
 	public Integer getCusttype() {
 		return custtype;
 	}
@@ -3654,4 +3656,11 @@ public class CorpVO<T extends SuperVO<T>> extends SuperVO {
         this.corpSholderVos = corpSholderVos;
     }
 
+	public String getAccountProgressDate() {
+		return accountProgressDate;
+	}
+
+	public void setAccountProgressDate(String accountProgressDate) {
+		this.accountProgressDate = accountProgressDate;
+	}
 }
