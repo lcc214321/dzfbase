@@ -41,7 +41,7 @@ public class SessionSerializable extends AbstractSerializable<DZFSessionListVO> 
 					writeInt(nos, it.next());
 				}
 			}
-			nos.writeLong(sessionvo.getLasttime());
+			writeLong(nos,sessionvo.getLasttime());
 			write(nos, sessionvo.getSessionid());
 			write(nos, sessionvo.getAppid());
 			write(nos, sessionvo.getUuid());
@@ -53,7 +53,7 @@ public class SessionSerializable extends AbstractSerializable<DZFSessionListVO> 
 	public DZFSessionListVO getSerializable(NetObjectInputStream nos) throws IOException, ClassNotFoundException {
 		
 		DZFSessionListVO sessionListVO = new DZFSessionListVO();
-		int iListLen = nos.readInt();
+		int iListLen = readToInt(nos, -1);
 		List<DZFSessionVO> listSessionVO = new ArrayList<DZFSessionVO>();
 		DZFSessionVO sessionvo = null;
 		int iDzfMapLen = 0;
@@ -68,18 +68,18 @@ public class SessionSerializable extends AbstractSerializable<DZFSessionListVO> 
 			sessionvo.setDate(readerString(nos, -1));
 			sessionvo.setRemoteIp(readerString(nos, -1));
 	
-			iDzfMapLen = nos.readInt();
+			iDzfMapLen = readToInt(nos, -1);
 			
 			if (iDzfMapLen > 0)
 			{
 				hsset = new HashSet<Integer>();
 				for (int j = 0; j < iDzfMapLen; j++)
 				{
-					hsset.add(nos.readInt());
+					hsset.add(readToInt(nos, -1));
 				}
 				sessionvo.setDzfMap(hsset);
 			}
-			sessionvo.setLasttime(nos.readLong());
+			sessionvo.setLasttime(readLong(nos, -1));
 			sessionvo.setSessionid(readerString(nos, -1));
 			sessionvo.setAppid(readerString(nos, -1));
 			sessionvo.setUuid(readerString(nos, -1));

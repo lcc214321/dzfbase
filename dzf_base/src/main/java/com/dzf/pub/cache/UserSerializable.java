@@ -21,17 +21,17 @@ public class UserSerializable extends AbstractSerializable<UserVO> {
 		write(nos,svo.getPk_creatcorp());
 		
 		write(nos,svo.getUser_code());
-		write(nos,svo.getAble_time());
-		write(nos,svo.getDisable_time());
-	writeBytes(nos, svo.getLocked_tag(),svo.getBappuser(),svo.getIsmanager(),svo.getKeyuser(),svo.getBdata(),svo.getBaccount(),svo.getIslogin());
+		writeDate(nos,svo.getAble_time());
+		writeDate(nos,svo.getDisable_time());
+	writeBooleans(nos, svo.getLocked_tag(),svo.getBappuser(),svo.getIsmanager(),svo.getKeyuser(),svo.getBdata(),svo.getBaccount(),svo.getIslogin());
 	
-	nos.write(svo.getPk_corp().getBytes());
+	write(nos,svo.getPk_corp());
 	write(nos,svo.getPwdparam());
 	write(nos,svo.getUser_name());
-	writeByte(nos,svo.getIstate());
+	writeInt(nos,svo.getIstate());
 
-	nos.write(svo.getCuserid().getBytes());
-	writeByte(nos,svo.getPwdtype());
+	write(nos,svo.getCuserid());
+	writeInt(nos,svo.getPwdtype());
 	write(nos,svo.getPk_tempcorp());
 write(nos,svo.getPk_signcorp());
 
@@ -52,8 +52,8 @@ write(nos, svo.getMandq());
 	svo.setPk_creatcorp(readerString(nos, -1));
 	
 	svo.setUser_code(readerString(nos, -1));
-	svo.setAble_time(reader(nos));
-	svo.setDisable_time(reader(nos));
+	svo.setAble_time(readDate(nos));
+	svo.setDisable_time(readDate(nos));
 	
 	DZFBoolean[] bs=readerDZFBooleans(nos);
 	svo.setLocked_tag(bs[0]);
@@ -64,14 +64,14 @@ write(nos, svo.getMandq());
 	svo.setBaccount(bs[5]);
 	svo.setIslogin(bs[6]);
 	
-	svo.setPk_corp(readerString(nos,6));
+	svo.setPk_corp(readerString(nos,-1));
 	svo.setPwdparam(readerString(nos, -1));
 	//log.info("用户字节数："+nos.readByte());
 	svo.setUser_name(readerString(nos, -1));
-	svo.setIstate((int) nos.readByte());
+	svo.setIstate(readToInt(nos, -1));
 	
-	svo.setCuserid(readerString(nos,24));
-	svo.setPwdtype((int) nos.readByte());
+	svo.setCuserid(readerString(nos,-1));
+	svo.setPwdtype(readToInt(nos, -1));
 	svo.setPk_tempcorp(readerString(nos, -1));
 	svo.setPk_signcorp(readerString(nos, -1));
 	

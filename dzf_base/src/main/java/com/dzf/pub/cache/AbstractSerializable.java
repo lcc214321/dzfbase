@@ -10,8 +10,16 @@ import com.dzf.pub.lang.DZFDate;
 public abstract class AbstractSerializable<T> implements IDzfSerializable<T> {
 
 	public AbstractSerializable() {
-		// TODO Auto-generated constructor stub
 	}
+	
+	protected void writeLong(NetObjectOutputStream nos,Long cc) throws IOException{
+		String aa = null;
+		if(cc != null)
+			aa = String.valueOf(cc);
+		write(nos,aa);
+		
+	}
+
 	protected void write(NetObjectOutputStream nos,String str) throws IOException{
 		int len=0;
 		byte[] bs=new byte[0];
@@ -36,21 +44,17 @@ public abstract class AbstractSerializable<T> implements IDzfSerializable<T> {
 			bs = str.getBytes();
 			len = bs.length;
 		}
-		nos.writeInt(len);
+		writeInt(nos, len);
 		if (len > 0)
 			nos.write(bs);
 	}
-	protected void write(NetObjectOutputStream nos,DZFBoolean b) throws IOException{
+	protected void writeBoolean(NetObjectOutputStream nos,DZFBoolean b) throws IOException{
 			if(b==null)b=DZFBoolean.FALSE;
 			nos.writeBoolean(b.booleanValue());
 			//nos.write(b.toString().getBytes());
 	}
-	protected void writeByte(NetObjectOutputStream nos,Integer v) throws IOException{
-		if(v==null)v=-1;
-		
-		nos.writeByte(v);
-	}
-	protected void writeBytes(NetObjectOutputStream nos,DZFBoolean...b) throws IOException{
+
+	protected void writeBooleans(NetObjectOutputStream nos,DZFBoolean...b) throws IOException{
 		int len=b==null?0:b.length;
 		StringBuffer sb=new StringBuffer(len+1);
 		DZFBoolean db=null;
@@ -68,16 +72,18 @@ public abstract class AbstractSerializable<T> implements IDzfSerializable<T> {
 	}
 
 	protected void writeInt(NetObjectOutputStream nos,Integer v) throws IOException{
-		if(v==null)v=-1;
-		nos.writeInt(v);
+		String aa = null;
+		if(v != null)
+			aa = String.valueOf(v);
+		write(nos,aa);
 	}
-	protected void write(NetObjectOutputStream nos,DZFDate b) throws IOException{
+	protected void writeDate(NetObjectOutputStream nos,DZFDate b) throws IOException{
 		long l=0;
 		if(b!=null)l=b.toDate().getTime();
 		nos.writeLong(l);
 	
 }
-	protected DZFDate reader(NetObjectInputStream nos) throws IOException{
+	protected DZFDate readDate(NetObjectInputStream nos) throws IOException{
 		long l=nos.readLong();
 		if(l == 0){
 			return null;
@@ -100,6 +106,20 @@ public abstract class AbstractSerializable<T> implements IDzfSerializable<T> {
 	return new DZFBoolean(nos.readBoolean());
 	}
 
+	protected Integer readToInt(NetObjectInputStream nos, int len) throws IOException {
+		if (len < 0)
+			len = nos.readByte();
+		byte[] bs = new byte[len];
+		if (len > 0)
+			nos.read(bs);
+		String aa =  len > 0 ? new String(bs, "utf-8") : null;
+		Integer ier = null;
+		if(aa != null){
+			ier= Integer.valueOf(aa);
+		}
+		return ier;
+	}
+	
 	protected String readerString(NetObjectInputStream nos, int len) throws IOException {
 		if (len < 0)
 			len = nos.readByte();
@@ -117,11 +137,25 @@ public abstract class AbstractSerializable<T> implements IDzfSerializable<T> {
 	 */
 	protected String readLongString(NetObjectInputStream nos, int len) throws IOException {
 		if (len < 0)
-			len = nos.readInt();
+			len = readToInt(nos, -1);
 		byte[] bs = new byte[len];
 		if (len > 0)
 			nos.read(bs);
 		return len > 0 ? new String(bs) : null;
 	}
 
+	
+	protected Long readLong(NetObjectInputStream nos, int len) throws IOException {
+		if (len < 0)
+			len = nos.readByte();
+		byte[] bs = new byte[len];
+		if (len > 0)
+			nos.read(bs);
+		String aa =  len > 0 ? new String(bs, "utf-8") : null;
+		Long ier = null;
+		if(aa != null){
+			ier= Long.valueOf(aa);
+		}
+		return ier;
+	}
 }
