@@ -554,7 +554,18 @@ public class CorpVO<T extends SuperVO<T>> extends SuperVO {
     @FieldAlias("jdate")
     private DZFDate djoindate;//加盟商加盟日期
     
-	public DZFDate getDjoindate() {
+    @FieldAlias("vsuname")
+    private String vstateuname;//国税用户名
+    
+	public String getVstateuname() {
+        return vstateuname;
+    }
+
+    public void setVstateuname(String vstateuname) {
+        this.vstateuname = vstateuname;
+    }
+
+    public DZFDate getDjoindate() {
         return djoindate;
     }
 
