@@ -551,7 +551,18 @@ public class CorpVO<T extends SuperVO<T>> extends SuperVO {
     
     private String accountProgressDate;//彬杰，默认登录日期 调整 默认做账进度年月
     
-	public Integer getCusttype() {
+    @FieldAlias("jdate")
+    private DZFDate djoindate;//加盟商加盟日期
+    
+	public DZFDate getDjoindate() {
+        return djoindate;
+    }
+
+    public void setDjoindate(DZFDate djoindate) {
+        this.djoindate = djoindate;
+    }
+
+    public Integer getCusttype() {
 		return custtype;
 	}
 
