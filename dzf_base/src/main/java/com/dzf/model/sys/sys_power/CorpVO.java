@@ -557,7 +557,17 @@ public class CorpVO<T extends SuperVO<T>> extends SuperVO {
     @FieldAlias("vsuname")
     private String vstateuname;//国税用户名
     
-	public String getVstateuname() {
+    private Integer invtype;//发票类型  0: 专用发票、 1:普通发票 、2: 电子普通发票
+    
+	public Integer getInvtype() {
+        return invtype;
+    }
+
+    public void setInvtype(Integer invtype) {
+        this.invtype = invtype;
+    }
+
+    public String getVstateuname() {
         return vstateuname;
     }
 
