@@ -61,6 +61,7 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 		writeInt(nos, svo.getVprovince());//省
 		writeInt(nos, svo.getIcostforwardstyle());//成本结转类型
 		write(nos, svo.getFathercorp());//上级id
+		write(nos,svo.getCitycounty());//区域
 	}
 
 	@Override
@@ -120,6 +121,7 @@ public class CorpSerializable extends AbstractSerializable<CorpVO> {
 		cvo.setVprovince(readToInt(nos, -1));//省
 		cvo.setIcostforwardstyle(readToInt(nos, -1));//成本结转类型
 		cvo.setFathercorp(readerString(nos, -1));//上级id
+		cvo.setCitycounty(readerString(nos,-1));//区域
 		return cvo;
 	}
 	
