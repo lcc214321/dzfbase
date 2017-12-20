@@ -46,6 +46,11 @@ public class DZFValidator {
 	 * 正则表达式：验证IP地址
 	 */
 	public static final String REGEX_IP_ADDR = "(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)";
+	
+	/**
+	 * 正则表达式：数字
+	 */
+	public static final String REGEX_NUMBER = "[0-9]*";
 
 	/**
 	 * 校验用户名
@@ -126,4 +131,13 @@ public class DZFValidator {
 	public static boolean isIPAddr(String ipAddr) {
 		return Pattern.matches(REGEX_IP_ADDR, ipAddr);
 	}
+	
+	/**
+	 * 校验数字
+	 * @param number
+	 * @return
+	 */
+	public static boolean isNumber(String number) {
+        return Pattern.matches(REGEX_NUMBER, number);
+    }
 }
