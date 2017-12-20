@@ -33,6 +33,7 @@ import com.dzf.pub.IDGenerate;
 import com.dzf.pub.Logger;
 import com.dzf.pub.StringUtil;
 import com.dzf.pub.SuperVO;
+import com.dzf.pub.lang.DZFDateTime;
 
 
 
@@ -228,6 +229,10 @@ public class JdbcPersistenceManager extends PersistenceManager {
 		if (vos.length == 0) {
 			return new String[0];
 		}
+		DZFDateTime time = new DZFDateTime();
+		for(SuperVO v : vos){
+			v.setUpdatets(time);
+		}
 		String[] pks = null;
 		try {
 			String tableName = vos[0].getTableName();
@@ -413,7 +418,10 @@ public class JdbcPersistenceManager extends PersistenceManager {
 		if (vo.length == 0)
 			return 0;
 		int row = 0;
-
+		DZFDateTime time = new DZFDateTime();
+		for(SuperVO v : vo){
+			v.setUpdatets(time);
+		}
 		// session.setAddTimeStamp(false);
 		// 得到表名
 		String tableName = vo[0].getTableName();
@@ -603,8 +611,14 @@ public class JdbcPersistenceManager extends PersistenceManager {
 		if (vo.length == 0)
 			return 0;
 		// 得到表名
-		String sql = SQLHelper.getDeleteByPKSQL(vo[0].getTableName(),
-				vo[0].getPKFieldName());
+		String tableName = vo[0].getTableName();
+		String sql = " update " + tableName + " set dr = 1 WHERE " + vo[0].getPKFieldName() + "=?";
+		Object[][] types = getColmnTypes(tableName);
+		Map<String, Integer> map = getMap(types);
+		if(map.containsKey("UPDATETS")){
+			sql = " update " + tableName + " set dr = 1,updatets = '"+new DZFDateTime()+"' WHERE " + vo[0].getPKFieldName() + "=?";
+		}
+		map.clear();
 		List<SQLParameter> list=new ArrayList<SQLParameter>();
 		for (int i = 0; i < vo.length; i++) {
 			if (vo[i] == null)
@@ -686,6 +700,13 @@ public class JdbcPersistenceManager extends PersistenceManager {
 		
 		String sql = " update " + supervo.getTableName() + " set dr =1 WHERE "
 				+ supervo.getPKFieldName() + "=?";
+		Object[][] types = getColmnTypes(supervo.getTableName());
+		Map<String, Integer> map = getMap(types);
+		if(map.containsKey("UPDATETS")){
+			sql = " update " + supervo.getTableName() + " set dr =1,updatets = '"+new DZFDateTime()+"' where "
+					+ supervo.getPKFieldName() + "=?";		
+		}
+		map.clear();
 		List<SQLParameter> list=new ArrayList<SQLParameter>();
 		for (int i = 0; i < pks.length; i++) {
 			SQLParameter parameter = new SQLParameter();
@@ -727,6 +748,12 @@ public class JdbcPersistenceManager extends PersistenceManager {
 //				.append(supervo.getTableName()).toString();
 		
 		String sql = " update "+supervo.getTableName()+" set dr = 1  ";
+		Object[][] types = getColmnTypes(supervo.getTableName());
+		Map<String, Integer> map = getMap(types);
+		if(map.containsKey("UPDATETS")){
+			sql = " update "+supervo.getTableName()+" set dr = 1 ,updatets = '"+new DZFDateTime()+"' ";	
+		}
+		map.clear();
 		if (wherestr != null) {
 			wherestr = wherestr.trim();
 			if (wherestr.length() > 0) {

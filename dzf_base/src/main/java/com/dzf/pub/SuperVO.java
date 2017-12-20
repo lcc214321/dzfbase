@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import com.dzf.pub.lang.DZFDateTime;
+
 public abstract class SuperVO<T extends SuperVO<T>> extends CircularlyAccessibleValueObject implements
 		Serializable, Cloneable {
 
@@ -24,6 +26,7 @@ public abstract class SuperVO<T extends SuperVO<T>> extends CircularlyAccessible
 	private static transient ReentrantReadWriteLock rwl = new ReentrantReadWriteLock();
 	private T[] children;
 	private List<T> listchild;
+	private DZFDateTime updatets;//修改时间----数据库类型为char(19)-----2017-01-01 23:12:12
 
 	public int getPage() {
 		return page;
@@ -273,6 +276,14 @@ public abstract class SuperVO<T extends SuperVO<T>> extends CircularlyAccessible
 
 	public void setParent_id(String parent_id) {
 		this.parent_id = parent_id;
+	}
+	
+	public DZFDateTime getUpdatets() {
+		return updatets;
+	}
+
+	public void setUpdatets(DZFDateTime updatets) {
+		this.updatets = updatets;
 	}
 
 	public abstract String getParentPKFieldName();
