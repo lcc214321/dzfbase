@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dzf.dao.bs.SingleObjectBO;
+import com.dzf.pub.BusinessException;
 import com.dzf.pub.DZFWarpException;
+import com.dzf.pub.SuperVO;
 import com.dzf.pub.lang.DZFBoolean;
 import com.dzf.service.imp.IReferenceCheck;
 
@@ -161,4 +163,17 @@ public class ReferenceCheckImp implements IReferenceCheck {
 				excludedTableNames, true);
 	}
 
+	@Override
+	public void isDataEffective(SuperVO vo) throws DZFWarpException {
+		if(vo == null)
+			return;
+		if(vo.getUpdatets() == null)
+			return;
+		SuperVO v1 = singleObjectBO.queryByPrimaryKey(vo.getClass(), vo.getPrimaryKey());
+		if(v1 == null || v1.getUpdatets() == null)
+			return;
+		if(!v1.getUpdatets().equals(vo.getUpdatets())){
+			throw new BusinessException("当前数据已被修改，请刷新后重新操作！");
+		}
+	}
 }

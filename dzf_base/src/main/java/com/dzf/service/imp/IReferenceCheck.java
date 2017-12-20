@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.dzf.pub.DZFWarpException;
+import com.dzf.pub.SuperVO;
 
 
 /**
@@ -162,4 +163,6 @@ public interface IReferenceCheck {
 	public boolean isReferencedWhenModify(String tableName, String key,
 			String[] excludedTableNames) throws DZFWarpException;
 
+	//校验数据的有效性
+	public void isDataEffective(SuperVO vo)throws DZFWarpException;
 }
